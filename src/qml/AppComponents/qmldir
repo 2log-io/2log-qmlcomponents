@@ -1,0 +1,73 @@
+module AppComponents
+
+
+## Container
+## ---------
+
+AddUserContactDetailsContainer 1.0          Container/AddUserContainer/ContactDetailsContainer.qml
+MoneyCardContainer 1.0                      Container/AddUserContainer/MoneyCardContainer.qml
+AddUserPermissionContainer 1.0              Container/AddUserContainer/PermissionContainer.qml
+
+DotSetupContainer 1.0                       Container/HardwareSetupContainer/DotSetupContainer.qml
+SwitchSetupContainer 1.0                    Container/HardwareSetupContainer/SwitchSetupContainer.qml
+
+LastMachineJobsContainer 1.0                Container/LogContainer/LastJobsContainer.qml
+
+LoginContainer 1.0                          Container/LoginContainer/LoginContainer.qml
+
+GraphContainer 1.0                          Container/MachineContainer/GraphContainer.qml
+MachineCommonSettingsContainer 1.0          Container/MachineContainer/MachineCommonSettingsContainer.qml
+MachineInfoContainer 1.0                    Container/MachineContainer/MachineInfoContainer.qml
+MonitoringInfoContainer 1.0                 Container/MachineContainer/MonitoringInfoContainer.qml
+PricingContainer 1.0                        Container/MachineContainer/PricingContainer.qml
+SuctionCommonSettingsContainer 1.0          Container/MachineContainer/SuctionCommonSettingsContainer.qml
+SuctionInfoContainer 1.0                    Container/MachineContainer/SuctionInfoContainer.qml
+
+AdminUserContainer 1.0                      Container/SettingsContainer/AdminUserContainer.qml
+PermissionGroupContainer 1.0                Container/SettingsContainer/PermissionGroupContainer.qml
+# SelectAdminDotContainer 1.0                 Container/SettingsContainer/SelectAdminDotContainer.qml
+ServiceDotSetupContainer 1.0                Container/HardwareSetupContainer/ServiceDotSetupContainer.qml
+
+CardContainer 1.0                           Container/UserDetailsContainer/CardContainer.qml
+ContactDetailsContainer 1.0                 Container/UserDetailsContainer/ContactDetailsContainer.qml
+LastUserJobsContainer 1.0                   Container/UserDetailsContainer/LastActivityContainer/LastActivityContainer.qml
+MoneyContainer 1.0                          Container/UserDetailsContainer/MoneyContainer.qml
+PermissionContainer 1.0                     Container/UserDetailsContainer/PermissionContainer.qml
+ResetPasswordContainer 1.0                  Container/Profile/ResetPasswordContainer.qml
+LanguageContainer 1.0                       Container/Profile/LanguageContainer.qml
+CobotContainer 1.0                          Container/CobotContainer/CobotContainer.qml
+RevenueStatisticContainer 1.0               Container/Statistics/RevenueStatisticContainer.qml
+UserStatisticContainer 1.0                  Container/Statistics/UserStatisticContainer.qml
+ResourceStatisticContainer 1.0              Container/Statistics/ResourceStatisticContainer.qml
+MachineStatisticsContainer 1.0              Container/Statistics/MachineStatisticsContainer.qml
+ServerEyeContainer 1.0                      Container/ServerEyeContainer/ServerEyeContainer.qml
+
+HookDeviceContainer 1.0                     Container/HardwareSetupContainer/HookDeviceContainer.qml
+ChangeDevicePage 1.0                        Container/HardwareSetupContainer/ChangeDevicePage.qml
+
+
+BillSummary 1.0                             Container/PayDesk/BillSummary/BillSummary.qml
+
+## Widgets
+## ---------
+
+ScanCardWizzard 1.0                         Widgets/ScanCardWizzard/ScanCardWizzard.qml
+Container 1.0                               Widgets/Container.qml
+ContainerBase 1.0                           Widgets/ContainerBase.qml
+ContainerButton 1.0                         Widgets/ContainerButton.qml
+DeviceIDTextField 1.0                       Widgets/DeviceIDTextField.qml
+DeviceItem 1.0                              Widgets/DeviceItem.qml
+Header 1.0                                  Widgets/Header.qml
+MainMenu 1.0                                Widgets/MainMenu.qml
+PermissionItem 1.0                          Widgets/PermissionItem.qml
+ScrollViewBase 1.0                          Widgets/ScrollViewBase.qml
+ViewBase 1.0                                Widgets/ViewBase.qml
+BottomAppMenu 1.0                           Widgets/BottomAppMenu.qml
+BaseItem 1.0                                Widgets/BaseItem.qml
+GroupPermissionItem 1.0                     Container/UserDetailsContainer/GroupPermissionItem.qml
+SinglePermissionItem 1.0                    Container/UserDetailsContainer/SinglePermissionItem.qml
+singleton TypeDef 1.0                       Helper/TypeDef.qml
+TabContainer 1.0                            Widgets/TabContainer/TabContainer.qml
+DeviceProvisioningPopup 1.0                 Container/HardwareSetupContainer/DeviceProvisioningPopup.qml
+
+PaymentSalesStatistics 1.0                  Container/PaymentContainer/SalesContainer.qml
