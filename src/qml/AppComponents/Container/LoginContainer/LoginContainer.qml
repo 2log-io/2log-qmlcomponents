@@ -145,7 +145,7 @@ Container
         Connections
         {
             target: QuickHub
-            onStateChanged:
+            function onStateChanged()
             {
                 delayTimer.start()
             }

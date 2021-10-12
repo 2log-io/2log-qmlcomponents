@@ -41,7 +41,7 @@ Popup
     Connections
     {
         target: QuickHub
-        onStateChanged:
+        function onStateChanged()
         {
             // when all is done
             if(docroot.itsMe && ProvisioningManager.state == ProvisioningManager.PROVISIONING_CONNECTED_TO_HOME_WIFI && QuickHub.state == QuickHub.STATE_Authenticated && root.provisioning)
@@ -59,7 +59,7 @@ Popup
     Connections
     {
         target: ProvisioningManager
-        onStateChanged:
+        function onStateChanged()
         {
            if(ProvisioningManager.state === ProvisioningManager.PROVISIONING_CONNECTED_TO_HOME_WIFI)
                timer.start()

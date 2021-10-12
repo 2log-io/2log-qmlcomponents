@@ -279,11 +279,13 @@ Container
                 Connections
                 {
                     target: deviceModel
-                    onDeviceOnlineChanged:
-                    if(deviceModel.deviceOnline && docroot.waitingForDevice)
+                    function onDeviceOnlineChanged()
                     {
-                        stack.replace(dotOverview,StackView.PushTransition);
-                        docroot.waitingForDevice = false
+                        if(deviceModel.deviceOnline && docroot.waitingForDevice)
+                        {
+                            stack.replace(dotOverview,StackView.PushTransition);
+                            docroot.waitingForDevice = false
+                        }
                     }
                 }
             }

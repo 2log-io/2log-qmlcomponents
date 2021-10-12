@@ -40,6 +40,7 @@ Flickable
         Repeater
         {
             model:docroot.billData.bills
+            width: parent.width
 
             Column
             {
@@ -78,6 +79,7 @@ Flickable
                        name: modelData.name
                        price: modelData.price
                        flat: modelData.flat
+
                    }
                 }
 
@@ -137,3 +139,4 @@ Flickable
         }
     }
 }
+

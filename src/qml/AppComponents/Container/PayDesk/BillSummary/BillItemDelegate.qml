@@ -37,8 +37,9 @@ Rectangle
 
     RowLayout
     {
-        anchors.margins: 20
-        anchors.fill: parent
+        width: parent.width-40
+        x:20
+        height: parent.height
 
         Item
         {
