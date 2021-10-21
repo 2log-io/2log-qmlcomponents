@@ -136,40 +136,40 @@ Container
             property string role
             Binding on role{value:userModel.role}
             selectedIndex: TypeDef.getIndexOf(TypeDef.roles, role)
-            onEditedSelectedIndexChanged:
-            {
+//            onEditedSelectedIndexChanged:
+//            {
 
-                if(editedSelectedIndex > 0)
-                {
-                    courseCombo.enabled = false
-                    courseCombo.selectedIndex = -1
-                    courseCombo.editedSelectedIndex = -1
-                    courseCombo.mandatory = false
-                }
-                else
-                {
-                   // courseCombo.dirty = true
-                    courseCombo.mandatory = true
-                    courseCombo.enabled = true
+//                if(editedSelectedIndex > 0)
+//                {
+//                    courseCombo.enabled = false
+//                    courseCombo.selectedIndex = -1
+//                    courseCombo.editedSelectedIndex = -1
+//                    courseCombo.mandatory = false
+//                }
+//                else
+//                {
+//                   // courseCombo.dirty = true
+//                    courseCombo.mandatory = true
+//                    courseCombo.enabled = true
 
-                    if(userModel.course != "")
-                    {
-                        courseCombo.selectedIndex = Qt.binding(function(){return TypeDef.getIndexOf(TypeDef.courses, userModel.course) })
-                    }
-                }
-            }
+//                    if(userModel.course != "")
+//                    {
+//                        courseCombo.selectedIndex = Qt.binding(function(){return TypeDef.getIndexOf(TypeDef.courses, userModel.course) })
+//                    }
+//                }
+//            }
         }
 
-        FormDropDownItem
-        {
-            id: courseCombo
-            label:qsTr("Studiengang");
-            placeholder: qsTr("keine Auswahl")
-            property string course
-            Binding on course{value:userModel.course}
-            options: TypeDef.getLongStrings(TypeDef.courses);
-            selectedIndex:  TypeDef.getIndexOf(TypeDef.courses, course)
-        }
+//        FormDropDownItem
+//        {
+//            id: courseCombo
+//            label:qsTr("Studiengang");
+//            placeholder: qsTr("keine Auswahl")
+//            property string course
+//            Binding on course{value:userModel.course}
+//            options: TypeDef.getLongStrings(TypeDef.courses);
+//            selectedIndex:  TypeDef.getIndexOf(TypeDef.courses, course)
+//        }
     }
 
     Item{

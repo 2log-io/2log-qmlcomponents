@@ -81,21 +81,18 @@ Item
     ]
 
 
-
-
-
     property var roles:
     [
         {
-            "name":qsTr("Student"),
+            "name":qsTr("Member"),
             "code":"stud"
         },
         {
-            "name":qsTr("Angestellter"),
+            "name":qsTr("Mitarbeiter"),
             "code":"empl",
         },
         {
-            "name":qsTr("Extern"),
+            "name":qsTr("Gast"),
             "code":"ext",
         }
     ]

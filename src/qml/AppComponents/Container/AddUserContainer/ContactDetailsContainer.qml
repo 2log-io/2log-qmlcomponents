@@ -32,7 +32,7 @@ Container
     property string surname: surnameField.text
     property string eMail: emailField.text
     property int role: roleDD.selectedIndex
-    property int course: studgDD.selectedIndex
+   // property int course: studgDD.selectedIndex
 
 
 
@@ -41,11 +41,7 @@ Container
         width: parent.width
 
 
-        RowLayout
-        {
-            height: 40
-            width: parent.width
-            spacing: contact.spacing
+
 
             TextField
             {
@@ -67,7 +63,7 @@ Container
                 nextOnTab: emailField.field
                 Layout.fillWidth: true
             }
-        }
+
 
 
         TextField
@@ -83,23 +79,23 @@ Container
         DropDown
         {
             id: roleDD
-            nextOnTab: studgDD
+           // nextOnTab: studgDD
             mandatory: true
             width: parent.width
-            options: TypeDef.getLongStrings(TypeDef.roles)// ["Student","Angestellter","Extern"]
+            options: TypeDef.getLongStrings(TypeDef.roles)
             placeholderText: qsTr("Rolle")
             onSelectedIndexChanged: if(selectedIndex >= 0) studgDD.selectedIndex = -1
         }
 
-        DropDown
-        {
-            id: studgDD
-            mandatory: roleDD.selectedIndex === 0
-            width: parent.width
-            enabled: roleDD.selectedIndex <= 0
-            placeholderText: qsTr("Studiengang")
-            options:TypeDef.getLongStrings(TypeDef.courses)
-        }
+//        DropDown
+//        {
+//            id: studgDD
+//            mandatory: roleDD.selectedIndex === 0
+//            width: parent.width
+//            enabled: roleDD.selectedIndex <= 0
+//            placeholderText: qsTr("Studiengang")
+//            options:TypeDef.getLongStrings(TypeDef.courses)
+//        }
     }
 
     function checkInput()
@@ -108,7 +104,7 @@ Container
         var nameOK = nameField.acceptableInput
         var surnameOK = surnameField.acceptableInput
         var roleOK = roleDD.acceptableInput
-        var studgOK = studgDD.acceptableInput
+        var studgOK = true// studgDD.acceptableInput
         return mailOK && nameOK && surnameOK && roleOK && studgOK
     }
 
@@ -118,7 +114,7 @@ Container
         var nameOK = nameField.check()
         var surnameOK = surnameField.check()
         var roleOK = roleDD.check()
-        var studgOK = studgDD.check()
+        var studgOK = true//studgDD.check()
 
         if(!nameOK)
         {
@@ -160,6 +156,6 @@ Container
         nameField.text = ""
         surnameField.text = ""
         roleDD.selectedIndex = -1
-        studgDD.selectedIndex = -1
+      //  studgDD.selectedIndex = -1
     }
 }

@@ -46,6 +46,6 @@ TabContainer
         height: docroot.height
         userID: docroot.userID
         limit: docroot.limit
-        property string text:qsTr("Letzte Jobs")
+        property string text:qsTr("Letzte Rechnungen")
     }
 }

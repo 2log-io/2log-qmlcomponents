@@ -30,8 +30,7 @@ Container
     Layout.fillWidth: true
     Layout.minimumHeight: totalHeight
     Layout.maximumHeight: totalHeight
-    //Layout.fillHeight: true
-    headline:qsTr("Letzte Jobs")
+    headline:qsTr("Letzte Rechnungen")
     property string deviceID
     property int limit: 5
     property alias count: view.count
@@ -147,7 +146,6 @@ Container
                         horizontalAlignment: Text.AlignRight
                         text: (price / 100).toLocaleString(Qt.locale("de_DE"))
                         fontSize: Fonts.controlFontSize
-                   //     anchors.verticalCenter: parent.verticalCenter
                         visible: delegate.width > 400
                     }
                     TextLabel
@@ -156,8 +154,6 @@ Container
                         text: "EUR"
                         fontSize: Fonts.verySmallControlFontSize
                         color: Colors.lightGrey
-                     //   anchors.verticalCenter: parent.verticalCenter
-
                         visible: delegate.width > 400
                     }
                     Item
@@ -177,14 +173,6 @@ Container
                     }
                 }
             }
-
-//            Row
-//            {
-//                id: jobInfo
-//                Layout.alignment: Qt.AlignVCenter
-//                spacing: 5
-
-//            }
         }
 
         SynchronizedListModel
