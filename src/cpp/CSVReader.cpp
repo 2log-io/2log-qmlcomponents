@@ -9,7 +9,7 @@
 CSVReader::CSVReader(QObject *parent) : QObject(parent)
 {
 
-    connect(this, &CSVReader::overwriteDataChanged, [=]{qDebug()<<"READ";read();});
+    connect(this, &CSVReader::overwriteDataChanged, [=]{read();});
 }
 
 CSVReader::CSVReader(QString filename, QObject *parent): QObject(parent),

@@ -91,7 +91,6 @@ QtControls.Container
                     model: docroot.contentModel
                     preferredHighlightBegin: 0
                     preferredHighlightEnd: 1
-                    onCurrentIndexChanged: console.log(currentIndex)
                     highlightRangeMode: ListView.StrictlyEnforceRange
                 }
             }

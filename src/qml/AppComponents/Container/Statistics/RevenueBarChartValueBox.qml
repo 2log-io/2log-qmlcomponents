@@ -38,7 +38,6 @@ BaseValueBox
         anchors.fill:parent
         anchors.margins: 20
         anchors.topMargin: 40
-        onMaxChanged: console.log("MAX"+max)
         valueFormat:function(value){return (value / 100).toLocaleString(Qt.locale("de_DE"))+"€"}
     }
 

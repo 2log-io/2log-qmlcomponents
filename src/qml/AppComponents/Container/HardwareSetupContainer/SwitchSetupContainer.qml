@@ -133,7 +133,6 @@ Container
 
             onClicked:
             {
-                console.log(docroot.shortID)
                 machineControlService.call("unhookWithMapping",{"mapping":deviceModel.resource}, function(data){})
             }
         }

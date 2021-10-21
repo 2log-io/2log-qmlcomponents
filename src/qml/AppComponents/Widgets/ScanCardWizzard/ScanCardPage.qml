@@ -21,12 +21,14 @@ Item
         {
             if(data.errorCode < 0)
             {
+                console.log("Unbekannte Karte")
                 scanCardPage.state = "cardOK"
+
             }
             else
             {
-                scanCardPage.state = "cardUsed"
                 console.log("Karte bereits verwendet")
+                scanCardPage.state = "cardUsed"
             }
         }
     }

@@ -48,7 +48,6 @@ ListView
             id: delegateWrapper
             Layout.fillWidth: true
             Layout.fillHeight: true
-            onWidthChanged: console.log()
 
             property bool bindingHelper: false
 

@@ -178,7 +178,6 @@ Popup
                 var server = QuickHub.serverUrl
                 if(server.endsWith(".2log.io"))
                     server = server.replace(".2log.io", ".iot.2log.io:443");
-                console.log(server);
                 ProvisioningManager.startProvisioning(password, server)
             }
             onCancel: docroot.close()

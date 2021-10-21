@@ -147,7 +147,6 @@ Container
                                     "userID": userModel.uuid,
                                     "value": intval
                                 }
-                                console.log(intval)
                                 labService.call("transferMoney", data, function(){stack.replace(initialItem, StackView.PushAnimation)})
 
                             }

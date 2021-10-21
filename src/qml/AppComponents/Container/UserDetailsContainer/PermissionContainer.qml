@@ -196,7 +196,6 @@ Container
                 {
                     id: permModel
                     resource: "labcontrol/users/permissions/"+container.userID
-                    onResourceChanged: console.log(resource)
                     lookupKey:"resourceID"
                     keepDeletedItems: true
                 }
