@@ -141,9 +141,7 @@ Container
                             icon: Icons.plus
                             onClicked:
                             {
-                                console.log("A")
                                 var intval = Math.abs(HelperFunctions.priceTextToInt(priceLabel.text))
-                                console.log("B"+intval)
                                 var data =
                                 {
                                     "userID": userModel.uuid,

@@ -55,7 +55,6 @@ Container
                 if(initialized)
                 {
                     var reset = lastMaintainance.reset
-                    console.log(reset)
                     if(reset !== undefined)
                     {
                         var now = new Date()
@@ -117,7 +116,6 @@ Container
                 text:  {
                     if(lastMaintainance.initialized && lastMaintainance.reset !== undefined)
                     {
-                        console.log(JSON.stringify(lastMaintainance.reset))
                         return qsTr("Seit dem %1").arg(Qt.formatDate(lastMaintainance.reset, "dd.MM.yy"))
                     }
                     else

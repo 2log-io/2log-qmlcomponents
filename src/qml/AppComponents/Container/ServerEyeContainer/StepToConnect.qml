@@ -110,10 +110,5 @@ Item
         {
             docroot.waitForConnect()
         }
-        else
-        {
-            console.log("ERROR")
-        }
     }
-
 }

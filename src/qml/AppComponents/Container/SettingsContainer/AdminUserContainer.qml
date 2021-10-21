@@ -366,14 +366,13 @@ Container
                             onIndexClicked:
                             {
                                 var level = TypeDef.adminRoles[index].code
-                                console.log(level+ " "+index)
                                 var data =
                                 {
                                     'userID':userID,
                                     'level': level
                                 }
 
-                                labService.call("changeUserLevel", data, function(result){console.log(JSON.stringify(result))})
+                                labService.call("changeUserLevel", data, function(result){})
                             }
 
                         }

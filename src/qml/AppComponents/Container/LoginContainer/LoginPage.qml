@@ -66,7 +66,6 @@ Column
         {
             if(QuickHub.state == QuickHub.STATE_Connected)
             {
-                console.log(username.text, password.text )
                 docroot.login(username.text, password.text)
             }
             else if(QuickHub.serverUrl !== "")

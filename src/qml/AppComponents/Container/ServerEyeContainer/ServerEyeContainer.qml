@@ -42,7 +42,6 @@ Container
             {
                 script:
                 {
-                    console.log("NOT CONNECTED")
                     stack.replace(notConnected, StackView.PushTransition)
                 }
             }
@@ -59,7 +58,6 @@ Container
             {
                 script:
                 {
-                    console.log("NOT CONNECTED")
                     stack.replace(loading, StackView.PushTransition)
                 }
             }

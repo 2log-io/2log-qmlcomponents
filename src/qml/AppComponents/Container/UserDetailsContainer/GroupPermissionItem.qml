@@ -158,8 +158,6 @@ BaseItem
         }
     }
 
-
-    onStateChanged: console.log(state)
     states:
     [
         State

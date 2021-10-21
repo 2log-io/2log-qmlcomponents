@@ -50,7 +50,6 @@ Container
 
     function callback(data)
     {
-        console.log(JSON.stringify(data))
         if(data.errorcode >= 0 )
         {
             stack.replace(dotOverview,StackView.PushTransition);

@@ -102,7 +102,6 @@ Flow
         linkColor: Colors.white_op50
         onLinkActivated:
         {
-            console.log(link)
             if ( link == "fromDate")
             {
                 dateFlyoutFrom.open()
@@ -157,7 +156,6 @@ Flow
         linkColor: Colors.white_op50
         onLinkActivated:
         {
-            console.log(link)
             if ( link == "fromTime")
             {
                 timeFlyoutFrom.open()
@@ -204,7 +202,6 @@ Flow
         linkColor: Colors.white_op50
         onLinkActivated:
         {
-            console.log(link)
             if ( link == "toDate")
             {
                 dateFlyoutTo.open()
@@ -280,7 +277,6 @@ Flow
         linkColor: Colors.white_op50
         onLinkActivated:
         {
-            console.log(link)
             if ( link == "toTime")
             {
                 timeFlyoutTo.open()

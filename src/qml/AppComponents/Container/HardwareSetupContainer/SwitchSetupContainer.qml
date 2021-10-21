@@ -34,7 +34,6 @@ Container
 
     function callback(data)
     {
-        console.log(JSON.stringify(data))
         if(data.errCode >= 0)
         {
             stack.replace(dotOverview, StackView.PushTransition);
@@ -135,7 +134,7 @@ Container
             onClicked:
             {
                 console.log(docroot.shortID)
-                machineControlService.call("unhookWithMapping",{"mapping":deviceModel.resource}, function(data){console.log(data.errorcode)})
+                machineControlService.call("unhookWithMapping",{"mapping":deviceModel.resource}, function(data){})
             }
         }
 
@@ -270,7 +269,6 @@ Container
 
                 onProvisioningFinished:
                 {
-                    console.log(uuid)
                     deviceService.call("prepareSwitchMappingWighUUID", {"deviceID": docroot.deviceID, "uuid":uuid}, docroot.provisioningCallback )
                 }
 

@@ -39,7 +39,6 @@ BaseValueBox
         var max = 0
         for(var i = 0; i < docroot.model.length; i ++)
         {
-            console.log(docroot.model[i].value)
             max = Math.max(docroot.model[i].value, max)
         }
 

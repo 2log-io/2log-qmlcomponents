@@ -42,7 +42,6 @@ Item
             var sum = 0
             for(var i = 0; i < rep.count; i ++)
             {
-                console.log(rep.model[i].value)
                 sum += rep.model[i].value
             }
 

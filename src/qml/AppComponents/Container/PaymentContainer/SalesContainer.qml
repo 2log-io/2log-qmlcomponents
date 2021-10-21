@@ -79,14 +79,12 @@ Container
                 setupbtn2.text = qsTr("Benutzerdefiniert")
                 if(from !== undefined && (to === undefined || to === -1))
                 {
-                    console.log("A")
                     modelwrapper.reload(from, new Date())
                     return;
                 }
 
                 if(from !== undefined && to !== undefined)
                 {
-                    console.log("B")
                     modelwrapper.reload(from, to)
                     return
                 }
@@ -168,7 +166,6 @@ Container
 
         function callback(foo)
         {
-            console.log(JSON.stringify(foo))
             saleslist.model = foo
         }
     }

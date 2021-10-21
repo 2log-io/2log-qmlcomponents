@@ -81,7 +81,6 @@ BaseValueBox
             anchors.fill: parent
             lineColor: Colors.highlightBlue
             lineThickness: 1
-            Component.onCompleted: console.log(chart.maxVal)
 
             Rectangle
             {

@@ -60,7 +60,6 @@ Item
         onTriggered:
         {
             docroot.timeOut()
-            console.log("timeOut")
         }
         running: docroot.active
     }

@@ -21,9 +21,7 @@ Item
         {
             if(data.errorCode < 0)
             {
-                console.log("Unbekannte Karte")
                 scanCardPage.state = "cardOK"
-
             }
             else
             {

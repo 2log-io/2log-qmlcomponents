@@ -85,7 +85,7 @@ Item
     [
         {
             "name":qsTr("Member"),
-            "code":"stud"
+            "code":"mem"
         },
         {
             "name":qsTr("Mitarbeiter"),
