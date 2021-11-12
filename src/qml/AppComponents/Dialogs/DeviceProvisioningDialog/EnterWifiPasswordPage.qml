@@ -28,7 +28,7 @@ Item
     id: docroot
     property bool active: (StackView.status == StackView.Active)
     visible: StackView.status !== StackView.Inactive
-    signal next(string password)
+    signal next(string ssid, string password)
     signal cancel()
 
     Column
@@ -47,13 +47,17 @@ Item
             iconColor: Colors.grey
         }
 
-        TextLabel
+        TextField
         {
+            id: ssidField
             width: parent.width
+            placeholderText: qsTr("SSID")
             fontSize: Fonts.headerFontSze
-            horizontalAlignment:Text.AlignHCenter
+            hideLine: true
+            lineOnHover: true
             text: ProvisioningManager.currentSSID
-            wrapMode: Text.Wrap
+            //wrapMode: Text.Wrap
+            field.horizontalAlignment: Qt.AlignHCenter
             font.family: Fonts.simplonMono
         }
 
@@ -89,7 +93,7 @@ Item
         text: qsTr("Weiter")
         anchors.bottom: parent.bottom
         anchors.right: parent.right
-        onClicked: docroot.next(pass.text)
+        onClicked: docroot.next(ssidField.text, pass.text)
         opacity: parent.active ? 1 : 0
         iconAlignment:Qt.AlignRight
 

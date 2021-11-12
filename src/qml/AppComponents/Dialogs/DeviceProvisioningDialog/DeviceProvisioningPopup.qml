@@ -172,12 +172,10 @@ Popup
             onNext:
             {
                 root.provisioning = true
-                stack.push(provisioning, {"password": password})
+                stack.push(provisioning)
                 QuickHub.disconnectServer()
-                ProvisioningManager.deviceSSID = docroot.targetSSID
+                ProvisioningManager.deviceSSID = ssid
                 var server = QuickHub.serverUrl
-                if(server.endsWith(".2log.io"))
-                    server = server.replace(".2log.io", ".iot.2log.io:443");
                 ProvisioningManager.startProvisioning(password, server)
             }
             onCancel: docroot.close()

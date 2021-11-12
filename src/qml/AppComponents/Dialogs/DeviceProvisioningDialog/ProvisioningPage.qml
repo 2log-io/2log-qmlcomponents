@@ -28,9 +28,7 @@ import DeviceProvisioning 1.0
 Item
 {
     id: docroot
-    property string password
     property bool active
-    property string targetSSID
 
     signal cancel()
 
