@@ -174,9 +174,9 @@ Popup
                 root.provisioning = true
                 stack.push(provisioning)
                 QuickHub.disconnectServer()
-                ProvisioningManager.deviceSSID = ssid
+                ProvisioningManager.deviceSSID = docroot.targetSSID
                 var server = QuickHub.serverUrl
-                ProvisioningManager.startProvisioning(password, server)
+                ProvisioningManager.startProvisioning(password, server, ssid)
             }
             onCancel: docroot.close()
         }
