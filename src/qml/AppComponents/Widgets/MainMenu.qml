@@ -68,7 +68,7 @@ ColumnLayout
         width: parent.width
         height:60
         text:qsTr("Kasse")
-        visible:  root.width > 1000 &&  (QuickHub.currentUser.userData === undefined ? false : QuickHub.currentUser.userData.role !== "mngmt")
+        visible:  root.width > 1000 &&  (UserLogin.currentUser.userData === undefined ? false : UserLogin.currentUser.userData.role !== "mngmt")
         icon: Icons.payDesk
         selected: stackView.depth > 0 && stackView.currentItem !== null ?  stackView.currentItem.viewID === "paydesk" : false
         onClicked:
@@ -84,7 +84,7 @@ ColumnLayout
         width: parent.width
         height:60
         text:qsTr("Administration")
-        visible:  root.width > 1000 &&  (QuickHub.currentUser.userData === undefined ? false : QuickHub.currentUser.userData.role !== "mngmt")
+        visible:  root.width > 1000 &&  (UserLogin.currentUser.userData === undefined ? false : UserLogin.currentUser.userData.role !== "mngmt")
         icon: Icons.gear
         selected: stackView.depth > 0 && stackView.currentItem !== null ?  stackView.currentItem.viewID === "settings" : false
         onClicked:
@@ -101,7 +101,7 @@ ColumnLayout
 //        width: parent.width
 //        Layout.fillWidth: true
 //        height: 60
-//        visible: QuickHub.currentUser.userData === undefined ? false : QuickHub.currentUser.userData.role !== "mngmt"
+//        visible: UserLogin.currentUser.userData === undefined ? false : UserLogin.currentUser.userData.role !== "mngmt"
 //        icon:Icons.statistics
 //        selected: stackView.depth > 0 && stackView.currentItem !== null ?  stackView.currentItem.viewID === "overview" : false
 //        onClicked:

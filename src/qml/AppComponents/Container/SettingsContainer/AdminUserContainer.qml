@@ -45,24 +45,24 @@ Container
 
     function dleleteUserallback(success, code)
     {
-        if(code === QuickHub.PermissionDenied)
+        if(code === UserLogin.PermissionDenied)
         {
             deleteUserStatus.text="Access Denied!";
         }
 
-        if(code === QuickHub.IncorrectPassword)
+        if(code === UserLogin.IncorrectPassword)
         {
             deleteUserStatus.text="Wrong password!";
         }
 
-        if(code === QuickHub.NoError)
+        if(code === UserLogin.NoError)
         {
             deleteUserStatus.text="Success!";
             deleteUserId.text = ""
             deletePassword.text = ""
         }
 
-        if(code === QuickHub.UserNotExists)
+        if(code === UserLogin.UserNotExists)
         {
             deleteUserStatus.text="Unknown User!";
         }
@@ -175,17 +175,17 @@ Container
                 {
                     JSON.stringify(data)
                     var code = data.errrorcode
-                    if( code === QuickHub.UserAlreadyExists)
+                    if( code === UserLogin.UserAlreadyExists)
                     {
                         addUserStatus.text="User already exists!";
                     }
 
-                    if(code === QuickHub.PermissionDenied)
+                    if(code === UserLogin.PermissionDenied)
                     {
                         addUserStatus.text="Access Denied!";
                     }
 
-                    if(code === QuickHub.NoError)
+                    if(code === UserLogin.NoError)
                     {
                         mailField.text = ""
                         loginField.text = ""
@@ -362,7 +362,7 @@ Container
                             anchors.verticalCenter: parent.verticalCenter
                             anchors.verticalCenterOffset: 2
                             lineOnHover:true
-                            enabled: QuickHub.currentUser.userID !== userID
+                            enabled: UserLogin.currentUser.userID !== userID
                             onIndexClicked:
                             {
                                 var level = TypeDef.adminRoles[index].code
@@ -435,7 +435,7 @@ Container
                         PropertyChanges
                         {
                             target:iconButton
-                            visible:  QuickHub.currentUser.userID !== userID
+                            visible:  UserLogin.currentUser.userID !== userID
                         }
                     }
                 ]
@@ -456,7 +456,7 @@ Container
                 fontColor: Colors.warnRed
                 onClicked:
                 {
-                    QuickHub.deleteUser(deleteUserDialog.userID)
+                    UserLogin.deleteUser(deleteUserDialog.userID)
                     deleteUserDialog.close()
                 }
             }

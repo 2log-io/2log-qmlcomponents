@@ -121,12 +121,12 @@ Container
             onTriggered:
             {
 
-                if(QuickHub.state == QuickHub.STATE_Connected)
+                if(Connection.state == Connection.STATE_Connected)
                 {
                     if(stack.currentItem.desc !== "login")
                         stack.replace(login, StackView.PushTransition)
                 }
-                else if(QuickHub.state == QuickHub.STATE_Disconnected)
+                else if(Connection.state == Connection.STATE_Disconnected)
                 {
                     if(serverURL === "")
                     {
@@ -144,7 +144,7 @@ Container
 
         Connections
         {
-            target: QuickHub
+            target: Connection
             function onStateChanged()
             {
                 delayTimer.start()

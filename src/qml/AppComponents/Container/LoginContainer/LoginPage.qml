@@ -25,7 +25,7 @@ import CloudAccess 1.0
 Column
 {
     id: docroot
-    onLogin: QuickHub.login(username, password, loginCb, true)
+    onLogin: UserLogin.login(username, password, loginCb, true)
      //width: parent.width
     spacing: 10
 
@@ -48,7 +48,7 @@ Column
     TextField
     {
         id: username
-        enabled: QuickHub.state != QuickHub.STATE_Authenticated
+        enabled: Connection.state != Connection.STATE_Authenticated
         width: parent.width
         placeholderText: qsTr( "Login" )
         nextOnTab:  password.field
@@ -61,16 +61,16 @@ Column
         width: parent.width
         placeholderText: qsTr("Password")
         field.echoMode: TextInput.Password
-        enabled: QuickHub.state != QuickHub.STATE_Authenticated
+        enabled: Connection.state != Connection.STATE_Authenticated
         onAccepted:
         {
-            if(QuickHub.state == QuickHub.STATE_Connected)
+            if(Connection.state == Connection.STATE_Connected)
             {
                 docroot.login(username.text, password.text)
             }
-            else if(QuickHub.serverUrl !== "")
+            else if(Connection.serverUrl !== "")
             {
-                QuickHub.reconnectServer()
+                Connection.reconnectServer()
             }
         }
         icon: Icons.lock
@@ -85,10 +85,10 @@ Column
 
     Connections
     {
-        target: QuickHub
+        target: Connection
         onStateChanged:
         {
-            if(QuickHub.state == QuickHub.STATE_Connected)
+            if(Connection.state == Connection.STATE_Connected)
             {
                 if(username.text !== "" && password.text !== "")
                 {
@@ -112,7 +112,7 @@ Column
             fontSize: Fonts.verySmallControlFontSize
             anchors.left: parent.left
             anchors.leftMargin: -10
-            opacity: .5//docroot.showForgetField ? .5 : 0
+            opacity: .5
             Behavior on opacity { NumberAnimation{}}
         }
         StandardButton
@@ -121,13 +121,13 @@ Column
             text: "Login"
             onClicked:
             {
-                if(QuickHub.state == QuickHub.STATE_Connected)
+                if(Connection.state == Connection.STATE_Connected)
                 {
                     docroot.login(username.text, password.text)
                 }
-                else if(QuickHub.serverUrl !== "")
+                else if(Connection.serverUrl !== "")
                 {
-                    QuickHub.reconnectServer()
+                    Connection.reconnectServer()
                 }
             }
         }

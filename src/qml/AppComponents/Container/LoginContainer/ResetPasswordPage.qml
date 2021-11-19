@@ -51,7 +51,7 @@ import CloudAccess 1.0
             placeholderText: qsTr("Login")
             onAccepted: docroot.login(username.text, password.text)
             icon: Icons.user
-            enabled: QuickHub.state !== QuickHub.STATE_Disconnected
+            enabled: Connection.state !== Connection.STATE_Disconnected
         }
 
 

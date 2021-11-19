@@ -44,7 +44,7 @@ Item
                 if(!server.text.startsWith("ws"))
                     server.text = "wss://"+server.text
 
-                QuickHub.connectToServer(server.text, connectCb)
+                Connection.connectToServer(server.text, connectCb)
             }
             else
             {
@@ -77,7 +77,7 @@ Item
             width: parent.width
             icon: Icons.server
             text:serverURL
-            enabled: (QuickHub.state == QuickHub.STATE_Disconnected
+            enabled: (Connection.state == Connection.STATE_Disconnected
                      && !root.suspended
                      && !root.provisioning) || errorLabel.text !== ""
 

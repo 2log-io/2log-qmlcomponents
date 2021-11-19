@@ -71,7 +71,7 @@ Container
         {
             enabled: (pass1.text === pass2.text) && (originPass.text !== "") && (pass1.text !== "")
             text:qsTr("Passwort ändern")
-            onClicked: QuickHub.changePassword(originPass.text, pass2.text, parent.changePassCb)
+            onClicked: UserLogin.changePassword(originPass.text, pass2.text, parent.changePassCb)
         }
 
         function changePassCb(success, code)

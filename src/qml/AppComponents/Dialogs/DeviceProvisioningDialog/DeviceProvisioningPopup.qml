@@ -40,11 +40,11 @@ Popup
 
     Connections
     {
-        target: QuickHub
+        target: Connection
         function onStateChanged()
         {
             // when all is done
-            if(docroot.itsMe && ProvisioningManager.state == ProvisioningManager.PROVISIONING_CONNECTED_TO_HOME_WIFI && QuickHub.state == QuickHub.STATE_Authenticated && root.provisioning)
+            if(docroot.itsMe && ProvisioningManager.state == ProvisioningManager.PROVISIONING_CONNECTED_TO_HOME_WIFI && Connection.state == Connection.STATE_Authenticated && root.provisioning)
             {
                 if(ProvisioningManager.errorCode == ProvisioningManager.ERR_PROVISIONING_NO_ERROR)
                     docroot.provisioningFinished(ProvisioningManager.uuid)
@@ -74,8 +74,8 @@ Popup
         repeat: false
         onTriggered:
         {
-            QuickHub.disconnectServer()
-            QuickHub.reconnectServer()
+            Connection.disconnectServer()
+            Connection.reconnectServer()
         }
     }
 
@@ -173,9 +173,9 @@ Popup
             {
                 root.provisioning = true
                 stack.push(provisioning)
-                QuickHub.disconnectServer()
+                Connection.disconnectServer()
                 ProvisioningManager.deviceSSID = docroot.targetSSID
-                var server = QuickHub.serverUrl
+                var server = Connection.serverUrl
                 ProvisioningManager.startProvisioning(password, server, ssid)
             }
             onCancel: docroot.close()
