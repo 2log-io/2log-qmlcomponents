@@ -3,71 +3,56 @@ import CloudAccess 1.0
 import QtQuick.Controls 2.3
 import UIControls 1.0
 
-
-Item
-{
+Item {
     id: scanCardPage
 
     property bool active: (StackView.status == StackView.Active) //&& parentStackActive
 
     signal confirm(string cardID)
-    signal cancel()
+    signal cancel
 
     property CardReader reader
-    Connections
-    {
+    Connections {
         target: reader
-        onCardRead:
-        {
-            if(data.errorCode < 0)
-            {
+        onCardRead: {
+            if (data.errorCode < 0) {
                 console.log("Unbekannte Karte")
                 scanCardPage.state = "cardOK"
-
-            }
-            else
-            {
+            } else {
                 console.log("Karte bereits verwendet")
                 scanCardPage.state = "cardUsed"
             }
         }
     }
 
-    Column
-    {
+    Column {
         anchors.centerIn: parent
         anchors.verticalCenterOffset: -20
         spacing: 20
 
-        Item
-        {
-            width:  30
+        Item {
+            width: 30
             height: 30
             anchors.horizontalCenter: parent.horizontalCenter
 
-            Icon
-            {
+            Icon {
                 id: cardIccon
                 anchors.centerIn: parent
                 iconSize: 30
                 icon: Icons.card
 
-                SequentialAnimation
-                {
+                SequentialAnimation {
                     id: animation
                     running: true
                     loops: Animation.Infinite
-                    NumberAnimation
-                    {
-                       from: 1
-                       to: 1.2
-                       property: "scale"
-                       target: cardIccon
-                       duration: 400
-
+                    NumberAnimation {
+                        from: 1
+                        to: 1.2
+                        property: "scale"
+                        target: cardIccon
+                        duration: 400
                     }
-                    NumberAnimation
-                    {
+                    NumberAnimation {
                         to: 1
                         property: "scale"
                         target: cardIccon
@@ -76,8 +61,7 @@ Item
                 }
             }
 
-            Rectangle
-            {
+            Rectangle {
                 id: bubble
                 property color bubbleColor: Colors.highlightBlue
                 property string bubbleIcon: Icons.check
@@ -86,13 +70,12 @@ Item
                 width: 22
                 height: 22
                 radius: 11
-                border.color:  bubbleColor
+                border.color: bubbleColor
                 color: Colors.darkBlue
                 anchors.horizontalCenter: parent.right
                 anchors.verticalCenter: parent.bottom
 
-                Icon
-                {
+                Icon {
                     iconSize: 10
                     iconColor: parent.bubbleColor
                     anchors.centerIn: parent
@@ -101,8 +84,7 @@ Item
             }
         }
 
-        TextLabel
-        {
+        TextLabel {
             id: cardField
             anchors.horizontalCenter: parent.horizontalCenter
             fontSize: Fonts.actionFontSize
@@ -110,19 +92,17 @@ Item
             visible: opacity > 0
         }
 
-        TextField
-        {
+        TextField {
             id: descriptionField
             centerPlaceholder: true
             anchors.horizontalCenter: parent.horizontalCenter
             visible: opacity > 0
-            opacity:0
+            opacity: 0
             fontSize: Fonts.actionFontSize
         }
     }
 
-    StandardButton
-    {
+    StandardButton {
         transparent: true
         icon: Icons.leftAngle
         text: qsTr("Abbrechen")
@@ -130,149 +110,122 @@ Item
         onClicked: scanCardPage.cancel()
         opacity: scanCardPage.active ? 1 : 0
 
-        Behavior on opacity
-        {
-            NumberAnimation{ }
+        Behavior on opacity {
+            NumberAnimation {}
         }
     }
 
-    Timer
-    {
+    Timer {
         id: confirmTimer
         interval: 1000
-        onTriggered:
-        {
+        onTriggered: {
             scanCardPage.confirm(reader.lastCardID)
         }
-
     }
 
-    states:
-    [
-        State
-        {
+    states: [
+        State {
             name: "cardOK"
-            PropertyChanges
-            {
-                target:  animation
+            PropertyChanges {
+                target: animation
                 running: false
             }
 
-            PropertyChanges
-            {
-                target:  cardIccon
+            PropertyChanges {
+                target: cardIccon
                 iconColor: Colors.white
                 scale: 1.2
             }
 
-            PropertyChanges
-            {
-                target:  bubble
+            PropertyChanges {
+                target: bubble
                 opacity: 1
             }
 
-            PropertyChanges
-            {
-                target:  cardField
+            PropertyChanges {
+                target: cardField
                 opacity: 1
                 text: reader.lastCardID
             }
 
-            PropertyChanges
-            {
-                target:  descriptionField
+            PropertyChanges {
+                target: descriptionField
                 opacity: 0
                 placeholderText: reader.lastCardID
             }
 
-            StateChangeScript
-            {
+            StateChangeScript {
                 script: confirmTimer.start()
             }
 
-
-//            PropertyChanges
-//            {
-//                target: confirmButton
-//                opacity:1
-//            }
+            //            PropertyChanges
+            //            {
+            //                target: confirmButton
+            //                opacity:1
+            //            }
         },
-        State
-        {
+        State {
             name: "cardUsed"
-            PropertyChanges
-            {
-                target:  animation
+            PropertyChanges {
+                target: animation
                 running: false
             }
 
-            PropertyChanges
-            {
-                target:  cardIccon
+            PropertyChanges {
+                target: cardIccon
                 iconColor: Colors.white
                 opacity: .5
                 scale: 1
             }
 
-            PropertyChanges
-            {
-                target:  bubble
+            PropertyChanges {
+                target: bubble
                 opacity: 1
                 bubbleColor: Colors.warnRed
                 bubbleIcon: Icons.warning
             }
 
-            PropertyChanges
-            {
-                target:  cardField
+            PropertyChanges {
+                target: cardField
                 text: qsTr("Karte bereits registriert")
             }
 
-//            PropertyChanges
-//            {
-//                target: confirmButton
-//                opacity:0
-//            }
+            //            PropertyChanges
+            //            {
+            //                target: confirmButton
+            //                opacity:0
+            //            }
         }
     ]
 
-    transitions:
-    [
-        Transition
-        {
+    transitions: [
+        Transition {
 
-            PropertyAction
-            {
+            PropertyAction {
                 target: cardField
-                property:"text"
+                property: "text"
             }
 
-            PropertyAction
-            {
-                 target: descriptionField
-                 property:"placeholderText"
+            PropertyAction {
+                target: descriptionField
+                property: "placeholderText"
             }
 
-            PropertyAction
-            {
-                 target: bubble
-                 property:"bubbleColor"
+            PropertyAction {
+                target: bubble
+                property: "bubbleColor"
             }
 
-
-            PropertyAction
-            {
-                 target: bubble
-                 property:"bubbleIcon"
+            PropertyAction {
+                target: bubble
+                property: "bubbleIcon"
             }
 
-            ColorAnimation
-            {
+            ColorAnimation {
                 target: cardIccon
             }
 
-            NumberAnimation
-            {
+            NumberAnimation {
                 property: "scale"
                 target: cardIccon
                 duration: 100

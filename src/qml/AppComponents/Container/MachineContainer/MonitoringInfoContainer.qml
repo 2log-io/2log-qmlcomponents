@@ -1,3 +1,5 @@
+
+
 /*   2log.io
  *   Copyright (C) 2021 - 2log.io | mail@2log.io,  mail@friedemann-metzger.de
  *
@@ -14,8 +16,6 @@
  *   You should have received a copy of the GNU Affero General Public License
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
-
 import QtQuick 2.5
 import CloudAccess 1.0
 import UIControls 1.0
@@ -23,10 +23,9 @@ import QtQuick.Layouts 1.3
 import "../../Widgets"
 import "../Statistics"
 
-Container
-{
+Container {
     id: docroot
-    headline:qsTr("Status")
+    headline: qsTr("Status")
     width: parent.width
     Layout.minimumHeight: totalHeight
     Layout.maximumHeight: totalHeight
@@ -36,32 +35,27 @@ Container
     property DeviceModel pow
 
     property bool allOkay: pow.available && pow.deviceOnline
-    Column
-    {
-        width:parent.width
+    Column {
+        width: parent.width
         spacing: docroot.spacing
-        Flow
-        {
+        Flow {
             id: flow
             width: parent.width
             spacing: docroot.spacing
 
-            Item
-            {
+            Item {
                 id: switchStateContainer
 
                 width: responsiveStates.itemWidth
                 height: 120
 
-                Rectangle
-                {
+                Rectangle {
                     anchors.fill: parent
-                    color:"white"
+                    color: "white"
                     opacity: .05
                 }
 
-                TextLabel
-                {
+                TextLabel {
                     anchors.top: parent.top
                     anchors.left: parent.left
                     anchors.margins: 10
@@ -69,129 +63,113 @@ Container
                     opacity: .5
                 }
 
-                Row
-                {
+                Row {
                     anchors.centerIn: parent
                     anchors.verticalCenterOffset: 10
                     spacing: 20
 
-
-                    TextLabel
-                    {
-                        text:qsTr("Aus")
+                    TextLabel {
+                        text: qsTr("Aus")
                         anchors.verticalCenter: parent.verticalCenter
                         fontSize: Fonts.bigDisplayFontSize
-                        opacity:  pow.available ? 1 : 0.5
+                        opacity: pow.available ? 1 : 0.5
                     }
 
-
-                    ToggleSwitch
-                    {
+                    ToggleSwitch {
                         enabled: pow.available
                         checkable: false
-                        Binding on checked
-                        {
-                            value: controller ? pow.getProperty("on").value : false
+                        Binding on checked {
+                            value: controller ? pow.getProperty(
+                                                    "on").value : false
                         }
 
                         anchors.verticalCenter: parent.verticalCenter
-                        onClicked: pow.getProperty("on").value  = !pow.getProperty("on").value
+                        onClicked: pow.getProperty(
+                                       "on").value = !pow.getProperty(
+                                       "on").value
                     }
 
-                    TextLabel
-                    {
-                        opacity:  pow.available ? 1 : 0.5
-                        text:qsTr("An")
+                    TextLabel {
+                        opacity: pow.available ? 1 : 0.5
+                        text: qsTr("An")
                         anchors.verticalCenter: parent.verticalCenter
                         fontSize: Fonts.bigDisplayFontSize
                     }
 
-
-//                    TextLabel
-//                    {
-//                        anchors.verticalCenter: parent.verticalCenter
-//                        anchors.topMargin: 20
-//                        text:controller && !controller.getProperty("enabled").value  ? qsTr("Aktiv") : qsTr("Inaktiv")
-//                        fontSize: Fonts.bigDisplayFontSize
-//                        width: 115
-//                    }
+                    //                    TextLabel
+                    //                    {
+                    //                        anchors.verticalCenter: parent.verticalCenter
+                    //                        anchors.topMargin: 20
+                    //                        text:controller && !controller.getProperty("enabled").value  ? qsTr("Aktiv") : qsTr("Inaktiv")
+                    //                        fontSize: Fonts.bigDisplayFontSize
+                    //                        width: 115
+                    //                    }
                 }
             }
 
-            StatusValueBox
-            {
+            StatusValueBox {
                 id: statusContainer
                 width: responsiveStates.itemWidth
 
                 switchState: {
-                    if(!pow.available)
+                    if (!pow.available)
                         return -1
 
-                    if(!pow.deviceOnline)
+                    if (!pow.deviceOnline)
                         return -2
 
-                    return 0;
+                    return 0
                 }
             }
 
-            ValueBox
-            {
+            ValueBox {
                 id: powerContainer
                 width: responsiveStates.itemWidth
                 label: qsTr("Stromverbrauch (24h)")
                 unit: "kW/h"
-                value:
-                {
-                    var val = influxModel.initialized ? (((influxModel.curr * 230) / 1000) * 24) : 0 //pow.getProperty("curr").value
+                value: {
+                    var val = influxModel.initialized ? (((influxModel.curr * 230) / 1000)
+                                                         * 24) : 0 //pow.getProperty("curr").value
                     return val > 0 ? val.toFixed(2) : 0
                 }
             }
 
-            SynchronizedObjectModel
-            {
+            SynchronizedObjectModel {
                 id: influxModel
-                resource: "influxdb/"+pow.resource+"$curr?last=24h"
+                resource: "influxdb/" + pow.resource + "$curr?last=24h"
             }
         }
 
-        GraphValueBox
-        {
+        GraphValueBox {
             id: graphValueBox
             powModel: docroot.pow
             width: flow.width
         }
     }
 
-    Item
-    {
+    Item {
         id: responsiveStates
-        property int itemWidth:
-        {
-            var width = (flow.width - (flow.visibleChildren.length-1) * flow.spacing)  / flow.visibleChildren.length
-            return width < 250 ? flow.width :  width
+        property int itemWidth: {
+            var width = (flow.width - (flow.visibleChildren.length - 1)
+                         * flow.spacing) / flow.visibleChildren.length
+            return width < 250 ? flow.width : width
         }
 
-        states:
-        [
-            State
-            {
-                name:"ready"
+        states: [
+            State {
+                name: "ready"
                 when: flow.width < 800 && docroot.allOkay
-                PropertyChanges
-                {
+                PropertyChanges {
                     target: statusContainer
                     visible: false
                 }
             },
 
+            State {
+                name: "switchOffline"
+                when: flow.width < 800 && !pow.deviceOnline
 
-            State
-            {
-                name:"switchOffline"
-                when: flow.width < 800 &&  !pow.deviceOnline
-
-                PropertyChanges
-                {
+                PropertyChanges {
                     target: switchStateContainer
                     visible: false
                 }

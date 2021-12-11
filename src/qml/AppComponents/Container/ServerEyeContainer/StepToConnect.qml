@@ -1,3 +1,5 @@
+
+
 /*   2log.io
  *   Copyright (C) 2021 - 2log.io | mail@2log.io,  mail@friedemann-metzger.de
  *
@@ -14,52 +16,43 @@
  *   You should have received a copy of the GNU Affero General Public License
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
-
 import QtQuick 2.12
 import CloudAccess 1.0
 import QtQuick.Controls 2.3
 import UIControls 1.0
 
-Item
-{
+Item {
     id: docroot
     property bool active: (StackView.status == StackView.Active)
-    signal cancel()
-    signal waitForConnect()
+    signal cancel
+    signal waitForConnect
 
-
-    Form
-    {
+    Form {
         id: form
-        width: parent.width -20
+        width: parent.width - 20
         anchors.centerIn: parent
         anchors.verticalCenterOffset: -30
 
-        FormTextItem
-        {
-            label:qsTr("Customer ID")
+        FormTextItem {
+            label: qsTr("Customer ID")
             id: customerID
             mandatory: true
         }
 
-        FormTextItem
-        {
-            label:qsTr("Secret Key")
+        FormTextItem {
+            label: qsTr("Secret Key")
             id: secretKey
             mandatory: true
         }
 
-        FormTextItem
-        {
-            label:qsTr("External Customer Number")
+        FormTextItem {
+            label: qsTr("External Customer Number")
             id: customerNumber
             mandatory: true
         }
     }
 
-    StandardButton
-    {
+    StandardButton {
         transparent: true
         icon: Icons.leftAngle
         text: qsTr("Abbrechen")
@@ -67,47 +60,42 @@ Item
         onClicked: docroot.cancel()
         opacity: docroot.active ? 1 : 0
 
-        Behavior on opacity
-        {
-            NumberAnimation{ }
+        Behavior on opacity {
+            NumberAnimation {}
         }
     }
 
-
-    StandardButton
-    {
+    StandardButton {
         id: confirmButton
         icon: Icons.check
         opacity: docroot.active ? 1 : 0
         anchors.bottom: parent.bottom
         anchors.right: parent.right
         text: "Verbinden"
-        onClicked:
-        {
-            if(!form.checkValid())
+        onClicked: {
+            if (!form.checkValid())
                 return
 
-            var data = {"secret": secretKey.editedText, "customerID": customerID.editedText, "externalUser": customerNumber.editedText}
+            var data = {
+                "secret": secretKey.editedText,
+                "customerID": customerID.editedText,
+                "externalUser": customerNumber.editedText
+            }
             serverEyeService.call("connect", data, connectCb)
         }
 
-        Behavior on opacity
-        {
-            NumberAnimation{ }
+        Behavior on opacity {
+            NumberAnimation {}
         }
     }
 
-
-    ServiceModel
-    {
+    ServiceModel {
         id: serverEyeService
         service: "servereye"
     }
 
-    function connectCb(data)
-    {
-        if(data.success)
-        {
+    function connectCb(data) {
+        if (data.success) {
             docroot.waitForConnect()
         }
     }

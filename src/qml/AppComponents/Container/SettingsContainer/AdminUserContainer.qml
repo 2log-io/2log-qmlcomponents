@@ -1,3 +1,5 @@
+
+
 /*   2log.io
  *   Copyright (C) 2021 - 2log.io | mail@2log.io,  mail@friedemann-metzger.de
  *
@@ -14,8 +16,6 @@
  *   You should have received a copy of the GNU Affero General Public License
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
-
 import QtQuick 2.8
 import QtQuick.Controls 2.4
 import UIControls 1.0
@@ -23,170 +23,144 @@ import QtQuick.Layouts 1.3
 import AppComponents 1.0
 import CloudAccess 1.0
 
-
-Container
-{
+Container {
     id: docroot
     width: parent.width
     headline: qsTr("2log Administratoren")
     helpText: qsTr("Hier bestimmst du, wer sich in dieses 2log Portal einloggen darf. Je nach Rolle sind einzelne Funktionen eingeschränkt. Administrator und Mitarbeiter haben jeweils Zugriff auf alle Funktionen. Der einzige Unterschied besteht darin, dass Mitarbeiter keine Administratoren ernennen dürfen. Ein Nutzer mit der Rolle Sekretariat hat ausschließlich Zugriff auf die Benutzerverwaltung.")
 
-    header:ContainerButton
-    {
+    header: ContainerButton {
         anchors.right: parent.right
-        anchors.verticalCenter:parent.verticalCenter
+        anchors.verticalCenter: parent.verticalCenter
         icon: Icons.addUser
         text: qsTr("Administrator hinzufügen")
-        onClicked:
-        {
+        onClicked: {
             nameField.forceActiveFocus()
         }
     }
 
-    function dleleteUserallback(success, code)
-    {
-        if(code === UserLogin.PermissionDenied)
-        {
-            deleteUserStatus.text="Access Denied!";
+    function dleleteUserallback(success, code) {
+        if (code === UserLogin.PermissionDenied) {
+            deleteUserStatus.text = "Access Denied!"
         }
 
-        if(code === UserLogin.IncorrectPassword)
-        {
-            deleteUserStatus.text="Wrong password!";
+        if (code === UserLogin.IncorrectPassword) {
+            deleteUserStatus.text = "Wrong password!"
         }
 
-        if(code === UserLogin.NoError)
-        {
-            deleteUserStatus.text="Success!";
+        if (code === UserLogin.NoError) {
+            deleteUserStatus.text = "Success!"
             deleteUserId.text = ""
             deletePassword.text = ""
         }
 
-        if(code === UserLogin.UserNotExists)
-        {
-            deleteUserStatus.text="Unknown User!";
+        if (code === UserLogin.UserNotExists) {
+            deleteUserStatus.text = "Unknown User!"
         }
     }
 
-    Column
-    {
+    Column {
         width: parent.width
 
-        RowLayout
-        {
-            width: parent.width -10
+        RowLayout {
+            width: parent.width - 10
             spacing: 10
             x: 10
             height: 45
 
-            Item
-            {
+            Item {
                 Layout.fillHeight: true
                 Layout.fillWidth: true
-                TextField
-                {
-                    id:nameField
+                TextField {
+                    id: nameField
                     placeholderText: qsTr("Name")
                     width: parent.width
                     anchors.verticalCenter: parent.verticalCenter
-                     nextOnTab: loginField.field
-                     mandatory:true
+                    nextOnTab: loginField.field
+                    mandatory: true
                 }
             }
 
-            Item
-            {
+            Item {
                 Layout.fillHeight: true
                 Layout.fillWidth: true
-                TextField
-                {
+                TextField {
                     id: loginField
                     placeholderText: qsTr("LogIn")
                     anchors.verticalCenter: parent.verticalCenter
                     width: parent.width
                     nextOnTab: roleDropDown
-                    mandatory:true
+                    mandatory: true
                 }
             }
 
-            Item
-            {
+            Item {
 
                 Layout.fillHeight: true
                 width: 110
                 Layout.minimumWidth: 110
                 Layout.maximumWidth: 110
 
-                DropDown
-                {
+                DropDown {
                     id: roleDropDown
                     placeholderText: qsTr("Rolle")
-                    options: TypeDef.getLongStrings(TypeDef.adminRoles)// ["Student","Angestellter","Extern"]
+                    options: TypeDef.getLongStrings(
+                                 TypeDef.adminRoles) // ["Student","Angestellter","Extern"]
                     width: parent.width
                     anchors.verticalCenter: parent.verticalCenter
-                    mandatory:true
+                    mandatory: true
                     nextOnTab: mailField.field
                 }
-
             }
-            Item
-            {
+            Item {
                 Layout.fillHeight: true
                 Layout.fillWidth: true
-                TextField
-                {
+                TextField {
                     id: mailField
-                    mandatory:true
+                    mandatory: true
                     placeholderText: qsTr("eMail")
-                    field.validator: RegExpValidator { regExp:/\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*/ }
+                    field.validator: RegExpValidator {
+                        regExp: /\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*/
+                    }
                     width: parent.width
                     anchors.verticalCenter: parent.verticalCenter
                 }
             }
 
-
-            ServiceModel
-            {
+            ServiceModel {
                 id: labService
                 service: "lab"
             }
 
-            StandardButton
-            {
+            StandardButton {
                 icon: Icons.addUser
                 Layout.alignment: Qt.AlignRight
-                onClicked:
-                {
-                    if(!checkInut())
-                        return;
+                onClicked: {
+                    if (!checkInut())
+                        return
 
-                    var user =
-                    {
-                        'userID': loginField.text,
-                        'level':TypeDef.adminRoles[roleDropDown.selectedIndex].code,
-                        'eMail':mailField.text,
-                        'name': nameField.text
+                    var user = {
+                        "userID": loginField.text,
+                        "level": TypeDef.adminRoles[roleDropDown.selectedIndex].code,
+                        "eMail": mailField.text,
+                        "name": nameField.text
                     }
 
                     labService.call("addSystemUser", user, addUserCb)
                 }
 
-                function addUserCb(data)
-                {
+                function addUserCb(data) {
                     JSON.stringify(data)
                     var code = data.errrorcode
-                    if( code === UserLogin.UserAlreadyExists)
-                    {
-                        addUserStatus.text="User already exists!";
+                    if (code === UserLogin.UserAlreadyExists) {
+                        addUserStatus.text = "User already exists!"
                     }
 
-                    if(code === UserLogin.PermissionDenied)
-                    {
-                        addUserStatus.text="Access Denied!";
+                    if (code === UserLogin.PermissionDenied) {
+                        addUserStatus.text = "Access Denied!"
                     }
 
-                    if(code === UserLogin.NoError)
-                    {
+                    if (code === UserLogin.NoError) {
                         mailField.text = ""
                         loginField.text = ""
                         nameField.text = ""
@@ -195,224 +169,204 @@ Container
                     }
                 }
 
-                function checkInut()
-                {
+                function checkInut() {
 
                     var nameOK = nameField.check()
                     var loginOK = loginField.check()
                     var roleOK = roleDropDown.check()
                     var mailOK = mailField.check()
 
-                    if(!nameOK)
-                    {
+                    if (!nameOK) {
                         nameField.field.forceActiveFocus()
-                        return false;
+                        return false
                     }
 
-                    if(!loginOK)
-                    {
+                    if (!loginOK) {
                         loginField.field.forceActiveFocus()
-                        return false;
+                        return false
                     }
 
-                    if(!roleOK)
-                    {
+                    if (!roleOK) {
                         roleDropDown.forceActiveFocus()
-                        return false;
+                        return false
                     }
 
-                    if(!mailOK)
-                    {
+                    if (!mailOK) {
                         mailField.forceActiveFocus()
-                        return false;
+                        return false
                     }
 
-                    return true;
+                    return true
                 }
             }
         }
 
-        TextInput{id: dummy; visible: false}
+        TextInput {
+            id: dummy
+            visible: false
+        }
 
-
-        Item
-        {
+        Item {
             height: 5
             width: parent.width
         }
 
-        ListView
-        {
+        ListView {
             id: list
             property string selectedUser
             signal userClicked(string userID)
             interactive: false
             height: contentHeight
 
-            opacity: nameField.field.activeFocus || mailField.field.activeFocus  || loginField.field.activeFocus || roleDropDown.activeFocus ? .2 : 1
-            Behavior on opacity {NumberAnimation{duration: 200}}
-            UserListModel
-            {
+            opacity: nameField.field.activeFocus || mailField.field.activeFocus
+                     || loginField.field.activeFocus
+                     || roleDropDown.activeFocus ? .2 : 1
+            Behavior on opacity {
+                NumberAnimation {
+                    duration: 200
+                }
+            }
+            UserListModel {
                 id: userModel
             }
 
-
             model: userModel
             width: parent.width
-            delegate:
-
-            Item
-            {
+            delegate: Item {
                 width: parent.width + 10
                 height: 40
 
-                MouseArea
-                {
+                MouseArea {
                     id: area
                     hoverEnabled: true
                     propagateComposedEvents: true
-                    onClicked:
-                    {
+                    onClicked: {
                         dummy.forceActiveFocus()
                         roleDropDown.selectedIndex = -1
                     }
                     anchors.fill: parent
                 }
 
-                Rectangle
-                {
+                Rectangle {
                     id: backGroundRect
                     anchors.fill: parent
                     anchors.rightMargin: 10
-                    color:"white"
+                    color: "white"
                     opacity: 0
                 }
 
-                RowLayout
-                {
+                RowLayout {
                     anchors.fill: parent
                     anchors.rightMargin: 10
-                    anchors.leftMargin:  10
+                    anchors.leftMargin: 10
                     spacing: 10
 
-                    Item
-                    {
+                    Item {
                         Layout.fillHeight: true
                         Layout.fillWidth: true
 
-                        RowLayout
-                        {
-                           anchors.fill: parent
-                           spacing: 10
-                           property string eMailAddress: eMail
+                        RowLayout {
+                            anchors.fill: parent
+                            spacing: 10
+                            property string eMailAddress: eMail
 
-                           RoundGravatarImage
-                           {
-                               eMail: parent.eMailAddress
-                               width: 30
-                               height: 30
-                               Layout.alignment:  Qt.AlignVCenter
-                           }
+                            RoundGravatarImage {
+                                eMail: parent.eMailAddress
+                                width: 30
+                                height: 30
+                                Layout.alignment: Qt.AlignVCenter
+                            }
 
-                           TextLabel
-                           {
-                               Layout.fillWidth: true
-                               text:  userName == "" ? userID : userName
-                               font.pixelSize: 16
-                               Layout.alignment:  Qt.AlignVCenter
-                               color: Colors.white
-                               width: parent.width
-                               elide:Text.ElideRight
-                               opacity: 1
-                           }
+                            TextLabel {
+                                Layout.fillWidth: true
+                                text: userName == "" ? userID : userName
+                                font.pixelSize: 16
+                                Layout.alignment: Qt.AlignVCenter
+                                color: Colors.white
+                                width: parent.width
+                                elide: Text.ElideRight
+                                opacity: 1
+                            }
                         }
                     }
-                    Item
-                    {
+                    Item {
 
                         Layout.fillHeight: true
                         Layout.fillWidth: true
 
-                        TextLabel
-                        {
-                            text:userID
+                        TextLabel {
+                            text: userID
                             font.pixelSize: 16
                             anchors.verticalCenter: parent.verticalCenter
                             color: Colors.white
                             width: parent.width
-                            elide:Text.ElideRight
+                            elide: Text.ElideRight
                             opacity: 1
                         }
                     }
-                    Item
-                    {
+                    Item {
 
                         Layout.fillHeight: true
                         width: 110
-                        Layout.minimumWidth:  110
+                        Layout.minimumWidth: 110
                         Layout.maximumWidth: 110
 
-                        DropDown
-                        {
+                        DropDown {
                             id: roleDelegateDropDown
                             placeholderText: "Rolle"
-                            options: TypeDef.getLongStrings(TypeDef.adminRoles)// ["Student","Angestellter","Extern"]
-                            selectedIndex: TypeDef.getIndexOf(TypeDef.adminRoles, userData.role)
+                            options: TypeDef.getLongStrings(
+                                         TypeDef.adminRoles) // ["Student","Angestellter","Extern"]
+                            selectedIndex: TypeDef.getIndexOf(
+                                               TypeDef.adminRoles,
+                                               userData.role)
                             width: parent.width
                             anchors.verticalCenter: parent.verticalCenter
                             anchors.verticalCenterOffset: 2
-                            lineOnHover:true
+                            lineOnHover: true
                             enabled: UserLogin.currentUser.userID !== userID
-                            onIndexClicked:
-                            {
+                            onIndexClicked: {
                                 var level = TypeDef.adminRoles[index].code
-                                var data =
-                                {
-                                    'userID':userID,
-                                    'level': level
+                                var data = {
+                                    "userID": userID,
+                                    "level": level
                                 }
 
-                                labService.call("changeUserLevel", data, function(result){})
+                                labService.call("changeUserLevel", data,
+                                                function (result) {})
                             }
-
                         }
                     }
 
-                    Item
-                    {
+                    Item {
 
                         Layout.fillHeight: true
                         Layout.fillWidth: true
-                        TextLabel
-                        {
+                        TextLabel {
                             text: eMail == "" ? "k.A." : eMail
                             font.pixelSize: 16
-                            font.italic:  eMail == ""
+                            font.italic: eMail == ""
                             anchors.verticalCenter: parent.verticalCenter
                             color: Colors.grey
                             opacity: eMail == "" ? .8 : 1
                             width: parent.width
-                            elide:Text.ElideRight
+                            elide: Text.ElideRight
                         }
                     }
 
-                    Item
-                    {
+                    Item {
 
                         width: 35
                         height: 35
 
-                        IconButton
-                        {
+                        IconButton {
                             id: iconButton
                             anchors.centerIn: parent
                             visible: false
                             icon: Icons.userDelete
                             iconColor: Colors.warnRed
-                            iconSize:14
+                            iconSize: 14
                             area.hoverEnabled: false
-                            onClicked:
-                            {
+                            onClicked: {
                                 deleteUserDialog.userID = userID
                                 deleteUserDialog.open()
                             }
@@ -420,29 +374,26 @@ Container
                     }
                 }
 
-                states:
-                [
-                    State
-                    {
-                        name:"hover"
-                        when: area.containsMouse || roleDelegateDropDown.containsMouse || roleDelegateDropDown.open
-                        PropertyChanges
-                        {
-                            target:backGroundRect
+                states: [
+                    State {
+                        name: "hover"
+                        when: area.containsMouse
+                              || roleDelegateDropDown.containsMouse
+                              || roleDelegateDropDown.open
+                        PropertyChanges {
+                            target: backGroundRect
                             opacity: .05
                         }
 
-                        PropertyChanges
-                        {
-                            target:iconButton
-                            visible:  UserLogin.currentUser.userID !== userID
+                        PropertyChanges {
+                            target: iconButton
+                            visible: UserLogin.currentUser.userID !== userID
                         }
                     }
                 ]
             }
         }
-        InfoDialog
-        {
+        InfoDialog {
             id: deleteUserDialog
             property string userID
             anchors.centerIn: Overlay.overlay
@@ -450,23 +401,19 @@ Container
             icon: Icons.userDelete
             iconColor: Colors.warnRed
 
-            StandardButton
-            {
-                text:qsTr("Löschen")
+            StandardButton {
+                text: qsTr("Löschen")
                 fontColor: Colors.warnRed
-                onClicked:
-                {
+                onClicked: {
                     UserLogin.deleteUser(deleteUserDialog.userID)
                     deleteUserDialog.close()
                 }
             }
 
-            StandardButton
-            {
-                text:qsTr("Abbrechen")
+            StandardButton {
+                text: qsTr("Abbrechen")
                 onClicked: deleteUserDialog.close()
             }
         }
     }
-
 }

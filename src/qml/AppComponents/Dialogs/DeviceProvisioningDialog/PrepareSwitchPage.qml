@@ -1,3 +1,5 @@
+
+
 /*   2log.io
  *   Copyright (C) 2021 - 2log.io | mail@2log.io,  mail@friedemann-metzger.de
  *
@@ -14,61 +16,52 @@
  *   You should have received a copy of the GNU Affero General Public License
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
-
 import QtQuick 2.5
 import QtQuick.Layouts 1.12
 import QtQuick.Controls 2.4
 import UIControls 1.0
 import AppComponents 1.0
 
-
-Item
-{
+Item {
     id: docroot
 
     property bool active: (StackView.status === StackView.Active)
-    signal next()
-    signal cancel()
+    signal next
+    signal cancel
 
     visible: StackView.status !== StackView.Inactive
 
-    Column
-    {
+    Column {
         anchors.centerIn: parent
         width: parent.width - 80
         spacing: 50
 
-        TextLabel
-        {
+        TextLabel {
             text: qsTr("Versetze den Switch nun in den Pairing Modus")
             width: parent.width
-            horizontalAlignment:Text.AlignHCenter
+            horizontalAlignment: Text.AlignHCenter
             fontSize: Fonts.headerFontSze
             wrapMode: Text.Wrap
         }
 
-        Image
-        {
+        Image {
             id: image
-            width: parent.width  - 40
+            width: parent.width - 40
             anchors.horizontalCenter: parent.horizontalCenter
 
             source: "qrc:/switch_line_svg"
             fillMode: Image.PreserveAspectFit
         }
 
-        TextLabel
-        {
+        TextLabel {
             width: parent.width
-            horizontalAlignment:Text.AlignHCenter
+            horizontalAlignment: Text.AlignHCenter
             text: qsTr("Drücke dazu den Knopf für 5 Sekunden und klicke auf weiter, sobald das rote Licht durchängig leuchtet.")
             wrapMode: Text.Wrap
         }
     }
 
-    StandardButton
-    {
+    StandardButton {
         transparent: true
         icon: Icons.cancel
         anchors.bottom: parent.bottom
@@ -76,26 +69,23 @@ Item
         text: qsTr("Abbrechen")
         onClicked: docroot.cancel()
 
-        Behavior on opacity
-        {
-            NumberAnimation{ }
+        Behavior on opacity {
+            NumberAnimation {}
         }
     }
 
-    StandardButton
-    {
+    StandardButton {
         transparent: true
         icon: Icons.rightAngle
         text: qsTr("Weiter")
         anchors.bottom: parent.bottom
         anchors.right: parent.right
         opacity: parent.active ? 1 : 0
-        iconAlignment:Qt.AlignRight
+        iconAlignment: Qt.AlignRight
         onClicked: docroot.next()
 
-        Behavior on opacity
-        {
-            NumberAnimation{ }
+        Behavior on opacity {
+            NumberAnimation {}
         }
     }
 }

@@ -1,3 +1,5 @@
+
+
 /*   2log.io
  *   Copyright (C) 2021 - 2log.io | mail@2log.io,  mail@friedemann-metzger.de
  *
@@ -14,8 +16,6 @@
  *   You should have received a copy of the GNU Affero General Public License
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
-
 import QtQuick 2.5
 import QtQuick.Controls 2.3
 import UIControls 1.0
@@ -26,8 +26,7 @@ import AppComponents 1.0
 import "../../Widgets"
 import "../../Widgets/ScanCardWizzard"
 
-Container
-{
+Container {
     id: docroot
     Layout.fillHeight: true
     Layout.fillWidth: true
@@ -35,28 +34,22 @@ Container
 
     property string money
     property string cardID
-    property int cents:   parseInt(money.replace(",",".") * 100)
+    property int cents: parseInt(money.replace(",", ".") * 100)
 
-    header:
-    Row
-    {
+    header: Row {
         height: parent.height
         anchors.right: parent.right
 
-        Loader
-        {
+        Loader {
             visible: active
             active: stackView.depth === 2
-            anchors.verticalCenter:parent.verticalCenter
-            sourceComponent:
-            Row
-            {
+            anchors.verticalCenter: parent.verticalCenter
+            sourceComponent: Row {
                 spacing: -1
-                anchors.verticalCenter:parent.verticalCenter
-                RadioGroupButton
-                {
+                anchors.verticalCenter: parent.verticalCenter
+                RadioGroupButton {
                     id: radioLevel2
-                    toolTipText:qsTr("Manuelle Eingabe")
+                    toolTipText: qsTr("Manuelle Eingabe")
                     alignment: Qt.AlignLeft
                     iconChar: Icons.keyboard
                     iconCheckedColor: Colors.white
@@ -67,10 +60,9 @@ Container
                     checkedBackgroundColor: Colors.black_op25
                 }
 
-                RadioGroupButton
-                {
+                RadioGroupButton {
                     id: radioLevel0
-                    toolTipText:qsTr("Mit Dot scannen")
+                    toolTipText: qsTr("Mit Dot scannen")
                     iconCheckedColor: Colors.white
                     alignment: Qt.AlignRight
                     autoExclusive: true
@@ -84,51 +76,41 @@ Container
         }
     }
 
-    StackView
-    {
+    StackView {
         clip: true
-         initialItem: initialItem
-         height: 162
-         width: parent.width
-         id:stackView
+        initialItem: initialItem
+        height: 162
+        width: parent.width
+        id: stackView
 
-         CardReader
-         {
-             id: cardReader
-         }
+        CardReader {
+            id: cardReader
+        }
 
-        Component
-        {
+        Component {
             id: wizzard
-            ScanCardWizzard
-            {
-                reader:cardReader
+            ScanCardWizzard {
+                reader: cardReader
                 onCancel: stackView.pop()
-                onConfirm:
-                {
+                onConfirm: {
                     docroot.cardID = cardID
                     stackView.pop(StackView.PushTransition)
                 }
             }
         }
-        Component
-        {
+
+        Component {
             id: initialItem
-            Item
-            {
+            Item {
 
-
-                Column
-                {
+                Column {
                     anchors.centerIn: parent
                     spacing: 30
-                    Row
-                    {
+                    Row {
                         spacing: docroot.spacing
                         anchors.horizontalCenter: parent.horizontalCenter
 
-                        Icon
-                        {
+                        Icon {
                             icon: Icons.coins
                             anchors.verticalCenter: parent.verticalCenter
                             iconSize: 30
@@ -136,21 +118,21 @@ Container
                             opacity: .5
                         }
 
-                        TextField
-                        {
+                        TextField {
                             id: priceLabel
                             lineOnHover: true
                             clip: false
                             width: 100
                             placeholderText: "0,00"
-                            field.validator: RegExpValidator { regExp:/^[-]?\d+([\.,]\d{2})?$/}
-                            field.horizontalAlignment:  Text.AlignRight
+                            field.validator: RegExpValidator {
+                                regExp: /^[-]?\d+([\.,]\d{2})?$/
+                            }
+                            field.horizontalAlignment: Text.AlignRight
                             fontSize: Fonts.bigDisplayFontSize
                             onTextChanged: docroot.money = text
                         }
 
-                        TextLabel
-                        {
+                        TextLabel {
                             anchors.verticalCenter: parent.verticalCenter
                             text: "EUR"
                             color: Colors.grey
@@ -159,23 +141,19 @@ Container
                         }
                     }
 
-
-                    Row
-                    {
+                    Row {
                         spacing: docroot.spacing
                         width: parent.width
 
-                        Icon
-                        {
-                            opacity: docroot.cardID !== "" ? 1 :.5
+                        Icon {
+                            opacity: docroot.cardID !== "" ? 1 : .5
                             icon: Icons.card
                             anchors.verticalCenter: parent.verticalCenter
                             iconSize: 30
                             iconColor: Colors.white
                         }
 
-                        TextLabel
-                        {
+                        TextLabel {
                             text: docroot.cardID
                             visible: text !== ""
                             anchors.verticalCenter: parent.verticalCenter
@@ -183,24 +161,20 @@ Container
                             fontSize: Fonts.bigDisplayUnitFontSize
                         }
 
-                        StandardButton
-                        {
+                        StandardButton {
                             visible: cardID === ""
-                            text:qsTr("Karte hinzufügen")
+                            text: qsTr("Karte hinzufügen")
                             width: 154
                             onClicked: stackView.push(wizzard)
                         }
                     }
-
                 }
             }
         }
-
     }
-    function clear()
-    {
+
+    function clear() {
         priceLabel.text = ""
         cardIDField.text = ""
     }
 }
-

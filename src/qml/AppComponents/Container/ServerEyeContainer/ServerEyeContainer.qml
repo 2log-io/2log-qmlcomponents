@@ -1,3 +1,5 @@
+
+
 /*   2log.io
  *   Copyright (C) 2021 - 2log.io | mail@2log.io,  mail@friedemann-metzger.de
  *
@@ -14,8 +16,6 @@
  *   You should have received a copy of the GNU Affero General Public License
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
-
 import QtQuick 2.5
 import QtQuick.Controls 2.0
 import QtQuick.Layouts 1.12
@@ -25,151 +25,129 @@ import AppComponents 1.0
 
 import "../../Widgets"
 
-Container
-{
+Container {
     id: contact
     headline: "ServerEye"
-    property bool available:  stateInfo.serverEyePluginAvailable !== undefined && stateInfo.serverEyePluginAvailable
+    property bool available: stateInfo.serverEyePluginAvailable !== undefined
+                             && stateInfo.serverEyePluginAvailable
 
-    states:
-    [
-        State
-        {
+    states: [
+        State {
             when: stateInfo.connectedState === "NOT_CONNECTED"
             name: "notConnected"
 
-            StateChangeScript
-            {
-                script:
-                {
+            StateChangeScript {
+                script: {
                     stack.replace(notConnected, StackView.PushTransition)
                 }
             }
 
-            PropertyChanges {target: disconnectBtn; visible: false}
-            PropertyChanges {target: connectBtn; visible: true}
+            PropertyChanges {
+                target: disconnectBtn
+                visible: false
+            }
+            PropertyChanges {
+                target: connectBtn
+                visible: true
+            }
         },
-        State
-        {
+        State {
             when: stateInfo.connectedState === "INIT_CONNECTION"
             name: "connecting"
 
-            StateChangeScript
-            {
-                script:
-                {
+            StateChangeScript {
+                script: {
                     stack.replace(loading, StackView.PushTransition)
                 }
             }
-
         },
-        State
-        {
+        State {
             when: stateInfo.connectedState === "CONNECTED"
             name: "connected"
-            StateChangeScript
-            {
+            StateChangeScript {
                 script: stack.replace(connected, StackView.PushTransition)
             }
 
-            PropertyChanges {target: disconnectBtn; visible: true}
-            PropertyChanges {target: connectBtn; visible: false}
+            PropertyChanges {
+                target: disconnectBtn
+                visible: true
+            }
+            PropertyChanges {
+                target: connectBtn
+                visible: false
+            }
         }
-
     ]
 
-    header:
-    Row
-    {
+    header: Row {
         anchors.right: parent.right
         anchors.verticalCenter: parent.verticalCenter
         spacing: contact.spacing
 
-        ContainerButton
-        {
+        ContainerButton {
             id: disconnectBtn
-            anchors.verticalCenter:parent.verticalCenter
+            anchors.verticalCenter: parent.verticalCenter
             icon: Icons.disconnect
-            text:qsTr("Trennen")
+            text: qsTr("Trennen")
             onClicked: stack.push(stepToDisconnect)
         }
 
-        ContainerButton
-        {
+        ContainerButton {
             id: connectBtn
-            anchors.verticalCenter:parent.verticalCenter
+            anchors.verticalCenter: parent.verticalCenter
             icon: Icons.link
             text: "Verbinden"
             onClicked: stack.push(two)
         }
     }
 
-
-    Stack
-    {
+    Stack {
         clip: true
         height: 170
         id: stack
         width: parent.width
     }
 
-    Item
-    {
-        Component
-        {
+    Item {
+        Component {
             id: notConnected
 
-            NotConnected
-            {
-
-            }
+            NotConnected {}
         }
 
-        Component
-        {
+        Component {
             id: loading
-            Item
-            {
-                LoadingIndicator
-                {
+            Item {
+                LoadingIndicator {
                     anchors.centerIn: parent
                 }
             }
-
         }
 
-        Component
-        {
+        Component {
             id: connected
-            Connected
-            {
+            Connected {
                 containerID: stateInfo.containerID
             }
         }
 
-        Component
-        {
+        Component {
             id: two
-            StepToConnect
-            {
+            StepToConnect {
                 onCancel: stack.pop()
             }
         }
 
-        Component
-        {
+        Component {
             id: stepToDisconnect
-            StepToDisconnect
-            {
-                onCancel:  stack.pop()
+            StepToDisconnect {
+                onCancel: stack.pop()
             }
         }
 
-        SynchronizedObjectModel
-        {
+        SynchronizedObjectModel {
             id: stateInfo
             resource: "servereye/state"
         }
     }
-
 }

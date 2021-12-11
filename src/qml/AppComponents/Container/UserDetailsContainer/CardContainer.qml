@@ -1,3 +1,5 @@
+
+
 /*   2log.io
  *   Copyright (C) 2021 - 2log.io | mail@2log.io,  mail@friedemann-metzger.de
  *
@@ -14,8 +16,6 @@
  *   You should have received a copy of the GNU Affero General Public License
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
-
 import QtQuick 2.5
 import CloudAccess 1.0
 import QtQuick.Controls 2.3
@@ -23,47 +23,37 @@ import UIControls 1.0
 import "../../Widgets"
 import "../../Widgets/ScanCardWizzard"
 
-Container
-{
+Container {
     id: container
     headline: qsTr("Zugangskarten")
     property string userID
 
     width: parent.width
 
-
-    header:
-    Row
-    {
+    header: Row {
         height: parent.height
         anchors.right: parent.right
-        ContainerButton
-        {
+        ContainerButton {
 
-            anchors.verticalCenter:parent.verticalCenter
+            anchors.verticalCenter: parent.verticalCenter
             visible: stackView.depth == 1
             icon: Icons.plus
             text: qsTr("Karte hinzufügen")
-            onClicked:
-            {
+            onClicked: {
                 stackView.push(scanCardWizzard)
             }
         }
 
-        Loader
-        {
+        Loader {
             visible: active
             active: stackView.depth === 2
-            anchors.verticalCenter:parent.verticalCenter
-            sourceComponent:
-            Row
-            {
+            anchors.verticalCenter: parent.verticalCenter
+            sourceComponent: Row {
                 spacing: -1
-                anchors.verticalCenter:parent.verticalCenter
-                RadioGroupButton
-                {
+                anchors.verticalCenter: parent.verticalCenter
+                RadioGroupButton {
                     id: radioLevel2
-                    toolTipText:qsTr("Manuelle Eingabe")
+                    toolTipText: qsTr("Manuelle Eingabe")
                     alignment: Qt.AlignLeft
                     iconChar: Icons.keyboard
                     iconCheckedColor: Colors.white
@@ -74,10 +64,9 @@ Container
                     checkedBackgroundColor: Colors.black_op25
                 }
 
-                RadioGroupButton
-                {
+                RadioGroupButton {
                     id: radioLevel0
-                    toolTipText:qsTr("Mit Dot scannen")
+                    toolTipText: qsTr("Mit Dot scannen")
                     iconCheckedColor: Colors.white
                     alignment: Qt.AlignRight
                     autoExclusive: true
@@ -89,37 +78,32 @@ Container
                 }
             }
         }
-
     }
 
-    Stack
-    {
+    Stack {
         id: stackView
         initialItem: cardView
         width: parent.width
         height: cardModel.count == 0 ? 150 : currentItem.height
 
-        CardReader
-        {
+        CardReader {
             id: cardReader
-
         }
 
-        SynchronizedListModel
-        {
+        SynchronizedListModel {
             id: cardModel
-            resource: "labcontrol/users/cards/"+container.userID
+            resource: "labcontrol/users/cards/" + container.userID
         }
 
-        Component
-        {
-            id:scanCardWizzard
-            ScanCardWizzard
-            {
-                reader:cardReader
-                onConfirm:
-                {
-                    var obj = {"cardID": cardID, "active": true}
+        Component {
+            id: scanCardWizzard
+            ScanCardWizzard {
+                reader: cardReader
+                onConfirm: {
+                    var obj = {
+                        "cardID": cardID,
+                        "active": true
+                    }
                     cardModel.append(obj)
                     stackView.pop(StackView.PushTransition)
                 }
@@ -127,15 +111,12 @@ Container
             }
         }
 
-        Component
-        {
+        Component {
             id: cardView
-            Item
-            {
+            Item {
                 width: parent.width + 10
                 height: cardGrid.count === 0 ? 150 : cardGrid.height
-                TextLabel
-                {
+                TextLabel {
                     visible: cardGrid.count === 0
                     text: qsTr("Keine Karten zugewiesen")
                     anchors.right: parent.right
@@ -147,8 +128,7 @@ Container
                     opacity: .2
                 }
 
-                DynamicGridView
-                {
+                DynamicGridView {
                     id: cardGrid
                     width: parent.width
                     interactive: false
@@ -156,28 +136,24 @@ Container
                     maxCellWidth: 160
                     model: cardModel
 
-                    delegate:
-                    CardDelegate
-                    {
+                    delegate: CardDelegate {
                         width: cardGrid.cellWidth
                         height: cardGrid.cellHeight
-                        onCardClicked: cardModel.setProperty(index, "active", !cardEnabled)
+                        onCardClicked: cardModel.setProperty(index, "active",
+                                                             !cardEnabled)
                         onRemoveClicked: cardModel.remove(index)
-                        cardEnabled:  active
+                        cardEnabled: active
                     }
-
                 }
             }
         }
 
-        Rectangle
-        {
+        Rectangle {
             z: 10
             color: Colors.darkBlue
             anchors.fill: parent
-            opacity: !cardModel.initialized? 1 : 0
-            LoadingIndicator
-            {
+            opacity: !cardModel.initialized ? 1 : 0
+            LoadingIndicator {
                 visible: parent.opacity != 0
             }
         }

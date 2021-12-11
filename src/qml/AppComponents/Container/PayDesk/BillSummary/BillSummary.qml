@@ -1,3 +1,5 @@
+
+
 /*   2log.io
  *   Copyright (C) 2021 - 2log.io | mail@2log.io,  mail@friedemann-metzger.de
  *
@@ -14,45 +16,36 @@
  *   You should have received a copy of the GNU Affero General Public License
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
-
 import QtQuick 2.0
 import QtQuick.Controls 2.12
 import UIControls 1.0
 
-Flickable
-{
+Flickable {
     id: docroot
     clip: true
 
     contentHeight: flickContent.height
     contentWidth: width
 
-
     property var billData
 
-    Column
-    {
+    Column {
         id: flickContent
         width: parent.width
         spacing: 20
 
-        Repeater
-        {
-            model:docroot.billData.bills
+        Repeater {
+            model: docroot.billData.bills
             width: parent.width
 
-            Column
-            {
+            Column {
                 id: billColumn
                 width: parent.width
-                Item
-                {
+                Item {
                     height: 40
                     width: parent.width
 
-                    TextLabel
-                    {
+                    TextLabel {
                         anchors.left: parent.left
                         fontSize: Fonts.headerFontSze
                         anchors.margins: 20
@@ -60,31 +53,26 @@ Flickable
                         text: modelData.accountingCode
                     }
 
-                    Rectangle
-                    {
+                    Rectangle {
                         anchors.right: parent.right
                         anchors.left: parent.left
-                        anchors.rightMargin:  20
+                        anchors.rightMargin: 20
                         anchors.leftMargin: 20
                         anchors.bottom: parent.bottom
                         color: Colors.white_op50
                         height: 1
                     }
                 }
-                Repeater
-                {
+                Repeater {
                     model: modelData.items
-                    BillItemDelegate
-                   {
-                       name: modelData.name
-                       price: modelData.price
-                       flat: modelData.flat
-
-                   }
+                    BillItemDelegate {
+                        name: modelData.name
+                        price: modelData.price
+                        flat: modelData.flat
+                    }
                 }
 
-                Rectangle
-                {
+                Rectangle {
                     visible: modelData.discountPercent > 0
                     anchors.right: parent.right
                     anchors.left: parent.left
@@ -93,22 +81,19 @@ Flickable
                     color: Colors.white_op50
                 }
 
-                BillItemDelegate
-                {
+                BillItemDelegate {
                     name: "Summe"
                     visible: modelData.discountPercent > 0
                     price: modelData.totalBrutto
                 }
 
-                BillItemDelegate
-                {
+                BillItemDelegate {
                     visible: modelData.discountPercent > 0
                     name: modelData.discountPercent + "% Rabatt"
-                    price: -1 * (modelData.totalBrutto -  modelData.totalNetto)
+                    price: -1 * (modelData.totalBrutto - modelData.totalNetto)
                 }
 
-                Rectangle
-                {
+                Rectangle {
                     anchors.right: parent.right
                     anchors.left: parent.left
                     anchors.margins: 20
@@ -116,14 +101,12 @@ Flickable
                     color: Colors.white_op50
                 }
 
-                Item
-                {
+                Item {
                     height: 2
                     width: parent.width
                 }
 
-                Rectangle
-                {
+                Rectangle {
                     anchors.right: parent.right
                     anchors.left: parent.left
                     anchors.margins: 20
@@ -131,12 +114,10 @@ Flickable
                     color: Colors.white_op50
                 }
 
-                BillItemDelegate
-                {
+                BillItemDelegate {
                     price: modelData.totalNetto
                 }
             }
         }
     }
 }
-

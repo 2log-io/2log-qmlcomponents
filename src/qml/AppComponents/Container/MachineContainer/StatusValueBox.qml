@@ -1,3 +1,5 @@
+
+
 /*   2log.io
  *   Copyright (C) 2021 - 2log.io | mail@2log.io,  mail@friedemann-metzger.de
  *
@@ -14,8 +16,6 @@
  *   You should have received a copy of the GNU Affero General Public License
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
-
 import QtQuick 2.5
 import CloudAccess 1.0
 import QtQuick.Controls 2.0
@@ -23,8 +23,7 @@ import UIControls 1.0
 import QtQuick.Layouts 1.3
 import "../Statistics"
 
-BaseValueBox
-{
+BaseValueBox {
     id: docroot
 
     height: 120
@@ -33,25 +32,19 @@ BaseValueBox
     property int dotState: -10
     property int switchState: -10
 
-
-
-
-    RowLayout
-    {
+    RowLayout {
         anchors.fill: parent
         anchors.topMargin: 30
         anchors.margins: 20
         spacing: 10
 
-        Item
-        {
+        Item {
             Layout.fillWidth: true
             Layout.fillHeight: true
 
             visible: dotState > -10
 
-            Image
-            {
+            Image {
                 id: dotImage
                 anchors.centerIn: parent
                 height: 50
@@ -60,60 +53,48 @@ BaseValueBox
                 smooth: true
                 mipmap: true
 
-                Item
-                {
+                Item {
                     width: parent.paintedWidth
                     height: parent.paintedHeight
                     anchors.centerIn: parent
-                    states:
-                    [
-                        State
-                        {
+                    states: [
+                        State {
                             name: "na"
                             when: docroot.dotState == -1
 
-                            PropertyChanges
-                            {
+                            PropertyChanges {
                                 target: infoBubbleDot
                                 icon: Icons.question
                                 infoColor: Colors.white
                             }
                         },
 
-                        State
-                        {
+                        State {
                             name: "off"
                             when: docroot.dotState == -2
 
-                            PropertyChanges
-                            {
+                            PropertyChanges {
                                 target: infoBubbleDot
                                 icon: Icons.offline
                                 infoColor: Colors.warnRed
                             }
                         }
                     ]
-                    InfoBubble
-                    {
+                    InfoBubble {
                         id: infoBubbleDot
                         size: 20
                         x: parent.width * 0.8
                         y: 38
                         iconSize: 10
-
-
                     }
                 }
             }
         }
-        Item
-        {
+        Item {
             Layout.fillWidth: true
             Layout.fillHeight: true
 
-
-            Image
-            {
+            Image {
                 id: switchImage
                 anchors.centerIn: parent
                 height: 70
@@ -122,42 +103,35 @@ BaseValueBox
                 smooth: true
                 mipmap: true
 
-                Item
-                {
+                Item {
                     width: parent.paintedWidth
                     height: parent.paintedHeight
                     anchors.centerIn: parent
 
-                    states:
-                    [
-                        State
-                        {
+                    states: [
+                        State {
                             name: "na"
                             when: docroot.switchState == -1
 
-                            PropertyChanges
-                            {
+                            PropertyChanges {
                                 target: infoBubbleSwitch
                                 icon: Icons.question
                                 infoColor: Colors.white
                             }
                         },
 
-                        State
-                        {
+                        State {
                             name: "off"
                             when: docroot.switchState == -2
 
-                            PropertyChanges
-                            {
+                            PropertyChanges {
                                 target: infoBubbleSwitch
                                 icon: Icons.offline
                                 infoColor: Colors.warnRed
                             }
                         }
                     ]
-                    InfoBubble
-                    {
+                    InfoBubble {
                         id: infoBubbleSwitch
                         size: 20
                         x: parent.width * 0.6
@@ -167,6 +141,5 @@ BaseValueBox
                 }
             }
         }
-
     }
 }

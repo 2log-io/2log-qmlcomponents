@@ -1,3 +1,5 @@
+
+
 /*   2log.io
  *   Copyright (C) 2021 - 2log.io | mail@2log.io,  mail@friedemann-metzger.de
  *
@@ -14,8 +16,6 @@
  *   You should have received a copy of the GNU Affero General Public License
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
-
 import QtQuick 2.5
 import QtQuick.Controls 2.0
 import CloudAccess 1.0
@@ -24,57 +24,46 @@ import UIControls 1.0
 import AppComponents 1.0
 import "../Statistics"
 
-
-BaseValueBox
-{
+BaseValueBox {
     id: docroot
     label: qsTr("Stromsignatur")
 
     property alias repaintInterval: chart.repaintInterval
-    property bool hasNoData:  chart.maxVal < 0.001 || influxmodel.count < 3
+    property bool hasNoData: chart.maxVal < 0.001 || influxmodel.count < 3
     property DeviceModel powModel
 
     property DevicePropertyModel current
 
-    Binding on current
-    {
+    Binding on current {
         value: powModel.getProperty("curr")
     }
     property double value: current.value !== undefined ? current.value : 0
 
-    onValueChanged:
-    {
+    onValueChanged: {
         chart.addData(value)
     }
 
-
     property double max
 
-    SynchronizedListModel
-    {
+    SynchronizedListModel {
         id: influxmodel
-        resource: "influxdb/"+powModel.resource+"$curr?last=1h"
-        onCountChanged:
-        {
-            for(var i = 0; i < count; i++)
-            {
+        resource: "influxdb/" + powModel.resource + "$curr?last=1h"
+        onCountChanged: {
+            for (var i = 0; i < count; i++) {
                 var val = influxmodel.get(i).curr
-                chart.addData(val >= 0 ? val : 0, influxmodel.get(i).time, i === count-1)
+                chart.addData(val >= 0 ? val : 0, influxmodel.get(i).time,
+                              i === count - 1)
             }
-
         }
     }
 
-    Item
-    {
+    Item {
         anchors.fill: parent
         anchors.topMargin: 40
         anchors.margins: 10
         anchors.bottomMargin: 40
 
-
-        LineChart
-        {
+        LineChart {
             id: chart
             visible: !docroot.hasNoData
             anchors.rightMargin: hasNoData ? 0 : 130
@@ -82,8 +71,7 @@ BaseValueBox
             lineColor: Colors.highlightBlue
             lineThickness: 1
 
-            Rectangle
-            {
+            Rectangle {
                 id: bottomLine
                 height: 2
                 anchors.top: parent.bottom
@@ -93,40 +81,39 @@ BaseValueBox
                 visible: !hasNoData
             }
 
-
-            Rectangle
-            {
+            Rectangle {
                 width: 2
                 visible: !hasNoData
-                anchors.bottom:bottomLine.top
+                anchors.bottom: bottomLine.top
                 anchors.top: parent.top
                 anchors.left: parent.left
                 opacity: .05
             }
         }
 
-        TextLabel
-        {
+        TextLabel {
             anchors.left: chart.right
             anchors.leftMargin: 10
             visible: !hasNoData
-            Behavior on y {NumberAnimation{}}
-            text:powModel.available && powModel.deviceOnline ? docroot.value.toFixed(2) +" A" : ""
+            Behavior on y {
+                NumberAnimation {}
+            }
+            text: powModel.available
+                  && powModel.deviceOnline ? docroot.value.toFixed(
+                                                 2) + " A" : ""
             fontSize: Fonts.bigDisplayFontSize
-            y: (influxmodel.count > 0 ? chart.getYForValue(docroot.value) : 0) -height/2
+            y: (influxmodel.count > 0 ? chart.getYForValue(
+                                            docroot.value) : 0) - height / 2
         }
     }
-    //height: 540
 
-    Column
-    {
+    Column {
         anchors.centerIn: parent
-        visible:hasNoData
+        visible: hasNoData
         spacing: 5
-        TextLabel
-        {
+        TextLabel {
             text: qsTr("Keine Daten")
-            anchors.horizontalCenter:   parent.horizontalCenter
+            anchors.horizontalCenter: parent.horizontalCenter
             fontSize: Fonts.bigDisplayFontSize
             opacity: .2
         }

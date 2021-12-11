@@ -1,3 +1,5 @@
+
+
 /*   2log.io
  *   Copyright (C) 2021 - 2log.io | mail@2log.io,  mail@friedemann-metzger.de
  *
@@ -14,97 +16,81 @@
  *   You should have received a copy of the GNU Affero General Public License
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
-
 import QtQuick 2.5
 import QtQuick.Layouts 1.3
 import QtQuick.Controls 2.0
 import UIControls 1.0
 import CloudAccess 1.0
 
-Column
-{
+Column {
     id: docroot
     onLogin: UserLogin.login(username, password, loginCb, true)
-     //width: parent.width
     spacing: 10
 
     signal login(string username, string password)
-    signal resetPasswordClicked()
+    signal resetPasswordClicked
 
-    property bool showForgetField: !(username.text !== "" || password.text !== "")
+    property bool showForgetField: !(username.text !== ""
+                                     || password.text !== "")
     property bool active: StackView.status === StackView.Active
-    onActiveChanged: if(active) username.forceActiveFocus()
-    FocusScope{id: dummy}
-    function loginCb(login)
-    {
-        if(!login)
-        {
+    onActiveChanged: if (active)
+                         username.forceActiveFocus()
+    FocusScope {
+        id: dummy
+    }
+    function loginCb(login) {
+        if (!login) {
             password.text = ""
             shakeAnimation.start()
         }
     }
 
-    TextField
-    {
+    TextField {
         id: username
         enabled: Connection.state != Connection.STATE_Authenticated
         width: parent.width
-        placeholderText: qsTr( "Login" )
-        nextOnTab:  password.field
+        placeholderText: qsTr("Login")
+        nextOnTab: password.field
         icon: Icons.user
     }
 
-    TextField
-    {
+    TextField {
         id: password
         width: parent.width
         placeholderText: qsTr("Password")
         field.echoMode: TextInput.Password
         enabled: Connection.state != Connection.STATE_Authenticated
-        onAccepted:
-        {
-            if(Connection.state == Connection.STATE_Connected)
-            {
+        onAccepted: {
+            if (Connection.state == Connection.STATE_Connected) {
                 docroot.login(username.text, password.text)
-            }
-            else if(Connection.serverUrl !== "")
-            {
+            } else if (Connection.serverUrl !== "") {
                 Connection.reconnectServer()
             }
         }
         icon: Icons.lock
-
     }
 
-    Item
-    {
+    Item {
         height: 5
         width: parent.width
     }
 
-    Connections
-    {
+    Connections {
         target: Connection
-        onStateChanged:
-        {
-            if(Connection.state == Connection.STATE_Connected)
-            {
-                if(username.text !== "" && password.text !== "")
-                {
+        onStateChanged: {
+            if (Connection.state == Connection.STATE_Connected) {
+                if (username.text !== "" && password.text !== "") {
                     docroot.login(username.text, password.text)
-                    return;
+                    return
                 }
             }
         }
     }
 
-    Column
-    {
+    Column {
         width: parent.width
         spacing: 15
-        ViewActionButton
-        {
+        ViewActionButton {
             height: 10
             hasBorder: false
             text: qsTr("Passwort vergessen?")
@@ -113,62 +99,53 @@ Column
             anchors.left: parent.left
             anchors.leftMargin: -10
             opacity: .5
-            Behavior on opacity { NumberAnimation{}}
+            Behavior on opacity {
+                NumberAnimation {}
+            }
         }
-        StandardButton
-        {
+        StandardButton {
             width: parent.width
             text: "Login"
-            onClicked:
-            {
-                if(Connection.state == Connection.STATE_Connected)
-                {
+            onClicked: {
+                if (Connection.state == Connection.STATE_Connected) {
                     docroot.login(username.text, password.text)
-                }
-                else if(Connection.serverUrl !== "")
-                {
+                } else if (Connection.serverUrl !== "") {
                     Connection.reconnectServer()
                 }
             }
         }
     }
 
-    SequentialAnimation
-    {
+    SequentialAnimation {
         id: shakeAnimation
-        NumberAnimation
-        {
+        NumberAnimation {
             target: password
             property: "x"
             to: -5
             duration: 60
         }
 
-        NumberAnimation
-        {
+        NumberAnimation {
             target: password
             property: "x"
             to: 5
             duration: 60
         }
 
-        NumberAnimation
-        {
+        NumberAnimation {
             target: password
             property: "x"
             to: -5
             duration: 60
         }
-        NumberAnimation
-        {
+        NumberAnimation {
             target: password
             property: "x"
             to: 5
             duration: 60
         }
 
-        NumberAnimation
-        {
+        NumberAnimation {
             target: password
             property: "x"
             to: 0
@@ -176,4 +153,3 @@ Column
         }
     }
 }
-

@@ -1,3 +1,5 @@
+
+
 /*   2log.io
  *   Copyright (C) 2021 - 2log.io | mail@2log.io,  mail@friedemann-metzger.de
  *
@@ -14,8 +16,6 @@
  *   You should have received a copy of the GNU Affero General Public License
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
-
 import QtQuick 2.5
 import UIControls 1.0
 import QtQuick.Layouts 1.12
@@ -23,36 +23,28 @@ import QtQuick.Controls 2.0
 import CloudAccess 1.0
 import AppComponents 1.0
 
-Item
-{
+Item {
     id: docroot
 
     property bool active: (StackView.status == StackView.Active)
+    signal confirm
+    signal back
 
+    width: parent ? parent.width : 0
 
-    signal confirm()
-    signal back()
-
-    width: parent  ? parent.width : 0
-
-    function showError(errorMsg)
-    {
+    function showError(errorMsg) {
         shortIDField.showError(errorMsg)
     }
 
-
-    TextLabel
-    {
-
+    TextLabel {
         anchors.fill: parent
         anchors.leftMargin: 12
         wrapMode: Text.WordWrap
         anchors.bottomMargin: 20
         verticalAlignment: Text.AlignVCenter
-        text:qsTr("Dieses Gerät ist bereits einer anderen Ressource zugewiesen. Möchtest du es stattdessen dieser Ressource hier zuweisen?")
+        text: qsTr("Dieses Gerät ist bereits einer anderen Ressource zugewiesen. Möchtest du es stattdessen dieser Ressource hier zuweisen?")
     }
-    StandardButton
-    {
+    StandardButton {
         transparent: true
         icon: Icons.leftAngle
         text: qsTr("Zurück")
@@ -60,15 +52,12 @@ Item
         onClicked: docroot.back()
         opacity: docroot.active ? 1 : 0
 
-        Behavior on opacity
-        {
-            NumberAnimation{ }
+        Behavior on opacity {
+            NumberAnimation {}
         }
     }
 
-
-    StandardButton
-    {
+    StandardButton {
         id: confirmButton
         transparent: true
         icon: Icons.link
@@ -77,14 +66,12 @@ Item
         anchors.bottom: parent.bottom
         anchors.right: parent.right
 
-        onClicked:
-        {
+        onClicked: {
             docroot.confirm()
         }
 
-        Behavior on opacity
-        {
-            NumberAnimation{ }
+        Behavior on opacity {
+            NumberAnimation {}
         }
     }
 }

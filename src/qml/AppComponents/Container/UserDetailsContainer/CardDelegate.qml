@@ -1,3 +1,5 @@
+
+
 /*   2log.io
  *   Copyright (C) 2021 - 2log.io | mail@2log.io,  mail@friedemann-metzger.de
  *
@@ -14,55 +16,49 @@
  *   You should have received a copy of the GNU Affero General Public License
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
-
 import QtQuick 2.5
 import QtQuick.Controls 2.3
 import UIControls 1.0
 import "../../Widgets"
 
-Item
-{
+Item {
     id: delegate
 
-    Behavior on y {NumberAnimation{}}
+    Behavior on y {
+        NumberAnimation {}
+    }
 
     property bool cardEnabled
-    signal cardClicked()
-    signal removeClicked()
+    signal cardClicked
+    signal removeClicked
 
-    BaseItem
-    {
+    BaseItem {
         id: frame
         anchors.bottomMargin: 10
-        anchors.rightMargin:  10
+        anchors.rightMargin: 10
         anchors.fill: parent
         borderOpacity: .6
 
-        Item
-        {
+        Item {
             height: 40
             width: parent.width
             anchors.top: parent.top
             anchors.margins: 10
-            TextLabel
-            {
+            TextLabel {
                 anchors.horizontalCenter: parent.horizontalCenter
-                text:cardID
+                text: cardID
                 fontSize: Fonts.controlFontSize
             }
         }
 
-        Item
-        {
+        Item {
             id: iconFrame
-            width:  icon.width
+            width: icon.width
             height: icon.height
             anchors.centerIn: parent
             anchors.verticalCenterOffset: -10
 
-            Icon
-            {
+            Icon {
                 id: icon
 
                 icon: Icons.card
@@ -71,152 +67,133 @@ Item
                 opacity: .5
             }
 
-            Item
-            {
+            Item {
                 height: 2
                 width: iconFrame.width
                 anchors.centerIn: iconFrame
                 rotation: -45
 
-                Rectangle
-                {
+                Rectangle {
                     id: balken
                     color: Colors.warnRed
                     width: 0
                     height: parent.height
-                    Shadow
-                    {
+                    Shadow {
                         opacity: .1
                     }
                 }
             }
         }
 
-
-
-        MouseArea
-        {
+        MouseArea {
             id: area
             anchors.fill: parent
             hoverEnabled: true
-            onClicked:
-            {
+            onClicked: {
                 delegate.cardClicked()
-
             }
         }
 
-        Row
-        {
+        Row {
             id: buttonRow
             anchors.horizontalCenter: parent.horizontalCenter
             spacing: -1
             anchors.bottom: parent.bottom
             anchors.margins: 10
 
-            RadioGroupButton
-            {
+            RadioGroupButton {
                 id: radioLevel0
                 alignment: Qt.AlignLeft
                 iconChar: Icons.forbidden
                 iconCheckedColor: Colors.warnRed
-                onClicked: if(!checked) delegate.cardClicked()
-                toolTipText: checked ? qsTr("Karte deaktiviert") : qsTr("Karte deaktivieren")
+                onClicked: if (!checked)
+                               delegate.cardClicked()
+                toolTipText: checked ? qsTr("Karte deaktiviert") : qsTr(
+                                           "Karte deaktivieren")
             }
 
-            RadioGroupButton
-            {
+            RadioGroupButton {
                 id: radioLevel1
                 alignment: Qt.AlignRight
                 autoExclusive: true
                 iconChar: Icons.check
                 iconCheckedColor: Colors.highlightBlue
-                onClicked: if(!checked) delegate.cardClicked()
-                toolTipText: !checked ? qsTr("Karte aktivieren") : qsTr("Karte aktiv")
+                onClicked: if (!checked)
+                               delegate.cardClicked()
+                toolTipText: !checked ? qsTr("Karte aktivieren") : qsTr(
+                                            "Karte aktiv")
             }
 
-            Item{width: 10; height: 1}
+            Item {
+                width: 10
+                height: 1
+            }
 
-            RadioGroupButton
-            {
+            RadioGroupButton {
                 id: deleteBtn
                 alignment: -1
                 iconChar: Icons.trash
                 iconCheckedColor: Colors.warnRed
-                onClicked:  delegate.removeClicked()
+                onClicked: delegate.removeClicked()
                 toolTipText: qsTr("Karte löschen")
             }
         }
-
     }
 
-    states:
-    [
-        State
-        {
-            name:"active"
+    states: [
+        State {
+            name: "active"
             when: delegate.cardEnabled
 
-            PropertyChanges
-            {
-                target:frame
-                borderColor:Colors.highlightBlue
+            PropertyChanges {
+                target: frame
+                borderColor: Colors.highlightBlue
             }
 
-            PropertyChanges
-            {
-                target:radioLevel1
+            PropertyChanges {
+                target: radioLevel1
                 checked: true
             }
         },
 
-        State
-        {
-            name:"inactive"
+        State {
+            name: "inactive"
             when: !delegate.cardEnabled
 
-            PropertyChanges
-            {
-                target:balken
+            PropertyChanges {
+                target: balken
                 width: balken.parent.width
             }
 
-            PropertyChanges
-            {
-                target:frame
-                borderColor:Colors.warnRed
+            PropertyChanges {
+                target: frame
+                borderColor: Colors.warnRed
                 backgroundOpacity: 0
             }
 
-            PropertyChanges
-            {
-                target:radioLevel0
+            PropertyChanges {
+                target: radioLevel0
                 checked: true
             }
 
-            PropertyChanges
-            {
-                target:icon
+            PropertyChanges {
+                target: icon
                 opacity: .25
             }
         }
     ]
 
-    transitions:
-    [
+    transitions: [
         Transition {
 
-            PropertyAction
-            {
-                property:"visible"
+            PropertyAction {
+                property: "visible"
             }
 
-            PropertyAnimation
-            {
+            PropertyAnimation {
                 properties: "color,opacity, borderColor, width"
                 easing.type: Easing.OutQuad
             }
         }
-
     ]
 }

@@ -4,85 +4,66 @@ import CloudAccess 1.0
 import QtQuick.Controls 2.3
 import UIControls 1.0
 
-
-Item
-{
+Item {
     id: docroot
     property CardReader reader
     signal confirm(string cardID)
-    signal cancel()
+    signal cancel
     property bool manual: !reader.ready
 
-    Component.onCompleted:
-    {
-        if(isMobile && nfcReader.ready)
-        {
-            if(stack.depth > 1)
+    Component.onCompleted: {
+        if (isMobile && nfcReader.ready) {
+            if (stack.depth > 1)
                 stack.clear()
 
             stack.replace(scanCardPage)
         }
     }
 
-    onManualChanged:
-    {
-        if(stack.depth > 1)
+    onManualChanged: {
+        if (stack.depth > 1)
             stack.clear()
-        if(!manual)
-        {
-            if(reader.ready)
-            {
+        if (!manual) {
+            if (reader.ready) {
                 stack.replace(scanCardPage)
-            }
-            else
-            {
+            } else {
                 stack.replace(message)
             }
-        }
-        else
-        {
+        } else {
             stack.replace(keyboardCardPage)
         }
     }
 
     property bool parentStackActive: StackView.status == StackView.Active
 
-    Stack
-    {
+    Stack {
         id: stack
         anchors.fill: parent
         initialItem: docroot.manual ? undefined : scanCardPage
     }
 
-    Component
-    {
+    Component {
         id: scanCardPage
-        ScanCardPage
-        {
+        ScanCardPage {
             reader: docroot.reader
             onConfirm: docroot.confirm(cardID)
             onCancel: stack.depth > 1 ? stack.pop() : docroot.cancel()
         }
     }
 
-    Component
-    {
+    Component {
         id: message
 
-        MessagePage
-        {
+        MessagePage {
             message: qsTr("Momentan ist leider kein Dot zum Einlesen von Karten konfiguriert. Dies kann im Administrationsbereich geändert werden.")
             onConfirm: docroot.confirm(cardID)
             onCancel: stack.depth > 1 ? stack.pop() : docroot.cancel()
         }
     }
 
-
-    Component
-    {
+    Component {
         id: keyboardCardPage
-        TextFieldCardPage
-        {
+        TextFieldCardPage {
             onConfirm: docroot.confirm(cardID)
             onCancel: stack.depth > 1 ? stack.pop() : docroot.cancel()
         }

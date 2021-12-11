@@ -1,3 +1,5 @@
+
+
 /*   2log.io
  *   Copyright (C) 2021 - 2log.io | mail@2log.io,  mail@friedemann-metzger.de
  *
@@ -14,86 +16,73 @@
  *   You should have received a copy of the GNU Affero General Public License
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
-
 import QtQuick 2.5
 import QtQuick.Controls 2.0
 import QtQuick.Layouts 1.12
 import UIControls 1.0
 
-BaseValueBox
-{
+BaseValueBox {
     id: docroot
 
     property var model
     property double max
-    //height: 540
 
+    //height: 540
     label: qsTr("Durchschnittliche Session-Zeit")
 
-    onModelChanged:
-    {
+    onModelChanged: {
         if (!model || model === undefined)
             return
 
         var max = 0
-        for(var i = 0; i < docroot.model.length; i ++)
-        {
+        for (var i = 0; i < docroot.model.length; i++) {
             max = Math.max(docroot.model[i].value, max)
         }
 
         docroot.max = max
     }
 
-    Column
-    {
+    Column {
         anchors.centerIn: parent
         visible: rep2.count == 0
 
         spacing: 5
-        TextLabel
-        {
+        TextLabel {
             text: qsTr("Keine Daten")
-            anchors.horizontalCenter:   parent.horizontalCenter
+            anchors.horizontalCenter: parent.horizontalCenter
             fontSize: Fonts.bigDisplayFontSize
             opacity: .2
         }
 
-        TextLabel
-        {
+        TextLabel {
             text: qsTr("im ausgewählten Zeitfenster")
-            anchors.horizontalCenter:  parent.horizontalCenter
+            anchors.horizontalCenter: parent.horizontalCenter
             fontSize: Fonts.headerFontSze
             opacity: .2
         }
     }
 
-    Flickable
-    {
+    Flickable {
         anchors.fill: parent
         anchors.topMargin: 40
         anchors.margins: 20
         contentHeight: grid.height
         clip: true
 
-
-        GridLayout
-        {
+        GridLayout {
             id: grid
 
             width: parent.width
             rowSpacing: 0
             columnSpacing: 14
 
-            Repeater
-            {
+            Repeater {
                 id: rep2
                 model: docroot.model
-                delegate:
-                TextLabel
-                {
+                delegate: TextLabel {
                     verticalAlignment: Qt.AlignVCenter
-                    text:(docroot.model[index].value / 1000 / 60).toFixed(1)+"m"
+                    text: (docroot.model[index].value / 1000 / 60).toFixed(
+                              1) + "m"
                     Layout.alignment: Qt.AlignVCenter
                     Layout.minimumHeight: 40
                     Layout.row: index
@@ -101,39 +90,32 @@ BaseValueBox
                 }
             }
 
-            Repeater
-            {
+            Repeater {
                 id: rep3
                 model: docroot.model
-                delegate:
-                Item
-                {
+                delegate: Item {
                     height: 16
                     Layout.row: index
                     Layout.column: 1
                     Layout.fillWidth: true
-                    Rectangle
-                    {
+                    Rectangle {
                         height: parent.height
                         width: parent.width * (modelData.value / docroot.max)
                     }
                 }
             }
 
-            Repeater
-            {
+            Repeater {
                 id: rep1
                 model: docroot.model
-                delegate:
-                TextLabel
-                {
+                delegate: TextLabel {
                     Layout.minimumHeight: 40
                     verticalAlignment: Qt.AlignVCenter
-                    text:
-                    {
-                        var model =  deviceModel.getDeviceModel(modelData._id.resourceID)
-                        if(!model)
-                            return  modelData._id.resourceID
+                    text: {
+                        var model = deviceModel.getDeviceModel(
+                                    modelData._id.resourceID)
+                        if (!model)
+                            return modelData._id.resourceID
 
                         var txt = model.displayName
                         return txt
@@ -145,5 +127,4 @@ BaseValueBox
             }
         }
     }
-
 }

@@ -1,3 +1,5 @@
+
+
 /*   2log.io
  *   Copyright (C) 2021 - 2log.io | mail@2log.io,  mail@friedemann-metzger.de
  *
@@ -14,15 +16,12 @@
  *   You should have received a copy of the GNU Affero General Public License
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
-
 import QtQuick 2.5
 import QtQuick.Controls 2.0
 import QtQuick.Layouts 1.12
 import UIControls 1.0
 
-BaseValueBox
-{
+BaseValueBox {
     id: docroot
     width: 200
     height: 120
@@ -30,22 +29,19 @@ BaseValueBox
     property string value
     property string unit
 
-    Row
-    {
+    Row {
         spacing: 10
         anchors.centerIn: parent
         anchors.verticalCenterOffset: 10
 
-        TextLabel
-        {
+        TextLabel {
             id: statusText
             anchors.verticalCenter: parent.verticalCenter
             text: docroot.value
             fontSize: Fonts.bigDisplayFontSize
         }
 
-        TextLabel
-        {
+        TextLabel {
             anchors.verticalCenter: parent.verticalCenter
             anchors.verticalCenterOffset: 5
             text: docroot.unit

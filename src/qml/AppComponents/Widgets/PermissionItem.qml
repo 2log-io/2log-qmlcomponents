@@ -2,74 +2,66 @@ import QtQuick 2.5
 import QtQuick.Layouts 1.3
 import UIControls 1.0
 
-Item
-{
+Item {
     id: docroot
     height: 150
     width: 150
 
     property string icon: Icons.shield
-    signal clicked()
+    signal clicked
     property int permissionState: 0
     property date expires
     property string deviceName
-    signal secondaryActionClicked()
+    signal secondaryActionClicked
     property bool isTouch
 
-    Rectangle
-    {
+    Rectangle {
         anchors.fill: parent
         color: Colors.white
         opacity: .03
     }
 
-    ColumnLayout
-    {
+    ColumnLayout {
         anchors.fill: parent
         anchors.margins: 10
 
-        Icon
-        {
+        Icon {
             id: icon
-            Layout.alignment:Qt.AlignCenter
+            Layout.alignment: Qt.AlignCenter
             icon: docroot.icon
             iconSize: 40
             iconColor: Colors.white
             opacity: .5
 
-            InfoBubble
-            {
+            InfoBubble {
                 id: bubble
                 visible: false
                 anchors.top: parent.bottom
                 anchors.left: parent.right
-                anchors.topMargin:  -15
+                anchors.topMargin: -15
                 anchors.leftMargin: 0
             }
         }
 
-        Item
-        {
+        Item {
             height: 40
             Layout.fillWidth: true
-            Layout.alignment:Qt.AlignBottom
+            Layout.alignment: Qt.AlignBottom
 
-            Column
-            {
+            Column {
                 width: parent.width
                 anchors.bottom: parent.bottom
-                TextLabel
-                {
-                    text:docroot.deviceName
+                TextLabel {
+                    text: docroot.deviceName
                     fontSize: Fonts.controlFontSize
                     anchors.horizontalCenter: parent.horizontalCenter
                 }
 
-                TextLabel
-                {
+                TextLabel {
                     opacity: 0
                     id: expiresLabel
-                    text:qsTr("bis %1").arg(Qt.formatDate(docroot.expires, "dd.MM.yy"))
+                    text: qsTr("bis %1").arg(Qt.formatDate(docroot.expires,
+                                                           "dd.MM.yy"))
                     fontSize: Fonts.smallControlFontSize
                     color: Colors.grey
                     anchors.horizontalCenter: parent.horizontalCenter
@@ -78,16 +70,14 @@ Item
         }
     }
 
-    MouseArea
-    {
+    MouseArea {
         id: mouse
         anchors.fill: parent
         hoverEnabled: true
         onClicked: docroot.clicked()
     }
 
-    Item
-    {
+    Item {
         id: secondaryActionRect
         width: 30
         height: 30
@@ -95,15 +85,13 @@ Item
         anchors.right: parent.right
         visible: mouse.containsMouse || docroot.isTouch
         opacity: 0
-        Rectangle
-        {
+        Rectangle {
             anchors.fill: parent
             anchors.right: parent.right
             opacity: .1
         }
 
-        Icon
-        {
+        Icon {
             id: secondaryActionIcon
             anchors.centerIn: parent
             icon: Icons.plus
@@ -111,8 +99,7 @@ Item
             iconSize: Fonts.smallControlFontSize
         }
 
-        MouseArea
-        {
+        MouseArea {
             id: secondActionArea
             enabled: false
             anchors.fill: parent
@@ -120,96 +107,77 @@ Item
         }
     }
 
-    states:
-    [
-        State
-        {
-            name:"active"
+    states: [
+        State {
+            name: "active"
             when: docroot.permissionState === 1
-            PropertyChanges
-            {
+            PropertyChanges {
                 target: icon
                 opacity: 1
             }
 
-            PropertyChanges
-            {
+            PropertyChanges {
                 target: bubble
                 visible: true
             }
 
-            PropertyChanges
-            {
+            PropertyChanges {
                 target: expiresLabel
                 opacity: 1
             }
 
-            PropertyChanges
-            {
+            PropertyChanges {
                 target: secondaryActionIcon
                 iconColor: Colors.warnRed
                 icon: Icons.minus
             }
 
-            PropertyChanges
-            {
+            PropertyChanges {
                 target: secondaryActionRect
-                opacity:1
+                opacity: 1
             }
 
-
-            PropertyChanges
-            {
+            PropertyChanges {
                 target: secondActionArea
                 enabled: true
             }
         },
-        State
-        {
-            name:"forbidden"
+        State {
+            name: "forbidden"
             when: docroot.permissionState === 2
-            PropertyChanges
-            {
+            PropertyChanges {
                 target: icon
                 opacity: 1
             }
 
-            PropertyChanges
-            {
+            PropertyChanges {
                 target: expiresLabel
                 opacity: 1
             }
 
-
-            PropertyChanges
-            {
+            PropertyChanges {
                 target: bubble
                 visible: true
                 icon: Icons.forbidden
                 infoColor: Colors.warnRed
             }
 
-            PropertyChanges
-            {
+            PropertyChanges {
                 target: secondaryActionIcon
                 iconColor: Colors.warnRed
                 icon: Icons.minus
             }
 
-            PropertyChanges
-            {
+            PropertyChanges {
                 target: secondaryActionRect
-                opacity:1
+                opacity: 1
             }
 
-            PropertyChanges
-            {
+            PropertyChanges {
                 target: secondActionArea
                 enabled: true
             }
         },
-        State
-        {
-        }
+        State {}
     ]
 }

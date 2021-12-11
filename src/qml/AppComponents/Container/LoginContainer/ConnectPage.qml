@@ -1,3 +1,4 @@
+
 /*   2log.io
  *   Copyright (C) 2021 - 2log.io | mail@2log.io,  mail@friedemann-metzger.de
  *
@@ -14,110 +15,91 @@
  *   You should have received a copy of the GNU Affero General Public License
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
-
 import QtQuick 2.5
 import QtQuick.Layouts 1.3
 import QtQuick.Controls 2.0
 import UIControls 1.0
 import CloudAccess 1.0
 
-
-Item
-{
-
-    Column
-    {
+Item {
+    Column {
         id: docroot
         spacing: 0
         anchors.top: parent.top
         anchors.topMargin: 20
         width: parent.width
 
-        function connect()
-        {
-            if(server.text !== "")
-            {
-                if(!server.text.includes(".") && !server.text.includes(":"))
+        function connect() {
+            if (server.text !== "") {
+                if (!server.text.includes(".") && !server.text.includes(":"))
                     server.text = server.text + ".2log.io"
 
-                if(!server.text.startsWith("ws"))
-                    server.text = "wss://"+server.text
+                if (!server.text.startsWith("ws"))
+                    server.text = "wss://" + server.text
 
                 Connection.connectToServer(server.text, connectCb)
-            }
-            else
-            {
+            } else {
                 server.showErrorAnimation()
             }
         }
 
-        function connectCb(success, errorMsg)
-        {
-            if(!success)
-            {
-                if(errorMsg === 0)
+        function connectCb(success, errorMsg) {
+            if (!success) {
+                if (errorMsg === 0)
                     errorLabel.text = qsTr("Ungültige Server Adresse.")
                 else
                     errorLabel.text = qsTr("Server Fehler.")
 
                 error.opacity = 1
                 server.showErrorAnimation()
-            }
-            else
-            {
+            } else {
                 errorLabel.text = ""
             }
         }
 
-        TextField
-        {
+        TextField {
             id: server
-            placeholderText: qsTr( "Server" )
+            placeholderText: qsTr("Server")
             width: parent.width
             icon: Icons.server
-            text:serverURL
+            text: serverURL
             enabled: (Connection.state == Connection.STATE_Disconnected
-                     && !root.suspended
-                     && !root.provisioning) || errorLabel.text !== ""
+                      && !root.suspended && !root.provisioning)
+                     || errorLabel.text !== ""
 
-            onTextChanged: if(text !== "") error.opacity = 0
-            field.onAccepted:
-            {
+            onTextChanged: if (text !== "")
+                               error.opacity = 0
+            field.onAccepted: {
                 docroot.connect()
             }
         }
-        Item
-        {
+        Item {
             id: error
             width: parent.width
             height: 1
-            Behavior on opacity{NumberAnimation{}}
+            Behavior on opacity {
+                NumberAnimation {}
+            }
             opacity: 0
 
-            TextLabel
-            {
+            TextLabel {
                 id: errorLabel
                 color: Colors.red
                 y: -5
                 fontSize: 14
-
             }
         }
 
-        Item
-        {
+        Item {
             height: 25
             width: parent.width
         }
 
-        StandardButton
-        {
+        StandardButton {
             width: parent.width
             text: qsTr("Verbinden")
-            onClicked:
-            {
-                 docroot.connect()
+            onClicked: {
+                docroot.connect()
             }
         }
     }

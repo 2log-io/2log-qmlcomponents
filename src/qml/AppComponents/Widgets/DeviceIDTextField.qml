@@ -2,8 +2,7 @@ import QtQuick 2.5
 import QtQuick.Layouts 1.3
 import UIControls 1.0
 
-Item
-{
+Item {
 
     id: docroot
 
@@ -13,57 +12,49 @@ Item
     property string error
 
     width: column.width
-    height:column.height
+    height: column.height
 
-    signal returnPressed()
+    signal returnPressed
 
-    function forceActiveFocus()
-    {
+    function forceActiveFocus() {
         input.forceActiveFocus()
     }
 
-    function showError(error)
-    {
+    function showError(error) {
         docroot.error = error
         showErrorAnimation.start()
     }
 
-    TextInput
-    {
+    TextInput {
         id: input
         opacity: 0
         visible: false
         inputMask: "NNNN"
         onAccepted: docroot.returnPressed()
         anchors.bottom: parent.bottom
-        anchors.bottomMargin:  -25
+        anchors.bottomMargin: -25
 
         inputMethodHints: Qt.ImhNoPredictiveText
     }
 
-    MouseArea
-    {
+    MouseArea {
         anchors.fill: column
         onClicked: input.forceActiveFocus()
     }
 
-    SequentialAnimation
-    {
+    SequentialAnimation {
         id: showErrorAnimation
 
-        NumberAnimation
-        {
+        NumberAnimation {
             from: 1
             to: 0
             target: errorRow
             property: "opacity"
-            duration:  100
+            duration: 100
         }
 
-        ScriptAction
-        {
-            script:
-            {
+        ScriptAction {
+            script: {
                 errorIcon.visible = true
                 labelField.text = docroot.error
                 input.text = ""
@@ -71,27 +62,23 @@ Item
             }
         }
 
-        NumberAnimation
-        {
+        NumberAnimation {
             from: 0
             to: 1
             target: errorRow
             property: "opacity"
-            duration:  100
+            duration: 100
         }
     }
 
-    Column
-    {
+    Column {
         id: column
         spacing: 10
 
-        Row
-        {
+        Row {
             id: errorRow
             spacing: 10
-            Icon
-            {
+            Icon {
                 id: errorIcon
                 visible: false
                 iconSize: 14
@@ -99,30 +86,25 @@ Item
                 iconColor: Colors.warnRed
                 anchors.verticalCenter: parent.verticalCenter
             }
-            TextLabel
-            {
+            TextLabel {
                 id: labelField
                 text: docroot.label
                 anchors.verticalCenter: parent.verticalCenter
             }
         }
 
-        RowLayout
-        {
+        RowLayout {
             height: 50
             width: 180
             spacing: docroot.spacing
 
-            Repeater
-            {
+            Repeater {
                 model: 4
-                Item
-                {
+                Item {
                     Layout.fillHeight: true
                     Layout.fillWidth: true
 
-                    Rectangle
-                    {
+                    Rectangle {
                         id: background
                         radius: 5
                         anchors.fill: parent
@@ -131,61 +113,55 @@ Item
                         border.width: 1
                         border.color: "transparent"
 
-                        Rectangle
-                        {
+                        Rectangle {
                             id: cursor
                             width: parent.width - 10
                             anchors.horizontalCenter: parent.horizontalCenter
                             anchors.bottom: parent.bottom
                             anchors.bottomMargin: 4
                             height: 2
-                            color:Colors.white
-                            visible:
-                            {
-                                if(!isMobile)
-                                    input.cursorPosition == index && input.activeFocus
+                            color: Colors.white
+                            visible: {
+                                if (!isMobile)
+                                    input.cursorPosition == index
+                                            && input.activeFocus
                                 else
-                                    index === input.preeditText.length && input.activeFocus
+                                    index === input.preeditText.length
+                                            && input.activeFocus
                             }
                             opacity: 0
 
-                            SequentialAnimation
-                            {
+                            SequentialAnimation {
                                 loops: Animation.Infinite
                                 id: blinkAnimation
                                 running: cursor.visible
                                 alwaysRunToEnd: true
 
-                                PropertyAnimation
-                                {
+                                PropertyAnimation {
                                     target: cursor
-                                    property:"opacity"
+                                    property: "opacity"
                                     to: 1
                                     duration: 20
                                 }
 
-                                PauseAnimation
-                                {
-                                  duration: 800
+                                PauseAnimation {
+                                    duration: 800
                                 }
-                                PropertyAnimation
-                                {
+                                PropertyAnimation {
                                     target: cursor
-                                    property:"opacity"
+                                    property: "opacity"
                                     duration: 20
                                     to: 0
                                 }
 
-                                PauseAnimation
-                                {
-                                  duration: 800
+                                PauseAnimation {
+                                    duration: 800
                                 }
                             }
                         }
                     }
 
-                    TextLabel
-                    {
+                    TextLabel {
                         anchors.centerIn: parent
                         font.family: Fonts.simplonMono
                         fontSize: Fonts.bigDisplayFontSize
@@ -193,26 +169,20 @@ Item
                         anchors.verticalCenterOffset: 2
                     }
 
-                    states:
-                    [
-                        State
-                        {
-                            name:"focus"
+                    states: [
+                        State {
+                            name: "focus"
                             when: input.activeFocus
-                            PropertyChanges
-                            {
+                            PropertyChanges {
                                 target: background
                                 border.color: Colors.highlightBlue
                             }
                         }
                     ]
 
-                    transitions:
-                    [
-                        Transition
-                        {
-                            ColorAnimation
-                            {
+                    transitions: [
+                        Transition {
+                            ColorAnimation {
                                 target: background
                                 property: "border.color"
                             }
@@ -222,5 +192,4 @@ Item
             }
         }
     }
-
 }

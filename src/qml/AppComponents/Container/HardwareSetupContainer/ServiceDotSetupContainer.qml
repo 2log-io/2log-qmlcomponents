@@ -1,3 +1,5 @@
+
+
 /*   2log.io
  *   Copyright (C) 2021 - 2log.io | mail@2log.io,  mail@friedemann-metzger.de
  *
@@ -14,8 +16,6 @@
  *   You should have received a copy of the GNU Affero General Public License
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
-
 import QtQuick 2.5
 import UIControls 1.0
 import QtQuick.Layouts 1.12
@@ -24,83 +24,75 @@ import CloudAccess 1.0
 import AppComponents 1.0
 import "../../Dialogs/DeviceProvisioningDialog"
 
-Container
-{
+Container {
     id: docroot
 
     property string selectedReaderMapping
     property string shortID
 
-    Item
-    {
+    Item {
         id: p
         property string mapping
         property alias deviceModel: deviceModel
-        SynchronizedObjectModel
-        {
+        SynchronizedObjectModel {
             id: settingsModel
             resource: "home/settings/cardreader"
-            onInitializedChanged:
-            {
-                docroot.selectedReaderMapping = Qt.binding(function()
-                {
+            onInitializedChanged: {
+                docroot.selectedReaderMapping = Qt.binding(function () {
                     var selectedreader = settingsModel.selectedReader
-                    return selectedreader  === undefined ? "" : selectedreader
+                    return selectedreader === undefined ? "" : selectedreader
                 })
             }
         }
 
-        DeviceModel
-        {
-            id:deviceModel
+        DeviceModel {
+            id: deviceModel
             resource: docroot.selectedReaderMapping
         }
     }
 
-    function callback(data)
-    {
-        if(data.errorcode >= 0 )
-        {
-            stack.replace(dotOverview,StackView.PushTransition);
+    function callback(data) {
+        if (data.errorcode >= 0) {
+            stack.replace(dotOverview, StackView.PushTransition)
             settingsModel.selectedReader = p.mapping
-        }
-        else
-        {
+        } else {
             var errorMsg = qsTr("Unbekannter Fehler")
-            switch(data.errorcode)
-            {
-                case -4: stack.push(alreadyInUse); return;
-                case -10: errorMsg = qsTr("Unbekannte Controller-ID"); break;
-                case -11: errorMsg = qsTr("Kein Gerät gefunden"); break;
-                case -12: errorMsg = qsTr("Falscher Gerätetyp"); break;
+            switch (data.errorcode) {
+            case -4:
+                stack.push(alreadyInUse)
+                return
+            case -10:
+                errorMsg = qsTr("Unbekannte Controller-ID")
+                break
+            case -11:
+                errorMsg = qsTr("Kein Gerät gefunden")
+                break
+            case -12:
+                errorMsg = qsTr("Falscher Gerätetyp")
+                break
             }
             stack.currentItem.showError(errorMsg)
         }
     }
 
-    headline:qsTr("Administrations-Dot")
+    headline: qsTr("Administrations-Dot")
     helpText: qsTr("Der Adminsitrations-Dot erleichtert dir das Einpflegen von Nutzerkarten. Karten-IDs müssen nicht mehr manuell eingegeben werden, stattdessen genügt es die Karte mit dem Dot einzulesen. Jeder 2log Administrator kann einen eigenen Admin-Dot konfigurieren.")
-    states:
-    [
-        State
-        {
+    states: [
+        State {
             name: "na"
             when: !deviceModel.available
 
-            PropertyChanges
-            {
+            PropertyChanges {
                 target: infoBubble
                 icon: Icons.question
                 infoColor: Colors.white
             }
         },
-        State
-        {
+        State {
             name: "off"
             when: !deviceModel.deviceOnline
 
-            PropertyChanges
-            {
+            PropertyChanges {
                 target: infoBubble
                 icon: Icons.offline
                 infoColor: Colors.warnRed
@@ -108,49 +100,41 @@ Container
         }
     ]
 
-
-    header:ContainerButton
-    {
+    header: ContainerButton {
         id: setupbtn
         anchors.right: parent.right
-        anchors.verticalCenter:parent.verticalCenter
+        anchors.verticalCenter: parent.verticalCenter
         icon: Icons.swap
         enabled: stack.currentItem.stackID === "info" && deviceModel.available
         text: qsTr("Tauschen")
 
-        onClicked:
-        {
+        onClicked: {
             stack.push(setup)
         }
     }
 
-    RowLayout
-    {
+    RowLayout {
         width: parent.width
         spacing: docroot.spacing
 
-        Item
-        {
+        Item {
             Layout.fillWidth: true
             Layout.fillHeight: true
             Layout.maximumWidth: parent.width / 3
             height: 150
 
-            Image
-            {
+            Image {
                 id: image
                 width: parent.width
                 height: parent.height
                 source: "qrc:/dot_line_svg"
                 fillMode: Image.PreserveAspectFit
 
-                Item
-                {
+                Item {
                     width: parent.paintedWidth
                     height: parent.paintedHeight
                     anchors.centerIn: parent
-                    InfoBubble
-                    {
+                    InfoBubble {
                         id: infoBubble
                         size: 32
                         x: parent.width * 0.8
@@ -161,8 +145,7 @@ Container
             }
         }
 
-        StackView
-        {
+        StackView {
             id: stack
             initialItem: dotOverview
             Layout.fillWidth: true
@@ -171,131 +154,120 @@ Container
 
             clip: true
 
-            Component
-            {
+            Component {
                 id: setup
-                ChangeDevicePage
-                {
+                ChangeDevicePage {
                     property string stackID: "setup"
                     onBack: stack.pop()
 
-                    onConfirm:
-                    {
-                        p.mapping = "serviceDot/"+shortID
+                    onConfirm: {
+                        p.mapping = "serviceDot/" + shortID
                         docroot.shortID = shortID
-                        var data = {"mapping": p.mapping, "shortID":shortID, "force":false}
-                        deviceService.call("hookWithShortID", data, docroot.callback )
+                        var data = {
+                            "mapping": p.mapping,
+                            "shortID": shortID,
+                            "force": false
+                        }
+                        deviceService.call("hookWithShortID", data,
+                                           docroot.callback)
                     }
 
-                    ServiceModel
-                    {
+                    ServiceModel {
                         id: deviceService
                         service: "devices"
                     }
                 }
             }
 
-            Component
-            {
+            Component {
                 id: isAlreadyHooked
-                IsAlreadyHookedPage
-                {
+                IsAlreadyHookedPage {
                     onBack: stack.pop()
                     property string stackID: "isAlreadyHooked"
                     onYes: stack.push(setup)
-                    onNo:
-                    {
+                    onNo: {
                         provisioningPopup.open()
                     }
                 }
             }
 
-            DeviceProvisioningPopup
-            {
+            DeviceProvisioningPopup {
                 id: provisioningPopup
                 targetSSID: "I'm a Dot"
 
-                function prepareCallback(data)
-                {
-                    if(data.errCode >= 0)
-                    {
-                        stack.replace(dotOverview,StackView.PushTransition);
+                function prepareCallback(data) {
+                    if (data.errCode >= 0) {
+                        stack.replace(dotOverview, StackView.PushTransition)
                         settingsModel.selectedReader = p.mapping
                     }
                 }
 
-                onProvisioningFinished:
-                {
-                    p.mapping = "servideDot/"+uuid;
-                    deviceService.call("prepareMappingWithUUID", {"mapping": p.mapping, "uuid":uuid} , provisioningPopup.prepareCallback )
+                onProvisioningFinished: {
+                    p.mapping = "servideDot/" + uuid
+                    deviceService.call("prepareMappingWithUUID", {
+                                           "mapping": p.mapping,
+                                           "uuid": uuid
+                                       }, provisioningPopup.prepareCallback)
                 }
             }
 
-            Component
-            {
+            Component {
                 id: alreadyInUse
-                AlreadeInUsePage
-                {
+                AlreadeInUsePage {
                     onBack: stack.pop()
                     property string stackID: "alreadyInUse"
-                    onConfirm: deviceService.call("hookWithShortID", {"mapping": p.mapping, "shortID": docroot.shortID, "force":true}, docroot.callback )
+                    onConfirm: deviceService.call("hookWithShortID", {
+                                                      "mapping": p.mapping,
+                                                      "shortID": docroot.shortID,
+                                                      "force": true
+                                                  }, docroot.callback)
 
-                    ServiceModel
-                    {
+                    ServiceModel {
                         id: deviceService
                         service: "devices"
                     }
                 }
             }
 
-
-            Component
-            {
+            Component {
                 id: dotOverview
 
-                StackLayout
-                {
+                StackLayout {
                     id: stacklayout
                     property string stackID: "info"
-                    currentIndex: deviceModel.available ?  0 : 1
-                    Item
-                    {
+                    currentIndex: deviceModel.available ? 0 : 1
+                    Item {
                         Layout.fillHeight: true
                         Layout.fillWidth: true
 
-                        Column
-                        {
+                        Column {
                             anchors.centerIn: parent
                             spacing: 10
-                            DeviceInfoPage
-                            {
-                                deviceModel:p.deviceModel
+                            DeviceInfoPage {
+                                deviceModel: p.deviceModel
                             }
-                            StandardButton
-                            {
+                            StandardButton {
                                 text: qsTr("Blinken")
                                 enabled: deviceModel.deviceOnline
-                                onClicked: deviceModel.triggerFunction("showAccept",{})
+                                onClicked: deviceModel.triggerFunction(
+                                               "showAccept", {})
                             }
                         }
                     }
 
-                    Item
-                    {
+                    Item {
                         Layout.fillHeight: true
                         Layout.fillWidth: true
 
-                        Column
-                        {
+                        Column {
                             anchors.right: parent.right
-                            anchors.left:parent.left
+                            anchors.left: parent.left
                             anchors.verticalCenter: parent.verticalCenter
                             anchors.margins: 30
                             width: parent.width
                             spacing: docroot.spacing
 
-                            TextLabel
-                            {
+                            TextLabel {
                                 width: parent.width
                                 text: qsTr("Aktuell ist kein Dot zugewiesen.")
                                 wrapMode: Text.Wrap
@@ -306,17 +278,15 @@ Container
                             }
                         }
 
-                        StandardButton
-                        {
-                            text:qsTr("Jetzt einrichten")
+                        StandardButton {
+                            text: qsTr("Jetzt einrichten")
                             anchors.bottom: parent.bottom
                             anchors.right: parent.right
-                            transparent:true
+                            transparent: true
                             icon: Icons.rightAngle
                             iconAlignment: Qt.AlignRight
 
-                            onClicked:
-                            {
+                            onClicked: {
                                 stack.push(isAlreadyHooked)
                             }
                         }
@@ -326,4 +296,3 @@ Container
         }
     }
 }
-

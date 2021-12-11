@@ -1,3 +1,5 @@
+
+
 /*   2log.io
  *   Copyright (C) 2021 - 2log.io | mail@2log.io,  mail@friedemann-metzger.de
  *
@@ -14,187 +16,139 @@
  *   You should have received a copy of the GNU Affero General Public License
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
-
 import QtQuick 2.5
-//import UIControls 1.0
-
 pragma Singleton
 
-Item
-{
+Item {
 
     function parseISOLocal(s) {
-      var b = s.split(/\D/);
-      return new Date(b[0], b[1]-1, b[2], b[3], b[4], b[5]);
+        var b = s.split(/\D/)
+        return new Date(b[0], b[1] - 1, b[2], b[3], b[4], b[5])
     }
 
+    property var machineType: [{
+            "name": qsTr("Tellerschleifer"),
+            "code": "tellerschl",
+            "icon": "tellerschleiferIcon"
+        }, {
+            "name": qsTr("Bandschleifer"),
+            "code": "bandschl",
+            "icon": "bandschleiferIcon"
+        }, {
+            "name": qsTr("Tischkreissäge"),
+            "code": "teller",
+            "icon": "tischkreissaegeIcon"
+        }, {
+            "name": qsTr("Lasercutter"),
+            "code": "lasercutter",
+            "icon": "lasercutterIcon"
+        }, {
+            "name": qsTr("Bandsäge"),
+            "code": "bandsaege",
+            "icon": "bandsaegeIcon"
+        }, {
+            "name": qsTr("Folienplotter"),
+            "code": "plotter",
+            "icon": "plotterIcon"
+        }, {
+            "name": qsTr("Heißdraht"),
+            "code": "heissdraht",
+            "icon": "heiszdraht"
+        },
+        {
+            "name": qsTr("Standbohrmaschine"),
+            "code": "standbohr",
+            "icon": "standbohrerIcon"
+        }, {
+            "name": qsTr("Plattenfräse"),
+            "code": "plattenfraese",
+            "code": "plattenfraeseIcon"
+        }]
 
-    property var machineType:
-    [
-        {
-            "name":qsTr("Tellerschleifer"),
-            "code":"tellerschl",
-            "icon":"tellerschleiferIcon"
-        },
-        {
-            "name":qsTr("Bandschleifer"),
-            "code":"bandschl",
-            "icon":"bandschleiferIcon"
-        },
-        {
-            "name":qsTr("Tischkreissäge"),
-            "code":"teller",
-            "icon":"tischkreissaegeIcon"
-        },
-        {
-            "name":qsTr("Lasercutter"),
-            "code":"lasercutter",
-            "icon":"lasercutterIcon"
-        },
-        {
-            "name":qsTr("Bandsäge"),
-            "code":"bandsaege",
-            "icon":"bandsaegeIcon"
-        },
-        {
-            "name":qsTr("Folienplotter"),
-            "code":"plotter",
-            "icon":"plotterIcon"
-        },
-        {
-            "name":qsTr("Heißdraht"),
-            "code":"heissdraht",
-            "icon":"heiszdraht"
-        },
+    property var roles: [{
+            "name": qsTr("Member"),
+            "code": "mem"
+        }, {
+            "name": qsTr("Mitarbeiter"),
+            "code": "empl"
+        }, {
+            "name": qsTr("Gast"),
+            "code": "ext"
+        }]
 
-        {
-            "name":qsTr("Standbohrmaschine"),
-            "code":"standbohr",
-            "icon":"standbohrerIcon"
-        },
-        {
-            "name":qsTr("Plattenfräse"),
-            "code":"plattenfraese",
-            "code":"plattenfraeseIcon"
-        }
-    ]
+    property var adminRoles: [{
+            "name": qsTr("Mitarbeiter"),
+            "code": "empl"
+        }, {
+            "name": qsTr("Sekretariat"),
+            "code": "mngmt"
+        }, {
+            "name": qsTr("Admin"),
+            "code": "admin"
+        }, {
+            "name": qsTr("Kassierer*in"),
+            "code": "cash"
+        }]
 
-
-    property var roles:
-    [
-        {
-            "name":qsTr("Member"),
-            "code":"mem"
-        },
-        {
-            "name":qsTr("Mitarbeiter"),
-            "code":"empl",
-        },
-        {
-            "name":qsTr("Gast"),
-            "code":"ext",
-        }
-    ]
-
-
-    property var adminRoles:
-    [
-        {
-            "name":qsTr("Mitarbeiter"),
-            "code":"empl",
-        },
-        {
-            "name":qsTr("Sekretariat"),
-            "code":"mngmt",
-        },
-        {
-            "name":qsTr("Admin"),
-            "code":"admin",
-        },
-        {
-            "name":qsTr("Kassierer*in"),
-            "code":"cash",
-        }
-    ]
-
-    function getLongStrings(map)
-    {
+    function getLongStrings(map) {
         return map.map((function (x) {
             return x.name
-          }))
+        }))
     }
 
-    function getIndexOf(map, code)
-    {
+    function getIndexOf(map, code) {
         var i = 0
         var result = -1
-        map.find(function(element)
-        {
-          if(element.code === code)
-          {
-              result = i
-          }
-          i = i+1;
+        map.find(function (element) {
+            if (element.code === code) {
+                result = i
+            }
+            i = i + 1
         })
         return result
     }
 
-    function getMachineIconSource(machine)
-    {
-        if(machine === null || machine === "" || machine === undefined)
+    function getMachineIconSource(machine) {
+        if (machine === null || machine === "" || machine === undefined)
             return ""
         var index = getIndexOf(machineType, machine)
         var value = machineType[index]
         return value.icon
     }
 
-    property var courses:
-    [
-        {
-            "name":qsTr("Produktdesign"),
-            "code":"pd"
-        },
-        {
-            "name":qsTr("Kommunikationsdesign"),
-            "code":"kd",
-        },
-        {
-            "name":qsTr("Kunsterziehung"),
-            "code":"ke",
-        },
-        {
-            "name":qsTr("Freie Kunst"),
-            "code":"fk",
-        },
-        {
-            "name":qsTr("Media Art And Design"),
-            "code":"mad",
-        },
-        {
-            "name":qsTr("Architektur"),
-            "code":"arch",
-        },
-        {
-            "name":qsTr("Promotion"),
-            "code":"pro",
-        },
-        {
-            "name":qsTr("Kuratieren"),
-            "code":"kur",
-        },
-        {
-            "name":qsTr("Museumspädagogik"),
-            "code":"mpaed",
-        },
-        {
-            "name":qsTr("Netzkultur"),
-            "code":"nk",
-        }
-    ]
+    property var courses: [{
+            "name": qsTr("Produktdesign"),
+            "code": "pd"
+        }, {
+            "name": qsTr("Kommunikationsdesign"),
+            "code": "kd"
+        }, {
+            "name": qsTr("Kunsterziehung"),
+            "code": "ke"
+        }, {
+            "name": qsTr("Freie Kunst"),
+            "code": "fk"
+        }, {
+            "name": qsTr("Media Art And Design"),
+            "code": "mad"
+        }, {
+            "name": qsTr("Architektur"),
+            "code": "arch"
+        }, {
+            "name": qsTr("Promotion"),
+            "code": "pro"
+        }, {
+            "name": qsTr("Kuratieren"),
+            "code": "kur"
+        }, {
+            "name": qsTr("Museumspädagogik"),
+            "code": "mpaed"
+        }, {
+            "name": qsTr("Netzkultur"),
+            "code": "nk"
+        }]
 
-    function getIcon(tag)
-    {
+    function getIcon(tag) {
         if (tag === "plotter")
             return ""
 
@@ -213,8 +167,7 @@ Item
         return ""
     }
 
-    function getImage(tag)
-    {
+    function getImage(tag) {
         if (tag === "plotter")
             return "qrc:/QuickLabControls/Assets/Pics/Schneidplotter_white.svg"
 
@@ -225,7 +178,7 @@ Item
             return "QuickLabControls/Assets/Pics/Laser_white.svg"
 
         if (tag === "handTool")
-             return "QuickLabControls/Assets/Pics/Flex_white.svg"
+            return "QuickLabControls/Assets/Pics/Flex_white.svg"
 
         return ""
     }

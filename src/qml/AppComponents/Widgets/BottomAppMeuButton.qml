@@ -3,43 +3,37 @@ import QtQuick.Layouts 1.3
 import QtQuick.Controls 2.4
 import UIControls 1.0
 
-Item
-{
+Item {
     id: docroot
     property string text
     property string icon
     property bool selected
 
-    signal clicked()
+    signal clicked
 
     Layout.fillHeight: true
     Layout.fillWidth: true
     height: 40
 
-    Column
-    {
+    Column {
         spacing: 6
         anchors.centerIn: parent
-        Icon
-        {
+        Icon {
 
             icon: docroot.icon
-            iconColor:docroot.selected ? Colors.highlightBlue : Colors.lightGrey
+            iconColor: docroot.selected ? Colors.highlightBlue : Colors.lightGrey
             anchors.horizontalCenter: parent.horizontalCenter
         }
 
-        TextLabel
-        {
+        TextLabel {
             fontSize: Fonts.verySmallControlFontSize
             text: docroot.text
         }
     }
 
-    MouseArea
-    {
+    MouseArea {
         anchors.fill: parent
-        onClicked:
-        {
+        onClicked: {
             docroot.clicked()
         }
     }

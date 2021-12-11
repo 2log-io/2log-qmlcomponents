@@ -1,3 +1,5 @@
+
+
 /*   2log.io
  *   Copyright (C) 2021 - 2log.io | mail@2log.io,  mail@friedemann-metzger.de
  *
@@ -14,8 +16,6 @@
  *   You should have received a copy of the GNU Affero General Public License
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
-
 import QtQuick 2.5
 import QtQuick.Layouts 1.12
 import QtQuick.Controls 2.0
@@ -24,83 +24,83 @@ import CloudAccess 1.0
 import AppComponents 1.0
 import "../../Dialogs/DeviceProvisioningDialog"
 
-Container
-{
+Container {
     id: docroot
 
     property string deviceID
     property string shortID
     property bool waitingForDevice
 
-    function callback(data)
-    {
-        if(data.errCode >= 0)
-        {
-            stack.replace(dotOverview, StackView.PushTransition);
-        }
-        else
-        {
+    function callback(data) {
+        if (data.errCode >= 0) {
+            stack.replace(dotOverview, StackView.PushTransition)
+        } else {
             var errorMsg = qsTr("Unbekannter Fehler")
-            switch(data.errCode)
-            {
-                 case -4: stack.push(alreadyInUse); return;
-                case -10: errorMsg = qsTr("Unbekannte Controller-ID"); break;
-                case -11: errorMsg = qsTr("Kein Gerät gefunden"); break;
-                case -12: errorMsg = qsTr("Falscher Gerätetyp"); break;
+            switch (data.errCode) {
+            case -4:
+                stack.push(alreadyInUse)
+                return
+            case -10:
+                errorMsg = qsTr("Unbekannte Controller-ID")
+                break
+            case -11:
+                errorMsg = qsTr("Kein Gerät gefunden")
+                break
+            case -12:
+                errorMsg = qsTr("Falscher Gerätetyp")
+                break
             }
 
             stack.currentItem.showError(errorMsg)
         }
     }
 
-    function provisioningCallback(data)
-    {
-        if(data.errCode < 0)
-        {
-            stack.replace(dotOverview,StackView.PushTransition);
+    function provisioningCallback(data) {
+        if (data.errCode < 0) {
+            stack.replace(dotOverview, StackView.PushTransition)
             var errorMsg = qsTr("Unbekannter Fehler")
-            switch(data.errCode)
-            {
-                case -4: stack.push(alreadyInUse); return;
-                case -10: errorMsg = qsTr("Unbekannte Controller-ID"); break;
-                case -11: errorMsg = qsTr("Kein Gerät gefunden"); break;
-                case -12: errorMsg = qsTr("Falscher Gerätetyp"); break;
+            switch (data.errCode) {
+            case -4:
+                stack.push(alreadyInUse)
+                return
+            case -10:
+                errorMsg = qsTr("Unbekannte Controller-ID")
+                break
+            case -11:
+                errorMsg = qsTr("Kein Gerät gefunden")
+                break
+            case -12:
+                errorMsg = qsTr("Falscher Gerätetyp")
+                break
             }
 
             stack.currentItem.showError(errorMsg)
-        }
-        else
-        {
+        } else {
             stack.push(waitingForDevice)
             docroot.waitingForDevice = true
         }
     }
 
-    headline:qsTr("Switch")
+    headline: qsTr("Switch")
     property DeviceModel deviceModel
 
-    states:
-    [
-        State
-        {
+    states: [
+        State {
             name: "na"
             when: !deviceModel.available
 
-            PropertyChanges
-            {
+            PropertyChanges {
                 target: infoBubble
                 icon: Icons.question
                 infoColor: Colors.white
             }
         },
 
-        State
-        {
+        State {
             name: "off"
             when: !deviceModel.deviceOnline
 
-            PropertyChanges
-            {
+            PropertyChanges {
                 target: infoBubble
                 icon: Icons.offline
                 infoColor: Colors.warnRed
@@ -108,76 +108,66 @@ Container
         }
     ]
 
-
-    header:
-    Row
-    {
+    header: Row {
         anchors.right: parent.right
         anchors.verticalCenter: parent.verticalCenter
         spacing: docroot.spacing
-        ContainerButton
-        {
+        ContainerButton {
             id: disconnectBtn
 
-            anchors.verticalCenter:parent.verticalCenter
+            anchors.verticalCenter: parent.verticalCenter
             icon: Icons.disconnect
-            enabled: stack.currentItem.stackID === "info" && deviceModel.available && deviceModel.deviceOnline
-            text:qsTr("Trennen")
+            enabled: stack.currentItem.stackID === "info"
+                     && deviceModel.available && deviceModel.deviceOnline
+            text: qsTr("Trennen")
 
-
-            ServiceModel
-            {
+            ServiceModel {
                 id: machineControlService
                 service: "devices"
             }
 
-            onClicked:
-            {
-                machineControlService.call("unhookWithMapping",{"mapping":deviceModel.resource}, function(data){})
+            onClicked: {
+                machineControlService.call("unhookWithMapping", {
+                                               "mapping": deviceModel.resource
+                                           }, function (data) {})
             }
         }
 
-        ContainerButton
-        {
+        ContainerButton {
             id: setupbtn
-            anchors.verticalCenter:parent.verticalCenter
+            anchors.verticalCenter: parent.verticalCenter
             icon: Icons.swap
-            enabled: stack.currentItem.stackID === "info" && deviceModel.available
-            text:qsTr("Tauschen")
+            enabled: stack.currentItem.stackID === "info"
+                     && deviceModel.available
+            text: qsTr("Tauschen")
 
-            onClicked:
-            {
+            onClicked: {
                 stack.push(isAlreadyHooked)
             }
         }
     }
 
-    RowLayout
-    {
+    RowLayout {
         width: parent.width
         spacing: docroot.spacing
 
-        Item
-        {
+        Item {
             Layout.fillWidth: true
             Layout.fillHeight: true
             Layout.maximumWidth: parent.width / 3
             height: 150
 
-            Image
-            {
+            Image {
                 width: parent.width
                 height: parent.height
                 source: "qrc:/switch_line_svg"
                 fillMode: Image.PreserveAspectFit
 
-                Item
-                {
+                Item {
                     width: parent.paintedWidth
                     height: parent.paintedHeight
                     anchors.centerIn: parent
-                    InfoBubble
-                    {
+                    InfoBubble {
                         id: infoBubble
                         size: 32
                         x: parent.width * 0.6
@@ -188,165 +178,156 @@ Container
             }
         }
 
-        StackView
-        {
+        StackView {
             id: stack
             initialItem: dotOverview
             Layout.fillWidth: true
             Layout.fillHeight: true
             height: 150
-
             clip: true
 
-            Component
-            {
+            Component {
                 id: setup
-                ChangeDevicePage
-                {
+                ChangeDevicePage {
                     property string stackID: "setup"
                     onBack: stack.pop()
-                    onConfirm:
-                    {
+                    onConfirm: {
                         docroot.shortID = shortID
-                        var data = {"deviceID": docroot.deviceID, "shortID":shortID, "force":false}
-                        machineControlService.call("hookSwitch", data, docroot.callback )
+                        var data = {
+                            "deviceID": docroot.deviceID,
+                            "shortID": shortID,
+                            "force": false
+                        }
+                        machineControlService.call("hookSwitch", data,
+                                                   docroot.callback)
                     }
 
-                    ServiceModel
-                    {
+                    ServiceModel {
                         id: machineControlService
                         service: "machineControl"
                     }
                 }
             }
 
-            Component
-            {
+            Component {
                 id: isAlreadyHooked
-                IsAlreadyHookedPage
-                {
+                IsAlreadyHookedPage {
                     onBack: stack.pop()
                     property string stackID: "isAlreadyHooked"
                     onYes: stack.push(setup)
-                    onNo:
-                    {
+                    onNo: {
 
                         provisioningPopup.open()
                     }
                 }
             }
 
-            Component
-            {
+            Component {
                 id: waitingForDevice
-                WaitingForDevicePage
-                {
-                    onTimeOut: stack.replace(waitingForDeviceTimeout,StackView.PushTransition);
+                WaitingForDevicePage {
+                    onTimeOut: stack.replace(waitingForDeviceTimeout,
+                                             StackView.PushTransition)
                     property string stackID: "waitingForDevice"
                 }
             }
 
-            Component
-            {
+            Component {
                 id: waitingForDeviceTimeout
-                TryAgainPage
-                {
+                TryAgainPage {
                     onBack: stack.pop()
-                    onTryAgain:provisioningPopup.open()
+                    onTryAgain: provisioningPopup.open()
                 }
             }
 
-            DeviceProvisioningPopup
-            {
+            DeviceProvisioningPopup {
                 id: provisioningPopup
                 targetSSID: "I'm a Switch"
-                ServiceModel
-                {
+                ServiceModel {
                     id: deviceService
                     service: "machineControl"
                 }
 
-                onProvisioningFinished:
-                {
-                    deviceService.call("prepareSwitchMappingWighUUID", {"deviceID": docroot.deviceID, "uuid":uuid}, docroot.provisioningCallback )
+                onProvisioningFinished: {
+                    deviceService.call("prepareSwitchMappingWighUUID", {
+                                           "deviceID": docroot.deviceID,
+                                           "uuid": uuid
+                                       }, docroot.provisioningCallback)
                 }
 
-                Connections
-                {
+                Connections {
                     target: deviceModel
-                    onDeviceOnlineChanged:
-                    if(deviceModel.deviceOnline && docroot.waitingForDevice)
-                    {
-                        stack.replace(dotOverview,StackView.PushTransition);
-                        docroot.waitingForDevice = false
-                    }
+                    onDeviceOnlineChanged: if (deviceModel.deviceOnline
+                                                   && docroot.waitingForDevice) {
+                                               stack.replace(
+                                                           dotOverview,
+                                                           StackView.PushTransition)
+                                               docroot.waitingForDevice = false
+                                           }
                 }
             }
-            Component
-            {
+            Component {
                 id: alreadyInUse
-                AlreadeInUsePage
-                {
+                AlreadeInUsePage {
                     onBack: stack.pop()
                     property string stackID: "alreadyInUse"
-                    onConfirm: machineControlService.call("hookSwitch", {"deviceID": docroot.deviceID, "shortID":docroot.shortID, "force":true}, docroot.callback )
-                    ServiceModel
-                    {
+                    onConfirm: machineControlService.call("hookSwitch", {
+                                                              "deviceID": docroot.deviceID,
+                                                              "shortID": docroot.shortID,
+                                                              "force": true
+                                                          }, docroot.callback)
+                    ServiceModel {
                         id: machineControlService
                         service: "machineControl"
                     }
                 }
-
             }
 
-            Component
-            {
+            Component {
                 id: dotOverview
 
-                StackLayout
-                {
+                StackLayout {
                     property string stackID: "info"
-                    currentIndex: deviceModel.available ?  0 : 1
-                    Item
-                    {
+                    currentIndex: deviceModel.available ? 0 : 1
+                    Item {
                         Layout.fillHeight: true
                         Layout.fillWidth: true
 
-                        Column
-                        {
+                        Column {
                             anchors.centerIn: parent
                             spacing: 10
 
-//                            Row
-//                            {
-//                                spacing: 20
-//                                TextLabel
-//                                {
-//                                    text: deviceModel.shortID
-//                                    Layout.fillWidth: true
-//                                    font.styleName: "Medium"
-//                                    font.family: Fonts.simplonMono
-//                                    fontSize: Fonts.bigDisplayFontSize
-//                                }
-//                            }
-
-                            DeviceInfoPage
-                            {
+                            //                            Row
+                            //                            {
+                            //                                spacing: 20
+                            //                                TextLabel
+                            //                                {
+                            //                                    text: deviceModel.shortID
+                            //                                    Layout.fillWidth: true
+                            //                                    font.styleName: "Medium"
+                            //                                    font.family: Fonts.simplonMono
+                            //                                    fontSize: Fonts.bigDisplayFontSize
+                            //                                }
+                            //                            }
+                            DeviceInfoPage {
                                 deviceModel: docroot.deviceModel
                             }
-                            Row
-                            {
+                            Row {
                                 spacing: 20
-                                ToggleSwitch
-                                {
+                                ToggleSwitch {
                                     enabled: deviceModel.deviceOnline
-                                     checked: docroot.deviceModel && docroot.deviceModel.getProperty("on").value !== undefined ? docroot.deviceModel.getProperty("on").value : false
+                                    checked: docroot.deviceModel
+                                             && docroot.deviceModel.getProperty(
+                                                 "on").value
+                                             !== undefined ? docroot.deviceModel.getProperty(
+                                                                 "on").value : false
                                     checkable: false
-                                    onClicked:  docroot.deviceModel.getProperty("on").value = !docroot.deviceModel.getProperty("on").value
+                                    onClicked: docroot.deviceModel.getProperty(
+                                                   "on").value = !docroot.deviceModel.getProperty(
+                                                   "on").value
                                 }
-                                TextLabel
-                                {
-                                    text: docroot.deviceModel.getProperty("on").value ? "Ein" : "Aus"
+                                TextLabel {
+                                    text: docroot.deviceModel.getProperty(
+                                              "on").value ? "Ein" : "Aus"
                                     fontSize: Fonts.controlFontSize
                                     anchors.verticalCenter: parent.verticalCenter
                                 }
@@ -354,24 +335,22 @@ Container
                         }
                     }
 
-                    Item
-                    {
+                    Item {
                         Layout.fillHeight: true
                         Layout.fillWidth: true
 
-                        Column
-                        {
+                        Column {
                             anchors.right: parent.right
-                            anchors.left:parent.left
+                            anchors.left: parent.left
                             anchors.verticalCenter: parent.verticalCenter
                             anchors.margins: 30
                             width: parent.width
                             spacing: 20
 
-                            TextLabel
-                            {
+                            TextLabel {
                                 width: parent.width
-                                text: qsTr("Aktuell ist kein Switch zugewiesen.")
+                                text: qsTr(
+                                          "Aktuell ist kein Switch zugewiesen.")
                                 wrapMode: Text.Wrap
 
                                 Layout.fillWidth: true
@@ -380,17 +359,15 @@ Container
                             }
                         }
 
-                        StandardButton
-                        {
-                            text:qsTr("Jetzt einrichten")
+                        StandardButton {
+                            text: qsTr("Jetzt einrichten")
                             anchors.bottom: parent.bottom
                             anchors.right: parent.right
-                            transparent:true
+                            transparent: true
                             icon: Icons.rightAngle
                             iconAlignment: Qt.AlignRight
 
-                            onClicked:
-                            {
+                            onClicked: {
                                 stack.push(isAlreadyHooked)
                             }
                         }
@@ -400,4 +377,3 @@ Container
         }
     }
 }
-

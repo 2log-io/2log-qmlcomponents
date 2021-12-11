@@ -1,3 +1,5 @@
+
+
 /*   2log.io
  *   Copyright (C) 2021 - 2log.io | mail@2log.io,  mail@friedemann-metzger.de
  *
@@ -14,87 +16,67 @@
  *   You should have received a copy of the GNU Affero General Public License
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
-
 import QtQuick 2.5
 import QtQuick.Layouts 1.3
 import QtQuick.Controls 2.0
 import UIControls 1.0
 import CloudAccess 1.0
 
-//Item
-//{
-//    height: layout.height
-//    width: parent.width
+ColumnLayout {
+    id: docroot
+    signal cancel
+    property bool active: (StackView.status == StackView.Active)
 
-    ColumnLayout
-    {
-        id: docroot
-        signal cancel()
-        property bool active: (StackView.status == StackView.Active)
+    spacing: 10
 
-        spacing: 10
+    Item {
 
-
-        Item
-        {
-
-            Layout.fillHeight: true
-            Layout.fillWidth: true
-        }
-
-        TextField
-        {
-            id: id
-            width: parent.width
-
-            placeholderText: qsTr("Login")
-            onAccepted: docroot.login(username.text, password.text)
-            icon: Icons.user
-            enabled: Connection.state !== Connection.STATE_Disconnected
-        }
-
-
-        StandardButton
-        {
-            width: parent.width
-            text: qsTr("Passwort Zurücksetzen")
-            onClicked:
-            {
-                var object =
-                {
-                    "userID": id.text
-                }
-                labService.call("resetPassword", object, function(data){docroot.cancel()})
-            }
-
-        }
-
-        Item
-        {
-            Layout.fillHeight: true
-            Layout.fillWidth: true
-        }
-
-        StandardButton
-        {
-            transparent: true
-            icon: Icons.leftAngle
-            text: qsTr("Abbrechen")
-            onClicked: docroot.cancel()
-            opacity: docroot.active ? 1 : 0
-
-            Behavior on opacity
-            {
-                NumberAnimation{ }
-            }
-        }
-
-        ServiceModel
-        {
-            id: labService
-            service: "lab"
-        }
-
+        Layout.fillHeight: true
+        Layout.fillWidth: true
     }
-//}
+
+    TextField {
+        id: id
+        width: parent.width
+
+        placeholderText: qsTr("Login")
+        onAccepted: docroot.login(username.text, password.text)
+        icon: Icons.user
+        enabled: Connection.state !== Connection.STATE_Disconnected
+    }
+
+    StandardButton {
+        width: parent.width
+        text: qsTr("Passwort Zurücksetzen")
+        onClicked: {
+            var object = {
+                "userID": id.text
+            }
+            labService.call("resetPassword", object, function (data) {
+                docroot.cancel()
+            })
+        }
+    }
+
+    Item {
+        Layout.fillHeight: true
+        Layout.fillWidth: true
+    }
+
+    StandardButton {
+        transparent: true
+        icon: Icons.leftAngle
+        text: qsTr("Abbrechen")
+        onClicked: docroot.cancel()
+        opacity: docroot.active ? 1 : 0
+
+        Behavior on opacity {
+            NumberAnimation {}
+        }
+    }
+
+    ServiceModel {
+        id: labService
+        service: "lab"
+    }
+}

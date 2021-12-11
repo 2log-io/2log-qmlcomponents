@@ -1,3 +1,5 @@
+
+
 /*   2log.io
  *   Copyright (C) 2021 - 2log.io | mail@2log.io,  mail@friedemann-metzger.de
  *
@@ -14,15 +16,12 @@
  *   You should have received a copy of the GNU Affero General Public License
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
-
 import QtQuick 2.5
 import QtQuick.Controls 2.0
 import QtQuick.Layouts 1.12
 import UIControls 1.0
 
-BaseValueBox
-{
+BaseValueBox {
     id: docroot
 
     label: qsTr("Aktive Nutzer pro Tag")
@@ -33,31 +32,27 @@ BaseValueBox
     width: parent.width > 850 ? (parent.width - 20) / 2 : parent.width
     height: 260
 
-    Barchart
-    {
+    Barchart {
         id: bar
-        anchors.fill:parent
+        anchors.fill: parent
         anchors.margins: 20
         anchors.topMargin: 40
     }
 
-    Column
-    {
+    Column {
         anchors.centerIn: parent
-        visible:model === undefined || model.length === 0
+        visible: model === undefined || model.length === 0
         spacing: 5
-        TextLabel
-        {
+        TextLabel {
             text: qsTr("Keine Daten")
-            anchors.horizontalCenter:   parent.horizontalCenter
+            anchors.horizontalCenter: parent.horizontalCenter
             fontSize: Fonts.bigDisplayFontSize
             opacity: .2
         }
 
-        TextLabel
-        {
+        TextLabel {
             text: qsTr("im ausgewählten Zeitfenster")
-            anchors.horizontalCenter:  parent.horizontalCenter
+            anchors.horizontalCenter: parent.horizontalCenter
             fontSize: Fonts.headerFontSze
             opacity: .2
         }

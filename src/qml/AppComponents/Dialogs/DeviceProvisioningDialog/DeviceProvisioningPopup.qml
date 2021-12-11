@@ -1,3 +1,5 @@
+
+
 /*   2log.io
  *   Copyright (C) 2021 - 2log.io | mail@2log.io,  mail@friedemann-metzger.de
  *
@@ -14,8 +16,6 @@
  *   You should have received a copy of the GNU Affero General Public License
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
-
 import QtQuick 2.5
 import QtQuick.Layouts 1.12
 import QtQuick.Controls 2.4
@@ -24,8 +24,7 @@ import CloudAccess 1.0
 import AppComponents 1.0
 import DeviceProvisioning 1.0
 
-Popup
-{
+Popup {
     id: docroot
     anchors.centerIn: Overlay.overlay
     width: root.width
@@ -37,16 +36,15 @@ Popup
     property string targetSSID
     property bool itsMe: false
 
-
-    Connections
-    {
+    Connections {
         target: Connection
-        function onStateChanged()
-        {
+        function onStateChanged() {
             // when all is done
-            if(docroot.itsMe && ProvisioningManager.state == ProvisioningManager.PROVISIONING_CONNECTED_TO_HOME_WIFI && Connection.state == Connection.STATE_Authenticated && root.provisioning)
-            {
-                if(ProvisioningManager.errorCode == ProvisioningManager.ERR_PROVISIONING_NO_ERROR)
+            if (docroot.itsMe && ProvisioningManager.state
+                    == ProvisioningManager.PROVISIONING_CONNECTED_TO_HOME_WIFI
+                    && Connection.state == Connection.STATE_Authenticated
+                    && root.provisioning) {
+                if (ProvisioningManager.errorCode == ProvisioningManager.ERR_PROVISIONING_NO_ERROR)
                     docroot.provisioningFinished(ProvisioningManager.uuid)
 
                 docroot.close()
@@ -56,91 +54,72 @@ Popup
         }
     }
 
-    Connections
-    {
+    Connections {
         target: ProvisioningManager
-        function onStateChanged()
-        {
-           if(ProvisioningManager.state === ProvisioningManager.PROVISIONING_CONNECTED_TO_HOME_WIFI)
-               timer.start()
+        function onStateChanged() {
+            if (ProvisioningManager.state
+                    === ProvisioningManager.PROVISIONING_CONNECTED_TO_HOME_WIFI)
+                timer.start()
         }
     }
 
-    Timer
-    {
+    Timer {
         id: timer
         interval: 3000
-        running:false
+        running: false
         repeat: false
-        onTriggered:
-        {
+        onTriggered: {
             Connection.disconnectServer()
             Connection.reconnectServer()
         }
     }
 
-    onClosed:
-    {
+    onClosed: {
         stack.replace(stack.initialItem)
     }
 
-    enter:
-    Transition
-    {
-        PropertyAnimation
-        {
+    enter: Transition {
+        PropertyAnimation {
             property: "opacity"
             from: .3
             to: 1
             duration: 500
             easing.type: Easing.OutCurve
         }
-
     }
 
-    background: Item{}
-    Overlay.modal:
-    Rectangle
-    {
+    background: Item {}
+    Overlay.modal: Rectangle {
         color: Colors.backgroundDarkBlue
     }
 
-
-    Item
-    {
+    Item {
         width: parent.width
         height: parent.height
-        Stack
-        {
+        Stack {
             id: stack
-            initialItem:
-            {
-                if(isMobile)
-                    docroot.targetSSID.toLowerCase().includes("dot")  ? prepareDot : prepareSwitch
+            initialItem: {
+                if (isMobile)
+                    docroot.targetSSID.toLowerCase().includes(
+                                "dot") ? prepareDot : prepareSwitch
                 else
                     useApp
-
             }
             anchors.fill: parent
         }
     }
 
-    Component
-    {
+    Component {
         id: useApp
-        ProceedWithAppPage
-        {
+        ProceedWithAppPage {
             onCancel: docroot.close()
         }
     }
 
-    Component
-    {
+    Component {
         id: prepareSwitch
-        PrepareSwitchPage
-        {
-            onNext:
-            {
+        PrepareSwitchPage {
+            onNext: {
                 docroot.itsMe = true
                 stack.push(password)
             }
@@ -148,13 +127,10 @@ Popup
         }
     }
 
-    Component
-    {
+    Component {
         id: prepareDot
-        PrepareDotPage
-        {
-            onNext:
-            {
+        PrepareDotPage {
+            onNext: {
                 docroot.itsMe = true
                 stack.push(password)
             }
@@ -162,15 +138,11 @@ Popup
         }
     }
 
-
-    Component
-    {
+    Component {
         id: password
 
-        EnterWifiPasswordPage
-        {
-            onNext:
-            {
+        EnterWifiPasswordPage {
+            onNext: {
                 root.provisioning = true
                 stack.push(provisioning)
                 Connection.disconnectServer()
@@ -182,15 +154,12 @@ Popup
         }
     }
 
-
-    Component
-    {
+    Component {
         id: provisioning
-        ProvisioningPage
-        {
+        ProvisioningPage {
             active: (StackView.status === StackView.Active)
             visible: StackView.status !== StackView.Inactive
-            onCancel:ProvisioningManager.cancel()
+            onCancel: ProvisioningManager.cancel()
         }
     }
 }

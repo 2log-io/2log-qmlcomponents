@@ -1,3 +1,5 @@
+
+
 /*   2log.io
  *   Copyright (C) 2021 - 2log.io | mail@2log.io,  mail@friedemann-metzger.de
  *
@@ -14,92 +16,85 @@
  *   You should have received a copy of the GNU Affero General Public License
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
-
 import QtQuick 2.5
 import QtQuick.Layouts 1.3
 import AppComponents 1.0
 import UIControls 1.0
 
-BaseItem
-{
+BaseItem {
     id: docroot
     height: 154
     width: 150
 
     property string icon: Icons.group
     property bool hasGroupPermission
-    signal clicked()
+    signal clicked
     signal dateSelected(date date)
     property int permissionState: 0
     property date expires
     property string deviceName
-    signal secondaryActionClicked()
+    signal secondaryActionClicked
     property bool isTouch
     property string iconImage
     signal setLevel(int level)
     borderOpacity: .6
 
-    MouseArea
-    {
+    MouseArea {
         id: mouse
         anchors.fill: parent
         hoverEnabled: true
         onClicked: docroot.clicked()
     }
 
-    Row
-    {
+    Row {
         id: buttonRow
         anchors.horizontalCenter: parent.horizontalCenter
         spacing: -1
         anchors.bottom: parent.bottom
         anchors.margins: 10
 
-        RadioGroupButton
-        {
+        RadioGroupButton {
             id: radioLevel2
             alignment: Qt.AlignLeft
             iconChar: Icons.forbidden
             iconCheckedColor: Colors.warnRed
             onClicked: docroot.setLevel(2)
-            toolTipText: permissionState == 2 ? qsTr("Zugriff immer verboten") : qsTr("Zugriff immer verbieten")
+            toolTipText: permissionState == 2 ? qsTr("Zugriff immer verboten") : qsTr(
+                                                    "Zugriff immer verbieten")
         }
 
-        RadioGroupButton
-        {
+        RadioGroupButton {
             id: radioLevel0
             alignment: Qt.AlignCenter
             autoExclusive: true
-            iconChar: docroot.hasGroupPermission ? Icons.group :Icons.minus
+            iconChar: docroot.hasGroupPermission ? Icons.group : Icons.minus
             iconCheckedColor: docroot.hasGroupPermission ? Colors.highlightBlue : Colors.white
             onClicked: docroot.setLevel(0)
-            toolTipText: permissionState == 0 ? qsTr("Von Gruppenberechtigung abhängig") : qsTr("Von Gruppenberechtigung abhängig machen")
+            toolTipText: permissionState
+                         == 0 ? qsTr("Von Gruppenberechtigung abhängig") : qsTr(
+                                    "Von Gruppenberechtigung abhängig machen")
         }
 
-        RadioGroupButton
-        {
+        RadioGroupButton {
             id: radioLevel1
             alignment: Qt.AlignRight
             autoExclusive: true
             iconChar: Icons.check
             iconCheckedColor: Colors.highlightBlue
             onClicked: docroot.setLevel(1)
-            toolTipText: permissionState == 1 ? qsTr("Zugriff erlaubt") : qsTr("Zugriff erlauben")
+            toolTipText: permissionState == 1 ? qsTr("Zugriff erlaubt") : qsTr(
+                                                    "Zugriff erlauben")
         }
     }
 
-
-    Item
-    {
+    Item {
         width: 40
         height: 40
         anchors.centerIn: parent
         anchors.verticalCenterOffset: -10
         id: iconFrame
 
-        Icon
-        {
+        Icon {
             id: icon
             opacity: docroot.iconImage == "" ? .5 : 0
             anchors.centerIn: parent
@@ -108,51 +103,41 @@ BaseItem
             iconColor: Colors.white
         }
 
-        Image
-        {
+        Image {
             id: image
             anchors.centerIn: parent
             sourceSize.width: 40
             sourceSize.height: 40
             width: 40
             height: 40
-            source:docroot.iconImage == "" ? "": "qrc:/"+docroot.iconImage
+            source: docroot.iconImage == "" ? "" : "qrc:/" + docroot.iconImage
         }
-
     }
-    Item
-    {
+    Item {
         height: 2
         width: iconFrame.width
         anchors.centerIn: iconFrame
         rotation: -45
 
-
-        Rectangle
-        {
+        Rectangle {
             id: balken
             color: Colors.warnRed
             width: 0
             height: parent.height
-            Shadow
-            {
+            Shadow {
                 opacity: .1
             }
         }
-
     }
 
-
-    Item
-    {
+    Item {
         height: 40
         width: parent.width
         anchors.top: parent.top
         anchors.margins: 10
 
-        TextLabel
-        {
-            text:docroot.deviceName
+        TextLabel {
+            text: docroot.deviceName
             fontSize: Fonts.controlFontSize
             width: parent.width
             horizontalAlignment: Text.AlignHCenter
@@ -160,206 +145,167 @@ BaseItem
         }
     }
 
-    TextLabel
-    {
+    TextLabel {
         id: expiresLabel
 
         property string dateString: Qt.formatDate(docroot.expires, "dd.MM.yy")
         anchors.bottom: buttonRow.top
         anchors.margins: 6
         opacity: dateString !== ""
-        text:qsTr("bis %1").arg(dateString)
+        text: qsTr("bis %1").arg(dateString)
         fontSize: Fonts.smallControlFontSize
         color: Colors.grey
         anchors.horizontalCenter: parent.horizontalCenter
 
-        Rectangle
-        {
+        Rectangle {
             id: dateRect
             anchors.fill: parent
             anchors.margins: -2
             anchors.rightMargin: -4
-            anchors.leftMargin:  -4
+            anchors.leftMargin: -4
             radius: 3
             opacity: dateMouseArea.containsMouse || dateFlyout.opened ? .1 : 0
 
-
-            MouseArea
-            {
+            MouseArea {
                 id: dateMouseArea
                 anchors.fill: parent
                 hoverEnabled: true
                 enabled: expiresLabel.opacity === 1
-                onClicked:dateFlyout.open()
+                onClicked: dateFlyout.open()
             }
 
-            FlyoutBox
-            {
+            FlyoutBox {
                 id: dateFlyout
                 parent: dateRect
 
-                Loader
-                {
+                Loader {
                     active: dateFlyout.opened
                     width: 250
                     height: 250
-                    sourceComponent:
-                    CalendarWidget
-                    {
-                        anchors.fill:parent
+                    sourceComponent: CalendarWidget {
+                        anchors.fill: parent
                         selectedDate: docroot.expires
                         onClicked: docroot.dateSelected(date)
-                   }
+                    }
                 }
             }
         }
     }
 
-    states:
-    [
-        State
-        {
-            name:"active"
+    states: [
+        State {
+            name: "active"
             when: docroot.permissionState === 1
 
-            PropertyChanges
-            {
-                target:radioLevel1
+            PropertyChanges {
+                target: radioLevel1
                 checked: true
             }
 
-
-            PropertyChanges
-            {
-                target:docroot
-                borderColor:Colors.highlightBlue
-           //     borderOpacity: 1
+            PropertyChanges {
+                target: docroot
+                borderColor: Colors.highlightBlue
+                //     borderOpacity: 1
             }
         },
-        State
-        {
-            name:"forbidden"
+        State {
+            name: "forbidden"
             when: docroot.permissionState === 2
 
-            PropertyChanges
-            {
+            PropertyChanges {
                 target: expiresLabel
                 opacity: 1
             }
 
-            PropertyChanges
-            {
-                target:radioLevel2
+            PropertyChanges {
+                target: radioLevel2
                 checked: true
             }
 
-            PropertyChanges
-            {
-                target:docroot
-                borderColor:Colors.warnRed
+            PropertyChanges {
+                target: docroot
+                borderColor: Colors.warnRed
                 backgroundOpacity: 0
-            //    borderOpacity: 1
+                //    borderOpacity: 1
             }
 
-            PropertyChanges
-            {
-                target:balken
+            PropertyChanges {
+                target: balken
                 width: balken.parent.width
             }
 
-            PropertyChanges
-            {
-                target:iconFrame
+            PropertyChanges {
+                target: iconFrame
                 opacity: .5
             }
         },
-        State
-        {
-            name:"noneButGroup"
+        State {
+            name: "noneButGroup"
             when: docroot.permissionState === 0 && docroot.hasGroupPermission
 
-            PropertyChanges
-            {
+            PropertyChanges {
                 target: expiresLabel
                 opacity: 0
             }
 
-            PropertyChanges
-            {
-                target:radioLevel0
+            PropertyChanges {
+                target: radioLevel0
                 checked: true
             }
 
-            PropertyChanges
-            {
-                target:docroot
-                borderColor:Colors.highlightBlue
+            PropertyChanges {
+                target: docroot
+                borderColor: Colors.highlightBlue
             }
-
-
         },
-        State
-        {
-            name:"none"
+        State {
+            name: "none"
             when: docroot.permissionState === 0 && !docroot.hasGroupPermission
 
-            PropertyChanges
-            {
+            PropertyChanges {
                 target: expiresLabel
                 opacity: 0
             }
 
-            PropertyChanges
-            {
-                target:radioLevel0
+            PropertyChanges {
+                target: radioLevel0
                 checked: true
             }
 
-            PropertyChanges
-            {
-                target:docroot
-                borderColor:Colors.warnRed
+            PropertyChanges {
+                target: docroot
+                borderColor: Colors.warnRed
                 backgroundOpacity: 0
             }
 
-            PropertyChanges
-            {
-                target:balken
+            PropertyChanges {
+                target: balken
                 width: balken.parent.width
             }
 
-            PropertyChanges
-            {
-                target:iconFrame
+            PropertyChanges {
+                target: iconFrame
                 opacity: .5
             }
-
         }
     ]
 
-    transitions:
-    [
+    transitions: [
         Transition {
 
-            PropertyAction
-            {
-                property:"visible"
+            PropertyAction {
+                property: "visible"
             }
 
-
-//            ColorAnimation
-//            {
-//                target:docroot
-//               property: "borderColor"
-//            }
-
-
-            PropertyAnimation
-            {
+            //            ColorAnimation
+            //            {
+            //                target:docroot
+            //               property: "borderColor"
+            //            }
+            PropertyAnimation {
                 properties: "color,opacity, borderColor, width"
                 easing.type: Easing.OutQuad
             }
         }
-
     ]
 }

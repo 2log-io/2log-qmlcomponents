@@ -1,3 +1,5 @@
+
+
 /*   2log.io
  *   Copyright (C) 2021 - 2log.io | mail@2log.io,  mail@friedemann-metzger.de
  *
@@ -14,37 +16,31 @@
  *   You should have received a copy of the GNU Affero General Public License
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
-
 import QtQuick 2.5
 import UIControls 1.0
 
-Item
-{
+Item {
     id: docroot
     height: rep.contHeight + 20
-    width:rep.count * 50  + offset
+    width: rep.count * 50 + offset
     property int lableAngle: -50
     property color lineColor
     property int offset: 0.839 * height // tan(90 + lableAngle) * height
 
-    Row
-    {
+    Row {
         id: row
         height: 100
         anchors.bottom: parent.bottom
         anchors.bottomMargin: 6
         x: -15
 
-        Item
-        {
+        Item {
             width: 50
             height: 40
             rotation: docroot.lableAngle
             anchors.bottom: parent.bottom
 
-            Rectangle
-            {
+            Rectangle {
                 width: rep.totalHeight
                 height: 1
                 color: docroot.lineColor
@@ -53,48 +49,42 @@ Item
             }
         }
 
-
-        Repeater
-        {
+        Repeater {
             id: rep
             model: deviceModel
             property int contHeight
             property int totalHeight
-            function checkHeight()
-            {
-                for(var i = 0; i < count; i++)
-                {
-                    if(rep.itemAt(i) !== null)
-                    {
-                        rep.contHeight = Math.max(rep.contHeight, rep.itemAt(i).itemHeight)
-                        rep.totalHeight = Math.max(rep.totalHeight, rep.itemAt(i).totalHeight)
+            function checkHeight() {
+                for (var i = 0; i < count; i++) {
+                    if (rep.itemAt(i) !== null) {
+                        rep.contHeight = Math.max(rep.contHeight,
+                                                  rep.itemAt(i).itemHeight)
+                        rep.totalHeight = Math.max(rep.totalHeight,
+                                                   rep.itemAt(i).totalHeight)
                     }
                 }
             }
 
             Component.onCompleted: checkHeight()
 
-            Item
-            {
+            Item {
                 id: rotWrapper
                 width: 50
                 height: 40
                 rotation: docroot.lableAngle
                 anchors.bottom: parent.bottom
-                property int itemHeight: label.width*Math.cos(docroot.lableAngle * Math.PI / 180 ) + 20
+                property int itemHeight: label.width * Math.cos(
+                                             docroot.lableAngle * Math.PI / 180) + 20
 
                 property int totalHeight: label.width + 20
 
-                //Rectangle{color:"red"; opacity: .2; anchors.fill: parent}
-                TextLabel
-                {
+                TextLabel {
                     id: label
                     text: _displayName !== undefined ? _displayName : ""
                     onWidthChanged: rep.checkHeight()
-                    fontSize:Fonts.controlFontSize
+                    fontSize: Fonts.controlFontSize
 
-                    Rectangle
-                    {
+                    Rectangle {
                         width: rep.totalHeight
                         height: 1
                         anchors.bottom: parent.bottom

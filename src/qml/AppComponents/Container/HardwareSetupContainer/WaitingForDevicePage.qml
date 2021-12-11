@@ -1,3 +1,5 @@
+
+
 /*   2log.io
  *   Copyright (C) 2021 - 2log.io | mail@2log.io,  mail@friedemann-metzger.de
  *
@@ -14,8 +16,6 @@
  *   You should have received a copy of the GNU Affero General Public License
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
-
 import QtQuick 2.5
 import UIControls 1.0
 import QtQuick.Layouts 1.12
@@ -23,42 +23,35 @@ import QtQuick.Controls 2.0
 import CloudAccess 1.0
 import AppComponents 1.0
 
-Item
-{
+Item {
     id: docroot
 
     property bool active: (StackView.status == StackView.Active)
-    signal timeOut()
+    signal timeOut
     property int timeoutInterval: 20000
 
-    width: parent  ? parent.width : 0
+    width: parent ? parent.width : 0
 
-
-    Column
-    {
+    Column {
         anchors.centerIn: parent
         anchors.verticalCenterOffset: 20
         width: parent.width
         spacing: 40
 
-        LoadingIndicator
-        {
+        LoadingIndicator {
             height: 80
             anchors.horizontalCenter: parent.horizontalCenter
         }
 
-        TextLabel
-        {
-            text:qsTr("Warte auf neues Device...")
+        TextLabel {
+            text: qsTr("Warte auf neues Device...")
             anchors.horizontalCenter: parent.horizontalCenter
         }
     }
 
-    Timer
-    {
-        interval:docroot.timeoutInterval
-        onTriggered:
-        {
+    Timer {
+        interval: docroot.timeoutInterval
+        onTriggered: {
             docroot.timeOut()
         }
         running: docroot.active

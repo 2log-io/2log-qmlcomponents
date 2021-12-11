@@ -1,3 +1,5 @@
+
+
 /*   2log.io
  *   Copyright (C) 2021 - 2log.io | mail@2log.io,  mail@friedemann-metzger.de
  *
@@ -14,8 +16,6 @@
  *   You should have received a copy of the GNU Affero General Public License
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
-
 import QtQuick 2.5
 import UIControls 1.0
 import QtQuick.Layouts 1.12
@@ -23,27 +23,22 @@ import QtQuick.Controls 2.0
 import CloudAccess 1.0
 import AppComponents 1.0
 
-Item
-{
+Item {
     id: docroot
 
     property bool active: (StackView.status == StackView.Active)
 
+    signal yes
+    signal no
+    signal back
 
-    signal yes()
-    signal no()
-    signal back()
+    width: parent ? parent.width : 0
 
-    width: parent  ? parent.width : 0
-
-    function showError(errorMsg)
-    {
+    function showError(errorMsg) {
         shortIDField.showError(errorMsg)
     }
 
-
-    Column
-    {
+    Column {
         anchors.verticalCenter: parent.verticalCenter
         anchors.verticalCenterOffset: -20
         anchors.left: parent.left
@@ -51,98 +46,81 @@ Item
         anchors.leftMargin: 12
         spacing: 20
 
-        TextLabel
-        {
+        TextLabel {
             width: parent.width
             wrapMode: Text.WordWrap
             verticalAlignment: Text.AlignVCenter
-            text:qsTr("Ist das Device bereits mit Ihrer 2log Instanz verbunden?")
+            text: qsTr("Ist das Device bereits mit Ihrer 2log Instanz verbunden?")
         }
 
-        Row
-        {
+        Row {
             spacing: 10
             anchors.horizontalCenter: parent.horizontalCenter
             visible: docroot.width <= 260
-            StandardButton
-            {
+            StandardButton {
                 icon: Icons.no
                 visible: opacity > 0
                 text: qsTr("Nein")
-                onClicked:
-                {
+                onClicked: {
                     docroot.no()
                 }
 
-                Behavior on opacity
-                {
-                    NumberAnimation{ }
+                Behavior on opacity {
+                    NumberAnimation {}
                 }
             }
 
-            StandardButton
-            {
-             //   transparent: true
+            StandardButton {
+                //   transparent: true
                 icon: Icons.yes
                 visible: opacity > 0
                 text: qsTr("Ja")
 
-                onClicked:
-                {
+                onClicked: {
                     docroot.yes()
                 }
 
-                Behavior on opacity
-                {
-                    NumberAnimation{ }
+                Behavior on opacity {
+                    NumberAnimation {}
                 }
             }
         }
     }
 
-
-    Row
-    {
+    Row {
         spacing: 10
         anchors.bottom: parent.bottom
         anchors.right: parent.right
         visible: docroot.width > 260
-        StandardButton
-        {
+        StandardButton {
             icon: Icons.no
             visible: opacity > 0
             text: qsTr("Nein")
-            onClicked:
-            {
+            onClicked: {
                 docroot.no()
             }
 
-            Behavior on opacity
-            {
-                NumberAnimation{ }
+            Behavior on opacity {
+                NumberAnimation {}
             }
         }
 
-        StandardButton
-        {
+        StandardButton {
             icon: Icons.yes
             visible: opacity > 0
             text: qsTr("Ja")
 
-            onClicked:
-            {
+            onClicked: {
                 docroot.yes()
             }
 
-            Behavior on opacity
-            {
-                NumberAnimation{ }
+            Behavior on opacity {
+                NumberAnimation {}
             }
         }
     }
 
-    StandardButton
-    {
+    StandardButton {
         transparent: true
         icon: Icons.leftAngle
         text: qsTr("Abbrechen")
@@ -150,12 +128,8 @@ Item
         onClicked: docroot.back()
         opacity: docroot.active ? 1 : 0
 
-        Behavior on opacity
-        {
-            NumberAnimation{ }
+        Behavior on opacity {
+            NumberAnimation {}
         }
     }
-
-
-
 }

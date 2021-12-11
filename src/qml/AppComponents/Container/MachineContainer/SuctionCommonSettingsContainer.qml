@@ -1,3 +1,5 @@
+
+
 /*   2log.io
  *   Copyright (C) 2021 - 2log.io | mail@2log.io,  mail@friedemann-metzger.de
  *
@@ -14,79 +16,64 @@
  *   You should have received a copy of the GNU Affero General Public License
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
-
 import QtQuick 2.5
 import UIControls 1.0
 import QtQuick.Layouts 1.1
 import CloudAccess 1.0
 import "../../Widgets"
 
-Container
-{
+Container {
     id: docroot
-    headline:qsTr("Allgemein")
-    header:ContainerButton
-    {
+    headline: qsTr("Allgemein")
+    header: ContainerButton {
         visible: form.edited
         anchors.right: parent.right
-        anchors.verticalCenter:parent.verticalCenter
+        anchors.verticalCenter: parent.verticalCenter
         icon: Icons.save
         text: "Speichern"
-        onClicked:
-        {
-            if(form.checkValid())
+        onClicked: {
+            if (form.checkValid())
                 pageWrapper.save()
         }
     }
 
-    Item
-    {
+    Item {
         id: pageWrapper
-        function save()
-        {
-            if(name.dirty)
+        function save() {
+            if (name.dirty)
                 model.getProperty("displayName").value = name.editedText
 
-            if(autoOff.dirty)
+            if (autoOff.dirty)
                 model.idleTimeTimeout = autoOff.editedText * 1000 * 60
         }
     }
 
     property DeviceModel model
 
-    Form
-    {
+    Form {
         id: form
         width: parent.width
-        FormTextItem
-        {
-            label:qsTr("Anzeigename")
+        FormTextItem {
+            label: qsTr("Anzeigename")
             id: name
-            Binding on text {value: model ? model.getProperty("displayName").value : ""}
+            Binding on text {
+                value: model ? model.getProperty("displayName").value : ""
+            }
             mandatory: true
         }
 
-        FormTextItem
-        {
-            label:qsTr("Typ")
+        FormTextItem {
+            label: qsTr("Typ")
             id: type
-            enabled:type.editedSelectedIndex === 0
-            Binding on text {value: model ? model.tag : ""}
+            enabled: type.editedSelectedIndex === 0
+            Binding on text {
+                value: model ? model.tag : ""
+            }
         }
     }
 
-    Item
-    {
+    Item {
         height: 10
         width: parent.width
     }
-
-//    Rectangle
-//    {
-//        width: parent.width
-//        height: 60
-//        color:"red"
-//    }
-
 }

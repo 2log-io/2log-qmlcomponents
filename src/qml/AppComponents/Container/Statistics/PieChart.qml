@@ -1,3 +1,5 @@
+
+
 /*   2log.io
  *   Copyright (C) 2021 - 2log.io | mail@2log.io,  mail@friedemann-metzger.de
  *
@@ -14,8 +16,6 @@
  *   You should have received a copy of the GNU Affero General Public License
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
-
 import QtQuick 2.5
 import QtQuick.Controls 2.0
 import QtQuick.Layouts 1.12
@@ -23,25 +23,21 @@ import UIControls 1.0
 import CloudAccess 1.0
 import AppComponents 1.0
 
-Item
-{
+Item {
     id: docroot
     property var model
     property int hoveredIndex: -1
     property int total: rep.sum
     signal itemHovered(int index)
 
-    Repeater
-    {
+    Repeater {
         id: rep
         model: docroot.model
 
         property int sum
-        onModelChanged:
-        {
+        onModelChanged: {
             var sum = 0
-            for(var i = 0; i < rep.count; i ++)
-            {
+            for (var i = 0; i < rep.count; i++) {
                 sum += rep.model[i].value
             }
 
@@ -50,25 +46,23 @@ Item
 
         property int nettoRot: 360 - (rep.count * 2)
 
-        Arc
-        {
-            property real angle:  rep.sum == 0 ? 0 : (modelData.value / rep.sum) * rep.nettoRot
+        Arc {
+            property real angle: rep.sum == 0 ? 0 : (modelData.value / rep.sum) * rep.nettoRot
             anchors.fill: parent
             color: docroot.hoveredIndex == index ? Colors.highlightBlue : Colors.white
             thickness: 20
-            startAngle: index > 0 ? rep.itemAt(index -1).endAngle + 2 : 0
-            endAngle: startAngle + ( angle < 1 ? 1 : angle)
-            Behavior on color {ColorAnimation {}}
-            property bool containsMouse: isIn(area.mouseX, area.mouseY) && area.containsMouse
-            onContainsMouseChanged:
-            {
-                if(containsMouse)
-                {
+            startAngle: index > 0 ? rep.itemAt(index - 1).endAngle + 2 : 0
+            endAngle: startAngle + (angle < 1 ? 1 : angle)
+            Behavior on color {
+                ColorAnimation {}
+            }
+            property bool containsMouse: isIn(area.mouseX,
+                                              area.mouseY) && area.containsMouse
+            onContainsMouseChanged: {
+                if (containsMouse) {
                     docroot.itemHovered(index)
                     docroot.hoveredIndex = index
-                }
-                else
-                {
+                } else {
                     docroot.itemHovered(-1)
                     docroot.hoveredIndex = -1
                 }
@@ -76,8 +70,7 @@ Item
         }
     }
 
-    MouseArea
-    {
+    MouseArea {
         id: area
         anchors.fill: parent
         hoverEnabled: true

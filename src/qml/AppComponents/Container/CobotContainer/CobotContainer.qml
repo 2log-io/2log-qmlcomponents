@@ -1,3 +1,5 @@
+
+
 /*   2log.io
  *   Copyright (C) 2021 - 2log.io | mail@2log.io,  mail@friedemann-metzger.de
  *
@@ -14,8 +16,6 @@
  *   You should have received a copy of the GNU Affero General Public License
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
-
 import QtQuick 2.5
 import QtQuick.Controls 2.0
 import QtQuick.Layouts 1.12
@@ -25,138 +25,115 @@ import AppComponents 1.0
 
 import "../../Widgets"
 
-Container
-{
+Container {
     id: contact
     headline: "Cobot"
-    property bool available:  stateInfo.CobotPluginAvailable !== undefined && stateInfo.CobotPluginAvailable
+    property bool available: stateInfo.CobotPluginAvailable !== undefined
+                             && stateInfo.CobotPluginAvailable
 
-    states:
-    [
-        State
-        {
+    states: [
+        State {
             when: stateInfo.ConnectionState === "NOT_CONNECTED"
             name: "notConnected"
 
-            StateChangeScript
-            {
+            StateChangeScript {
                 script: stack.replace(notConnected)
             }
 
-            PropertyChanges {target: disconnectBtn; visible: false}
-            PropertyChanges {target: connectBtn; visible: true}
+            PropertyChanges {
+                target: disconnectBtn
+                visible: false
+            }
+            PropertyChanges {
+                target: connectBtn
+                visible: true
+            }
         },
-        State
-        {
+        State {
             when: stateInfo.ConnectionState === "INIT_CONNECTION"
             name: "connecting"
-
         },
-        State
-        {
+        State {
             when: stateInfo.ConnectionState === "CONNECTED"
             name: "connected"
-            StateChangeScript
-            {
+            StateChangeScript {
                 script: stack.replace(connected)
             }
 
-            PropertyChanges {target: disconnectBtn; visible: true}
-            PropertyChanges {target: connectBtn; visible: false}
+            PropertyChanges {
+                target: disconnectBtn
+                visible: true
+            }
+            PropertyChanges {
+                target: connectBtn
+                visible: false
+            }
         }
-
     ]
 
-    header:
-    Row
-    {
+    header: Row {
         anchors.right: parent.right
         anchors.verticalCenter: parent.verticalCenter
         spacing: contact.spacing
 
-        ContainerButton
-        {
+        ContainerButton {
             id: disconnectBtn
-            anchors.verticalCenter:parent.verticalCenter
+            anchors.verticalCenter: parent.verticalCenter
             icon: Icons.disconnect
-            text:qsTr("Trennen")
+            text: qsTr("Trennen")
             onClicked: stack.push(stepToDisconnect)
         }
 
-        ContainerButton
-        {
+        ContainerButton {
             id: connectBtn
-            anchors.verticalCenter:parent.verticalCenter
+            anchors.verticalCenter: parent.verticalCenter
             icon: Icons.link
             text: "Verbinden"
             onClicked: stack.push(two)
         }
     }
 
-
-
-    StackView
-    {
+    StackView {
         id: stack
         clip: true
         width: parent.width
         height: 150
-
-
     }
 
-
-
-    Item
-    {
-        Component
-        {
+    Item {
+        Component {
             id: notConnected
 
-            NotConnected
-            {
-
-            }
+            NotConnected {}
         }
 
-        Component
-        {
+        Component {
             id: connected
 
-            Connected
-            {
+            Connected {
                 onNext: stack.push(two)
                 spaceURL: stateInfo.initialized ? stateInfo.SpaceURL : ""
             }
         }
 
-        Component
-        {
+        Component {
             id: two
-
-            StepToConnect
-            {
+            StepToConnect {
                 onCancel: stack.pop()
             }
         }
 
-        Component
-        {
+        Component {
             id: stepToDisconnect
-
-            StepToDisconnect
-            {
+            StepToDisconnect {
                 onConfirm: stack.pop()
-                onCancel:  stack.pop()
+                onCancel: stack.pop()
             }
         }
 
-        SynchronizedObjectModel
-        {
+        SynchronizedObjectModel {
             id: stateInfo
             resource: "cobot/state"
         }
-
     }
-
 }

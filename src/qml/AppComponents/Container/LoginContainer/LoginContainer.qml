@@ -1,3 +1,5 @@
+
+
 /*   2log.io
  *   Copyright (C) 2021 - 2log.io | mail@2log.io,  mail@friedemann-metzger.de
  *
@@ -14,8 +16,6 @@
  *   You should have received a copy of the GNU Affero General Public License
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
-
 import QtQuick 2.12
 import QtQuick.Layouts 1.3
 import UIControls 1.0
@@ -23,130 +23,144 @@ import QtQuick.Controls 2.0
 import CloudAccess 1.0
 import AppComponents 1.0
 
-Container
-{
+Container {
     id: docroot
 
     width: 300
-    headline:  qsTr("Willkommen!")
+    headline: qsTr("Willkommen!")
 
-    StackView
-    {
+    StackView {
         id: stack
         width: parent.width
         height: 180
         initialItem: serverURL === "" ? connect : login
         clip: true
 
-
-
         pushEnter: Transition {
             id: pushEnter
-            ParallelAnimation
-            {
+            ParallelAnimation {
 
-                XAnimator {  from: pushEnter.ViewTransition.item.width; to:0; duration: 400; easing.type: Easing.OutCubic }
-                NumberAnimation { from: 0; to: 1; duration: 400; easing.type: Easing.OutCubic ; properties: "opacity" }
-
+                XAnimator {
+                    from: pushEnter.ViewTransition.item.width
+                    to: 0
+                    duration: 400
+                    easing.type: Easing.OutCubic
+                }
+                NumberAnimation {
+                    from: 0
+                    to: 1
+                    duration: 400
+                    easing.type: Easing.OutCubic
+                    properties: "opacity"
+                }
             }
         }
         pushExit: Transition {
             id: pushExit
-            ParallelAnimation
-            {
-                XAnimator { from: 0; to: -stack.currentItem.width; duration: 400;  easing.type: Easing.OutCubic}
-                NumberAnimation { from: 1; to: 0; duration: 400; easing.type: Easing.OutCubic ; properties: "opacity" }
+            ParallelAnimation {
+                XAnimator {
+                    from: 0
+                    to: -stack.currentItem.width
+                    duration: 400
+                    easing.type: Easing.OutCubic
+                }
+                NumberAnimation {
+                    from: 1
+                    to: 0
+                    duration: 400
+                    easing.type: Easing.OutCubic
+                    properties: "opacity"
+                }
             }
         }
 
-
         popEnter: Transition {
             id: popEnter
-            ParallelAnimation
-            {
-                XAnimator{from: -pushEnter.ViewTransition.item.width; to:0; duration: 400;easing.type: Easing.OutCubic}
-                NumberAnimation { from: 0; to: 1; duration: 400; easing.type: Easing.OutCubic ; properties: "opacity" }
-
+            ParallelAnimation {
+                XAnimator {
+                    from: -pushEnter.ViewTransition.item.width
+                    to: 0
+                    duration: 400
+                    easing.type: Easing.OutCubic
+                }
+                NumberAnimation {
+                    from: 0
+                    to: 1
+                    duration: 400
+                    easing.type: Easing.OutCubic
+                    properties: "opacity"
+                }
             }
         }
         popExit: Transition {
             id: popExit
             ParallelAnimation {
-                XAnimator{ from: 0; to: pushEnter.ViewTransition.item.width; duration: 400; easing.type: Easing.OutCubic }
-               NumberAnimation { from: 1; to: 0; duration: 400; easing.type: Easing.OutCubic ; properties: "opacity" }
-
+                XAnimator {
+                    from: 0
+                    to: pushEnter.ViewTransition.item.width
+                    duration: 400
+                    easing.type: Easing.OutCubic
+                }
+                NumberAnimation {
+                    from: 1
+                    to: 0
+                    duration: 400
+                    easing.type: Easing.OutCubic
+                    properties: "opacity"
+                }
             }
         }
 
-
-        Component
-        {
+        Component {
             id: connect
-            ConnectPage
-            {
+            ConnectPage {
                 id: page
                 property string desc: "connect"
-
             }
         }
 
-
-        Component
-        {
+        Component {
             id: login
-            LoginPage
-            {                
+            LoginPage {
                 id: page
                 property string desc: "login"
                 onResetPasswordClicked: stack.push(resetPassw)
             }
         }
 
-        Component
-        {
+        Component {
             id: resetPassw
 
-            ResetPasswordPage
-            {
+            ResetPasswordPage {
                 id: page
                 property string desc: "reset"
                 onCancel: stack.pop()
             }
         }
 
-        Timer
-        {
+        Timer {
             id: delayTimer
             interval: 250
-            onTriggered:
-            {
+            onTriggered: {
 
-                if(Connection.state == Connection.STATE_Connected)
-                {
-                    if(stack.currentItem.desc !== "login")
+                if (Connection.state == Connection.STATE_Connected) {
+                    if (stack.currentItem.desc !== "login")
                         stack.replace(login, StackView.PushTransition)
-                }
-                else if(Connection.state == Connection.STATE_Disconnected)
-                {
-                    if(serverURL === "")
-                    {
-                        if(stack.currentItem.desc !== "connect")
+                } else if (Connection.state == Connection.STATE_Disconnected) {
+                    if (serverURL === "") {
+                        if (stack.currentItem.desc !== "connect")
                             stack.replace(connect, StackView.PopTransition)
-                    }
-                    else
-                    {
-                        if(stack.currentItem.desc !== "login")
+                    } else {
+                        if (stack.currentItem.desc !== "login")
                             stack.replace(login, StackView.PushTransition)
                     }
                 }
             }
         }
 
-        Connections
-        {
+        Connections {
             target: Connection
-            function onStateChanged()
-            {
+            function onStateChanged() {
                 delayTimer.start()
             }
         }

@@ -1,3 +1,5 @@
+
+
 /*   2log.io
  *   Copyright (C) 2021 - 2log.io | mail@2log.io,  mail@friedemann-metzger.de
  *
@@ -14,51 +16,43 @@
  *   You should have received a copy of the GNU Affero General Public License
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
-
 import QtQuick 2.5
 import QtQuick.Layouts 1.12
 import QtQuick.Controls 2.4
 import UIControls 1.0
 import AppComponents 1.0
 
-
-Item
-{
+Item {
     id: docroot
 
     property bool active: (StackView.status === StackView.Active)
-    signal next()
-    signal cancel()
+    signal next
+    signal cancel
 
     visible: StackView.status !== StackView.Inactive
 
-    Column
-    {
+    Column {
         anchors.centerIn: parent
         width: parent.width - 80
         spacing: 50
 
-        TextLabel
-        {
+        TextLabel {
             text: qsTr("Einrichtung neuer Devices")
             width: parent.width
-            horizontalAlignment:Text.AlignHCenter
+            horizontalAlignment: Text.AlignHCenter
             fontSize: Fonts.headerFontSze
             wrapMode: Text.Wrap
         }
 
-        TextLabel
-        {
+        TextLabel {
             width: parent.width
-            horizontalAlignment:Text.AlignHCenter
+            horizontalAlignment: Text.AlignHCenter
             text: qsTr("Für die Einrichtung neuer Devices benötigst du ein Android oder iOS Mobilgerät. Installiere dazu die 2log App aus dem PlayStore oder dem AppStore und folge den Anweisungen.")
             wrapMode: Text.Wrap
         }
     }
 
-    StandardButton
-    {
+    StandardButton {
         transparent: true
         icon: Icons.leftArrow
         anchors.bottom: parent.bottom
@@ -66,9 +60,8 @@ Item
         text: qsTr("Verstanden")
         onClicked: docroot.cancel()
 
-        Behavior on opacity
-        {
-            NumberAnimation{ }
+        Behavior on opacity {
+            NumberAnimation {}
         }
     }
 }

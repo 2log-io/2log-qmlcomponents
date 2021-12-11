@@ -1,3 +1,5 @@
+
+
 /*   2log.io
  *   Copyright (C) 2021 - 2log.io | mail@2log.io,  mail@friedemann-metzger.de
  *
@@ -14,67 +16,51 @@
  *   You should have received a copy of the GNU Affero General Public License
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
-
 import QtQuick 2.5
 import UIControls 1.0
 import CloudAccess 1.0
 import AppComponents 1.0
 import "../../Widgets"
 
-Container
-{
+Container {
     id: contact
     headline: qsTr("Kontaktdaten")
     property SynchronizedObjectModel userModel
 
     property alias unsavedChanges: form.edited
-    function save()
-    {
-        if(form.checkValid())
-        {
+    function save() {
+        if (form.checkValid()) {
             pageWrapper.save()
             return true
         }
         return false
     }
 
-    Item
-    {
+    Item {
         id: pageWrapper
 
-        function save()
-        {
-            if(form.edited)
-            {
-                if(nameLabel.dirty)
-                {
+        function save() {
+            if (form.edited) {
+                if (nameLabel.dirty) {
                     userModel.name = nameLabel.editedText
                 }
 
-                if(mailLabel.dirty)
-                {
+                if (mailLabel.dirty) {
                     userModel.mail = mailLabel.editedText
                 }
 
-                if(surnameLabel.dirty)
-                {
+                if (surnameLabel.dirty) {
                     userModel.surname = surnameLabel.editedText
                 }
 
-                if(roleCombo.dirty)
-                {
+                if (roleCombo.dirty) {
                     userModel.role = TypeDef.roles[roleCombo.editedSelectedIndex].code
                 }
 
-                if(courseCombo.dirty)
-                {
-                    if(courseCombo.editedSelectedIndex >= 0)
-                    {
+                if (courseCombo.dirty) {
+                    if (courseCombo.editedSelectedIndex >= 0) {
                         userModel.course = TypeDef.courses[courseCombo.editedSelectedIndex].code
-                    }
-                    else
-                    {
+                    } else {
                         userModel.course = ""
                     }
                 }
@@ -82,110 +68,107 @@ Container
         }
     }
 
-    header:ContainerButton
-    {
+    header: ContainerButton {
         visible: form.edited
         anchors.right: parent.right
-        anchors.verticalCenter:parent.verticalCenter
+        anchors.verticalCenter: parent.verticalCenter
         icon: Icons.save
         text: "Speichern"
-        onClicked:
-        {
-            if(form.checkValid())
+        onClicked: {
+            if (form.checkValid())
                 pageWrapper.save()
         }
     }
 
-
-
-    Form
-    {
+    Form {
         id: form
         width: parent.width
-        FormTextItem
-        {
-            label:qsTr("Vorname")
+        FormTextItem {
+            label: qsTr("Vorname")
             id: nameLabel
-            Binding on text {value: userModel.name}
+            Binding on text {
+                value: userModel.name
+            }
             mandatory: true
         }
 
-        FormTextItem
-        {
-            label:qsTr("Nachname");
+        FormTextItem {
+            label: qsTr("Nachname")
             id: surnameLabel
-            Binding on text {value: userModel.surname}
+            Binding on text {
+                value: userModel.surname
+            }
             mandatory: true
         }
 
-        FormTextItem
-        {
-            label:qsTr("eMail");
+        FormTextItem {
+            label: qsTr("eMail")
             id: mailLabel
-            Binding on text {value: userModel.mail}
-            validator: RegExpValidator { regExp:/\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*/ }
+            Binding on text {
+                value: userModel.mail
+            }
+            validator: RegExpValidator {
+                regExp: /\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*/
+            }
             mandatory: true
-
         }
 
-        FormDropDownItem
-        {
+        FormDropDownItem {
             id: roleCombo
-            label:qsTr("Rolle");
-            options: TypeDef.getLongStrings(TypeDef.roles);
+            label: qsTr("Rolle")
+            options: TypeDef.getLongStrings(TypeDef.roles)
             property string role
-            Binding on role{value:userModel.role}
+            Binding on role {
+                value: userModel.role
+            }
             selectedIndex: TypeDef.getIndexOf(TypeDef.roles, role)
-//            onEditedSelectedIndexChanged:
-//            {
+            //            onEditedSelectedIndexChanged:
+            //            {
 
-//                if(editedSelectedIndex > 0)
-//                {
-//                    courseCombo.enabled = false
-//                    courseCombo.selectedIndex = -1
-//                    courseCombo.editedSelectedIndex = -1
-//                    courseCombo.mandatory = false
-//                }
-//                else
-//                {
-//                   // courseCombo.dirty = true
-//                    courseCombo.mandatory = true
-//                    courseCombo.enabled = true
+            //                if(editedSelectedIndex > 0)
+            //                {
+            //                    courseCombo.enabled = false
+            //                    courseCombo.selectedIndex = -1
+            //                    courseCombo.editedSelectedIndex = -1
+            //                    courseCombo.mandatory = false
+            //                }
+            //                else
+            //                {
+            //                   // courseCombo.dirty = true
+            //                    courseCombo.mandatory = true
+            //                    courseCombo.enabled = true
 
-//                    if(userModel.course != "")
-//                    {
-//                        courseCombo.selectedIndex = Qt.binding(function(){return TypeDef.getIndexOf(TypeDef.courses, userModel.course) })
-//                    }
-//                }
-//            }
+            //                    if(userModel.course != "")
+            //                    {
+            //                        courseCombo.selectedIndex = Qt.binding(function(){return TypeDef.getIndexOf(TypeDef.courses, userModel.course) })
+            //                    }
+            //                }
+            //            }
         }
 
-//        FormDropDownItem
-//        {
-//            id: courseCombo
-//            label:qsTr("Studiengang");
-//            placeholder: qsTr("keine Auswahl")
-//            property string course
-//            Binding on course{value:userModel.course}
-//            options: TypeDef.getLongStrings(TypeDef.courses);
-//            selectedIndex:  TypeDef.getIndexOf(TypeDef.courses, course)
-//        }
+        //        FormDropDownItem
+        //        {
+        //            id: courseCombo
+        //            label:qsTr("Studiengang");
+        //            placeholder: qsTr("keine Auswahl")
+        //            property string course
+        //            Binding on course{value:userModel.course}
+        //            options: TypeDef.getLongStrings(TypeDef.courses);
+        //            selectedIndex:  TypeDef.getIndexOf(TypeDef.courses, course)
+        //        }
     }
 
-    Item{
-    Rectangle
-    {
-        z: 10
+    Item {
+        Rectangle {
+            z: 10
 
-        color: Colors.darkBlue
-        width: form.width
-        height: form.height
-        opacity: !userModel.initialized? 1 : 0
-        LoadingIndicator
-        {
-            visible: parent.opacity != 0
+            color: Colors.darkBlue
+            width: form.width
+            height: form.height
+            opacity: !userModel.initialized ? 1 : 0
+            LoadingIndicator {
+                visible: parent.opacity != 0
+            }
         }
     }
-    }
-
 }

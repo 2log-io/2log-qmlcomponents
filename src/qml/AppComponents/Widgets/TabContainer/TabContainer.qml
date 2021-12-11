@@ -4,84 +4,69 @@ import QtQuick.Controls 2.5 as QtControls
 import QtQuick.Layouts 1.1
 import "../"
 
-QtControls.Container
-{
+QtControls.Container {
     id: docroot
     height: totalHeight
 
     property alias header: headerSpace.children
     property alias tabButtons: row.children
 
-
-    contentItem:
-    Item
-    {
+    contentItem: Item {
         id: content
         anchors.fill: parent
 
-        ColumnLayout
-        {
+        ColumnLayout {
             anchors.fill: parent
             spacing: 0
 
-            Item
-            {
+            Item {
                 height: 40
                 Layout.fillWidth: true
                 z: 10
 
-                Rectangle
-                {
+                Rectangle {
                     anchors.fill: parent
                     color: Colors.greyBlue
                     opacity: 1
-                    Shadow
-                    {
+                    Shadow {
                         property bool shadowTop: false
                         property bool shadowRight: false
                         property bool shadowLeft: false
                     }
                 }
 
-                Row
-                {
+                Row {
                     id: row
                     height: 35
                     anchors.bottom: parent.bottom
                     anchors.left: parent.left
                     anchors.leftMargin: 5
 
-                    Repeater
-                    {
+                    Repeater {
                         model: docroot.count
-                        TabButton
-                        {
+                        TabButton {
                             checkable: false
                             text: docroot.itemAt(index).text
                             checked: list.currentIndex === index
-                            onClicked:list.positionViewAtIndex(index, ListView.Center)
+                            onClicked: list.positionViewAtIndex(index,
+                                                                ListView.Center)
                         }
                     }
-
                 }
 
-                Row
-                {
+                Row {
                     id: headerSpace
                     height: parent.height
                     anchors.right: parent.right
                 }
             }
 
-
-            ContainerBase
-            {
+            ContainerBase {
                 Layout.fillWidth: true
                 Layout.fillHeight: true
                 margins: 0
 
-                ListView
-                {
+                ListView {
                     id: list
                     clip: true
                     snapMode: ListView.SnapOneItem

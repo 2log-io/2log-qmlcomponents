@@ -1,3 +1,5 @@
+
+
 /*   2log.io
  *   Copyright (C) 2021 - 2log.io | mail@2log.io,  mail@friedemann-metzger.de
  *
@@ -14,8 +16,6 @@
  *   You should have received a copy of the GNU Affero General Public License
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
-
 import QtQuick 2.5
 import AppComponents 1.0
 import UIControls 1.0
@@ -23,116 +23,99 @@ import QtQuick.Layouts 1.3
 import CloudAccess 1.0
 import "../../Widgets"
 
-
-Container
-{
+Container {
     id: docroot
     Layout.fillWidth: true
     Layout.minimumHeight: totalHeight
     Layout.maximumHeight: totalHeight
-    headline:qsTr("Letzte Rechnungen")
+    headline: qsTr("Letzte Rechnungen")
     property string deviceID
     property int limit: 5
     property alias count: view.count
 
-    ListView
-    {
+    ListView {
         id: view
 
         property int itemCount: count
         model: logModel
-        height:  count <  docroot.limit ? count * 40 : docroot.limit * 40
+        height: count < docroot.limit ? count * 40 : docroot.limit * 40
         width: parent.width
         interactive: false
         clip: true
-        delegate:
-        BaseDelegate
-        {
+        delegate: BaseDelegate {
             id: delegate
-            last: index == view.itemCount -1
+            last: index == view.itemCount - 1
 
-            Item
-            {
+            Item {
                 Layout.fillWidth: true
                 Layout.fillHeight: true
 
-                RowLayout
-                {
+                RowLayout {
                     width: parent.width
                     anchors.verticalCenter: parent.verticalCenter
-                    RoundGravatarImage
-                    {
+                    RoundGravatarImage {
                         eMail: email
                         width: 30
                         height: 30
                         Layout.alignment: Qt.AlignVCenter
-                     //   anchors.verticalCenter: parent.verticalCenter
+                        //   anchors.verticalCenter: parent.verticalCenter
                     }
 
-                    Item
-                    {
+                    Item {
                         width: 10
                         height: parent.height
                     }
 
-                    TextLabel
-                    {
-                      //  anchors.verticalCenter: parent.verticalCenter
+                    TextLabel {
+                        //  anchors.verticalCenter: parent.verticalCenter
                         text: userName
                         Layout.fillWidth: true
                         fontSize: Fonts.listDelegateSize
                     }
 
-                    Row
-                    {
+                    Row {
                         id: duration
                         width: 100
                         visible: delegate.width > 520
                         height: parent.height
-                        spacing:5
+                        spacing: 5
 
-                        property int seconds: (TypeDef.parseISOLocal(endTime).getTime() - TypeDef.parseISOLocal(startTime).getTime()) / 1000
+                        property int seconds: (TypeDef.parseISOLocal(
+                                                   endTime).getTime(
+                                                   ) - TypeDef.parseISOLocal(
+                                                   startTime).getTime()) / 1000
 
-                        onSecondsChanged:
-                        {
+                        onSecondsChanged: {
                             var hrs = parseInt(seconds / 3600)
                             var min = Math.round((seconds % 3600) / 60)
                             var s = Math.round(seconds % 60)
 
                             var text = ""
-                            if(hrs > 0)
-                            {
-                                hrsLabel.text = hrs+"h"
+                            if (hrs > 0) {
+                                hrsLabel.text = hrs + "h"
                             }
 
-                            if(min > 0)
-                            {
-                                minLabel.text = min+"m"
+                            if (min > 0) {
+                                minLabel.text = min + "m"
                             }
 
-
-
-                                sLabel.text =("00" + s).slice(-2)+"s"
-
+                            sLabel.text = ("00" + s).slice(-2) + "s"
                         }
-                        TextLabel
-                        {
+                        TextLabel {
                             id: hrsLabel
                             width: 30
-                           anchors.verticalCenter: parent.verticalCenter
+                            anchors.verticalCenter: parent.verticalCenter
                             fontSize: Fonts.listDelegateSize
                         }
 
-                        TextLabel
-                        {
+                        TextLabel {
                             id: minLabel
                             width: 30
                             anchors.verticalCenter: parent.verticalCenter
                             fontSize: Fonts.listDelegateSize
                             horizontalAlignment: Qt.AlignRight
                         }
-                        TextLabel
-                        {
+                        TextLabel {
                             id: sLabel
                             width: 30
                             anchors.verticalCenter: parent.verticalCenter
@@ -140,49 +123,52 @@ Container
                         }
                     }
 
-                    TextLabel
-                    {
+                    TextLabel {
                         width: 100
                         horizontalAlignment: Text.AlignRight
                         text: (price / 100).toLocaleString(Qt.locale("de_DE"))
                         fontSize: Fonts.controlFontSize
                         visible: delegate.width > 400
                     }
-                    TextLabel
-                    {
+                    TextLabel {
                         Layout.alignment: Qt.AlignVCenter
                         text: "EUR"
                         fontSize: Fonts.verySmallControlFontSize
                         color: Colors.lightGrey
                         visible: delegate.width > 400
                     }
-                    Item
-                    {
+                    Item {
                         id: content
                         width: 150
                         height: parent.height
 
-                        TimeFormatter
-                        {
+                        TimeFormatter {
                             id: formatter
                             time: timestamp
                             anchors.right: parent.right
                             anchors.verticalCenter: parent.verticalCenter
                         }
-
                     }
                 }
             }
         }
 
-        SynchronizedListModel
-        {
+        SynchronizedListModel {
             id: logModel
             property string userFilter
             property string resourceFilter
             preloadCount: 5
             resource: "labcontrol/logs"
-            filter: {"match":{"resourceID":docroot.deviceID, "logType":0}, "limit": docroot.limit, "sort":{"timestamp": -1}}
+            filter: {
+                "match": {
+                    "resourceID": docroot.deviceID,
+                    "logType": 0
+                },
+                "limit": docroot.limit,
+                "sort": {
+                    "timestamp": -1
+                }
+            }
         }
     }
 }

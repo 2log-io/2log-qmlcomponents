@@ -1,11 +1,10 @@
 import QtQuick 2.5
 import UIControls 1.0
 
-Rectangle
-{
+Rectangle {
     id: docroot
 
-    signal clicked()
+    signal clicked
 
     property alias icon: icon.icon
     property alias text: text.text
@@ -18,17 +17,14 @@ Rectangle
     color: "transparent"
     radius: 2
 
-
-    Row
-    {
+    Row {
         id: layout
         height: parent.height
         anchors.centerIn: parent
         spacing: 10
         opacity: .6
 
-        Icon
-        {
+        Icon {
             id: icon
             iconColor: Colors.white
             anchors.verticalCenter: parent.verticalCenter
@@ -38,71 +34,58 @@ Rectangle
             iconSize: 14
         }
 
-        Text
-        {
+        Text {
             id: text
             color: Colors.white
-            text:docroot.text
+            text: docroot.text
             font.pixelSize: Fonts.smallControlFontSize
             anchors.verticalCenter: parent.verticalCenter
             font.family: Fonts.simplonNorm_Medium
         }
     }
 
-    MouseArea
-    {
-       id: mouseArea
-       anchors.fill: parent
-       onClicked: docroot.clicked()
-       hoverEnabled: true
+    MouseArea {
+        id: mouseArea
+        anchors.fill: parent
+        onClicked: docroot.clicked()
+        hoverEnabled: true
     }
 
-    Item
-    {
-        states:
-        [
-            State
-            {
-                name:"disabled"
-                when:!docroot.enabled
-                PropertyChanges
-                {
+    Item {
+        states: [
+            State {
+                name: "disabled"
+                when: !docroot.enabled
+                PropertyChanges {
                     target: docroot
                     opacity: .3
                 }
             },
-            State
-            {
-                name:"pressed"
+            State {
+                name: "pressed"
                 when: mouseArea.pressed
 
-                PropertyChanges
-                {
+                PropertyChanges {
                     target: layout
                     opacity: 1
                 }
             },
-            State
-            {
-                name:"hover"
+            State {
+                name: "hover"
                 when: mouseArea.containsMouse
-                PropertyChanges
-                {
+                PropertyChanges {
                     target: layout
                     opacity: 1
                 }
             }
         ]
 
-        transitions:
-        [
-            Transition
-            {
+        transitions: [
+            Transition {
                 from: "pressed"
-                to:"hover"
+                to: "hover"
 
-                NumberAnimation
-                {
+                NumberAnimation {
                     property: "opacity"
                 }
 
@@ -112,18 +95,15 @@ Rectangle
                 }
             },
 
-            Transition
-            {
+            Transition {
                 from: "hover"
-                to:""
+                to: ""
 
-                NumberAnimation
-                {
+                NumberAnimation {
                     property: "opacity"
                 }
 
-                ColorAnimation
-                {
+                ColorAnimation {
                     target: docroot
                     duration: 200
                 }

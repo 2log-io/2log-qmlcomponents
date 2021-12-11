@@ -1,4 +1,6 @@
-﻿/*   2log.io
+﻿
+
+/*   2log.io
  *   Copyright (C) 2021 - 2log.io | mail@2log.io,  mail@friedemann-metzger.de
  *
  *   This program is free software: you can redistribute it and/or modify
@@ -14,17 +16,13 @@
  *   You should have received a copy of the GNU Affero General Public License
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
-
 import QtQuick 2.5
 import CloudAccess 1.0
 import UIControls 1.0
 import QtQuick.Layouts 1.3
 import "../../Widgets"
 
-
-Container
-{
+Container {
     id: docroot
     headline: qsTr("Status")
     width: parent.width
@@ -33,39 +31,32 @@ Container
     property DeviceModel controller
     property DeviceModel pow
 
-    states:
-    [
-        State
-        {
+    states: [
+        State {
             name: "allOffline"
             when: !pow.deviceOnline
-            PropertyChanges
-            {
+            PropertyChanges {
                 target: statusIcon
                 iconColor: Colors.warnRed
                 icon: Icons.offline
             }
 
-            PropertyChanges
-            {
+            PropertyChanges {
                 target: statusText
                 text: "offline"
                 horizontalAlignment: Text.AlignHCenter
             }
         },
-        State
-        {
+        State {
             name: "switchOffline"
             when: !pow.deviceOnline
-            PropertyChanges
-            {
+            PropertyChanges {
                 target: statusIcon
                 iconColor: Colors.warnRed
                 icon: Icons.offline
             }
 
-            PropertyChanges
-            {
+            PropertyChanges {
                 target: statusText
                 text: "switch off"
                 horizontalAlignment: Text.AlignHCenter
@@ -73,30 +64,23 @@ Container
         }
     ]
 
-    Flow
-    {
+    Flow {
         id: flow
         width: parent.width
-        spacing:  docroot.spacing
+        spacing: docroot.spacing
 
-
-        Item
-        {
+        Item {
             id: statusContainer
             width: responsiveStates.itemWidth
             height: 120
 
-
-            Rectangle
-            {
+            Rectangle {
                 anchors.fill: parent
-                color:"white"
+                color: "white"
                 opacity: .05
-
             }
 
-            TextLabel
-            {
+            TextLabel {
                 anchors.top: parent.top
                 anchors.left: parent.left
                 anchors.margins: 10
@@ -104,14 +88,12 @@ Container
                 opacity: .5
             }
 
-            Row
-            {
+            Row {
                 anchors.centerIn: parent
                 anchors.verticalCenterOffset: 10
                 spacing: 20
 
-                Icon
-                {
+                Icon {
                     id: statusIcon
                     iconSize: 40
                     icon: Icons.check
@@ -119,8 +101,7 @@ Container
                     anchors.verticalCenter: parent.verticalCenter
                 }
 
-                TextLabel
-                {
+                TextLabel {
                     id: statusText
                     anchors.verticalCenter: parent.verticalCenter
                     anchors.topMargin: 20
@@ -130,22 +111,18 @@ Container
             }
         }
 
-
-        Item
-        {
+        Item {
             id: currentContainer
             width: responsiveStates.itemWidth
             height: 120
 
-            Rectangle
-            {
+            Rectangle {
                 anchors.fill: parent
-                color:"white"
+                color: "white"
                 opacity: .05
             }
 
-            TextLabel
-            {
+            TextLabel {
                 anchors.top: parent.top
                 anchors.left: parent.left
                 anchors.margins: 10
@@ -153,15 +130,13 @@ Container
                 opacity: .5
             }
 
-            Row
-            {
+            Row {
                 opacity: pow.deviceOnline ? 1 : .5
                 anchors.centerIn: parent
                 anchors.verticalCenterOffset: 10
                 spacing: 20
 
-                Icon
-                {
+                Icon {
                     id: iconr
                     iconSize: 40
                     icon: Icons.blizzard
@@ -169,15 +144,12 @@ Container
                     anchors.verticalCenter: parent.verticalCenter
                 }
 
-                TextLabel
-                {
+                TextLabel {
                     property real currrent
                     width: 100
-                    Binding on currrent
-                    {
+                    Binding on currrent {
 
-                        value:
-                        {
+                        value: {
                             var val = pow.getProperty("curr").value
                             return val ? val.toFixed(2) : 0
                         }
@@ -192,35 +164,29 @@ Container
         }
     }
 
-    Item
-    {
+    Item {
         id: responsiveStates
-        property int itemWidth:
-        {
-            var width = (flow.width - (flow.visibleChildren.length-1) * flow.spacing)  / flow.visibleChildren.length
-            return width < 250 ? flow.width :  width
+        property int itemWidth: {
+            var width = (flow.width - (flow.visibleChildren.length - 1)
+                         * flow.spacing) / flow.visibleChildren.length
+            return width < 250 ? flow.width : width
         }
 
-        states:
-        [
-            State
-            {
-                name:"ready"
+        states: [
+            State {
+                name: "ready"
                 when: flow.width < 800 && docroot.state == ""
-                PropertyChanges
-                {
+                PropertyChanges {
                     target: statusContainer
                     visible: false
                 }
             },
 
-            State
-            {
-                name:"switchOffline"
-                when: flow.width < 800 &&  !pow.deviceOnline
+            State {
+                name: "switchOffline"
+                when: flow.width < 800 && !pow.deviceOnline
 
-                PropertyChanges
-                {
+                PropertyChanges {
                     target: currentContainer
                     visible: false
                 }

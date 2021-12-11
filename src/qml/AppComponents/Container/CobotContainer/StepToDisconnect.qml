@@ -1,3 +1,5 @@
+
+
 /*   2log.io
  *   Copyright (C) 2021 - 2log.io | mail@2log.io,  mail@friedemann-metzger.de
  *
@@ -14,43 +16,36 @@
  *   You should have received a copy of the GNU Affero General Public License
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
-
 import QtQuick 2.5
 import QtQuick.Controls 2.3
 import UIControls 1.0
 import CloudAccess 1.0
 
-Item
-{
+Item {
     id: docroot
 
     property bool active: (StackView.status == StackView.Active)
 
-    signal confirm()
-    signal cancel()
+    signal confirm
+    signal cancel
 
-    Column
-    {
+    Column {
         anchors.centerIn: parent
         anchors.verticalCenterOffset: -20
         spacing: 10
 
-        TextLabel
-        {
-            text:qsTr("Möchtest du die Verbindung zu Cobot trennen?")
+        TextLabel {
+            text: qsTr("Möchtest du die Verbindung zu Cobot trennen?")
             font.styleName: "Bold"
             fontSize: Fonts.subHeaderFontSize
         }
-        TextLabel
-        {
-            text:qsTr("Alle von Cobot importierten Nutzer werden aus 2log entfernt.\n"
-                      +"Dieser Vorgang kann nicht rückgängig gemacht werden!")
+        TextLabel {
+            text: qsTr("Alle von Cobot importierten Nutzer werden aus 2log entfernt.\n"
+                       + "Dieser Vorgang kann nicht rückgängig gemacht werden!")
         }
     }
 
-    StandardButton
-    {
+    StandardButton {
         id: confirmButton
         icon: Icons.disconnect
         visible: opacity > 0
@@ -59,32 +54,26 @@ Item
         anchors.right: parent.right
         iconColor: Colors.warnRed
         text: qsTr("Trennen")
-        onClicked:
-        {
+        onClicked: {
             var data = {}
             cobotService.call("disconnect", data, disconnectCb)
         }
 
-
-        function disconnectCb(data)
-        {
-             docroot.cancel()
+        function disconnectCb(data) {
+            docroot.cancel()
         }
 
-        Behavior on opacity
-        {
-            NumberAnimation{ }
+        Behavior on opacity {
+            NumberAnimation {}
         }
     }
 
-    ServiceModel
-    {
+    ServiceModel {
         id: cobotService
         service: "cobotservice"
     }
 
-    StandardButton
-    {
+    StandardButton {
         transparent: true
         icon: Icons.leftAngle
         text: qsTr("Abbrechen")
@@ -92,9 +81,8 @@ Item
         onClicked: docroot.cancel()
         opacity: docroot.active ? 1 : 0
 
-        Behavior on opacity
-        {
-            NumberAnimation{ }
+        Behavior on opacity {
+            NumberAnimation {}
         }
     }
 }

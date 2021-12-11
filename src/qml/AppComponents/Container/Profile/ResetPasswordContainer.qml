@@ -1,3 +1,5 @@
+
+
 /*   2log.io
  *   Copyright (C) 2021 - 2log.io | mail@2log.io,  mail@friedemann-metzger.de
  *
@@ -14,41 +16,33 @@
  *   You should have received a copy of the GNU Affero General Public License
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
-
 import QtQuick 2.8
 import UIControls 1.0
 import QtQuick.Layouts 1.3
 import AppComponents 1.0
 import CloudAccess 1.0
 
-
-Container
-{
+Container {
     id: docroot
     width: parent.width
     headline: qsTr("Passwort zurücksetzen")
-    signal passwordChanged(bool success,string code)
+    signal passwordChanged(bool success, string code)
 
-    RowLayout
-    {
+    RowLayout {
         width: parent.width
 
         spacing: 20
 
-        TextField
-        {
+        TextField {
             id: originPass
             Layout.fillWidth: true
             Layout.alignment: Qt.AlignVCenter
-            placeholderText:qsTr("Altes Passwort")
+            placeholderText: qsTr("Altes Passwort")
             nextOnTab: pass1.field
             field.echoMode: TextInput.Password
         }
 
-
-        TextField
-        {
+        TextField {
             id: pass1
             Layout.fillWidth: true
             Layout.alignment: Qt.AlignVCenter
@@ -57,8 +51,7 @@ Container
             field.echoMode: TextInput.Password
         }
 
-        TextField
-        {
+        TextField {
             id: pass2
             Layout.fillWidth: true
             Layout.alignment: Qt.AlignVCenter
@@ -66,16 +59,15 @@ Container
             field.echoMode: TextInput.Password
         }
 
-
-        StandardButton
-        {
-            enabled: (pass1.text === pass2.text) && (originPass.text !== "") && (pass1.text !== "")
-            text:qsTr("Passwort ändern")
-            onClicked: UserLogin.changePassword(originPass.text, pass2.text, parent.changePassCb)
+        StandardButton {
+            enabled: (pass1.text === pass2.text) && (originPass.text !== "")
+                     && (pass1.text !== "")
+            text: qsTr("Passwort ändern")
+            onClicked: UserLogin.changePassword(originPass.text, pass2.text,
+                                                parent.changePassCb)
         }
 
-        function changePassCb(success, code)
-        {
+        function changePassCb(success, code) {
             docroot.passwordChanged(success, code)
             originPass.text = ""
             pass1.text = ""

@@ -1,3 +1,5 @@
+
+
 /*   2log.io
  *   Copyright (C) 2021 - 2log.io | mail@2log.io,  mail@friedemann-metzger.de
  *
@@ -14,38 +16,31 @@
  *   You should have received a copy of the GNU Affero General Public License
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
-
 import QtQuick 2.5
 import UIControls 1.0
 import QtQuick.Layouts 1.3
 import CloudAccess 1.0
 import AppComponents 1.0
 
-
-TabContainer
-{
+TabContainer {
     id: docroot
 
-    //property alias listCount: view.count
     property string userID
     property int limit: 5
 
-    LastTransferPage
-    {
-        width: docroot.width-40
+    LastTransferPage {
+        width: docroot.width - 40
         height: docroot.height
         userID: docroot.userID
         limit: docroot.limit
-        property string text:qsTr("Letzte Buchungen")
+        property string text: qsTr("Letzte Buchungen")
     }
 
-    LastJobPage
-    {
-        width: docroot.width-40
+    LastJobPage {
+        width: docroot.width - 40
         height: docroot.height
         userID: docroot.userID
         limit: docroot.limit
-        property string text:qsTr("Letzte Rechnungen")
+        property string text: qsTr("Letzte Rechnungen")
     }
 }

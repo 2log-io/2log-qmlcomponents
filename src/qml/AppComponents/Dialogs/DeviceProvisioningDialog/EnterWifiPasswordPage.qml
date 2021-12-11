@@ -1,3 +1,5 @@
+
+
 /*   2log.io
  *   Copyright (C) 2021 - 2log.io | mail@2log.io,  mail@friedemann-metzger.de
  *
@@ -14,8 +16,6 @@
  *   You should have received a copy of the GNU Affero General Public License
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
-
 import QtQuick 2.5
 import QtQuick.Layouts 1.12
 import QtQuick.Controls 2.4
@@ -23,32 +23,28 @@ import UIControls 1.0
 import AppComponents 1.0
 import DeviceProvisioning 1.0
 
-Item
-{
+Item {
     id: docroot
     property bool active: (StackView.status == StackView.Active)
     visible: StackView.status !== StackView.Inactive
     signal next(string ssid, string password)
-    signal cancel()
+    signal cancel
 
-    Column
-    {
+    Column {
         anchors.top: parent.top
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.topMargin: 50
         width: parent.width - 80
         spacing: 50
 
-        Icon
-        {
+        Icon {
             icon: Icons.wifi
             iconSize: 100
             anchors.horizontalCenter: parent.horizontalCenter
             iconColor: Colors.grey
         }
 
-        TextField
-        {
+        TextField {
             id: ssidField
             width: parent.width
             placeholderText: qsTr("SSID")
@@ -61,8 +57,7 @@ Item
             font.family: Fonts.simplonMono
         }
 
-        TextField
-        {
+        TextField {
             id: pass
             placeholderText: qsTr("W-LAN Passwort")
             icon: Icons.lock
@@ -71,8 +66,7 @@ Item
         }
     }
 
-    StandardButton
-    {
+    StandardButton {
         transparent: true
         icon: Icons.cancel
         anchors.bottom: parent.bottom
@@ -80,14 +74,12 @@ Item
         onClicked: docroot.cancel()
         opacity: parent.active ? 1 : 0
 
-        Behavior on opacity
-        {
-            NumberAnimation{ }
+        Behavior on opacity {
+            NumberAnimation {}
         }
     }
 
-    StandardButton
-    {
+    StandardButton {
         transparent: true
         icon: Icons.rightAngle
         text: qsTr("Weiter")
@@ -95,11 +87,10 @@ Item
         anchors.right: parent.right
         onClicked: docroot.next(ssidField.text, pass.text)
         opacity: parent.active ? 1 : 0
-        iconAlignment:Qt.AlignRight
+        iconAlignment: Qt.AlignRight
 
-        Behavior on opacity
-        {
-            NumberAnimation{ }
+        Behavior on opacity {
+            NumberAnimation {}
         }
     }
 }

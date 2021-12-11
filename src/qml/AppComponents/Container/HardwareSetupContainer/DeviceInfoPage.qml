@@ -1,3 +1,5 @@
+
+
 /*   2log.io
  *   Copyright (C) 2021 - 2log.io | mail@2log.io,  mail@friedemann-metzger.de
  *
@@ -14,8 +16,6 @@
  *   You should have received a copy of the GNU Affero General Public License
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
-
 import QtQuick 2.5
 import UIControls 1.0
 import QtQuick.Layouts 1.12
@@ -23,24 +23,21 @@ import QtQuick.Controls 2.0
 import CloudAccess 1.0
 import AppComponents 1.0
 
-GridLayout
-{
+GridLayout {
     columns: 2
     rowSpacing: 5
     columnSpacing: 10
 
     property DeviceModel deviceModel
 
-    TextLabel
-    {
+    TextLabel {
         visible: ipLabel.shortID !== ""
         color: Colors.grey
         text: "ID"
         fontSize: Fonts.verySmallControlFontSize
     }
 
-    TextLabel
-    {
+    TextLabel {
         id: idlabel
         text: deviceModel.shortID
         Layout.fillWidth: true
@@ -49,20 +46,17 @@ GridLayout
         fontSize: 24
     }
 
-    TextLabel
-    {
+    TextLabel {
         visible: ipLabel.text !== ""
         color: Colors.grey
         text: "IP"
         fontSize: Fonts.verySmallControlFontSize
     }
 
-    TextLabel
-    {
+    TextLabel {
 
         id: ipLabel
-        text:
-        {
+        text: {
             var val = deviceModel.getProperty("ip").value
             return val ? val : ""
         }
@@ -71,19 +65,16 @@ GridLayout
         font.styleName: "Light"
     }
 
-    TextLabel
-    {
+    TextLabel {
         visible: macLabel.text !== ""
         color: Colors.grey
         text: "MAC"
         fontSize: Fonts.verySmallControlFontSize
     }
 
-    TextLabel
-    {
+    TextLabel {
         id: macLabel
-        text:
-        {
+        text: {
             var val = deviceModel.getProperty("mac").value
             return val ? val : ""
         }

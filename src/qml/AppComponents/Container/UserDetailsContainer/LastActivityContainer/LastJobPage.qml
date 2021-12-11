@@ -1,3 +1,5 @@
+
+
 /*   2log.io
  *   Copyright (C) 2021 - 2log.io | mail@2log.io,  mail@friedemann-metzger.de
  *
@@ -14,17 +16,13 @@
  *   You should have received a copy of the GNU Affero General Public License
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
-
 import QtQuick 2.5
 import UIControls 1.0
 import QtQuick.Layouts 1.3
 import CloudAccess 1.0
 import "../../../Widgets"
 
-
-ListView
-{
+ListView {
     id: docroot
 
     property int limit
@@ -32,75 +30,63 @@ ListView
     property int itemCount: count
 
     model: logModel
-    height:  count <  docroot.limit ? count * 40 : docroot.limit * 40
+    height: count < docroot.limit ? count * 40 : docroot.limit * 40
     width: parent.width
     interactive: false
     clip: true
 
-    delegate:
-    BaseDelegate
-    {
-        last: index == docroot.itemCount -1
+    delegate: BaseDelegate {
+        last: index == docroot.itemCount - 1
         id: delegate
 
-        Item
-        {
+        Item {
             id: delegateWrapper
             Layout.fillWidth: true
             Layout.fillHeight: true
 
             property bool bindingHelper: false
 
-            RowLayout
-            {
+            RowLayout {
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.fill: parent
 
-
-                TextLabel
-                {
+                TextLabel {
                     Layout.fillWidth: true
                     Layout.alignment: Qt.AlignVCenter
-                    text:
-                    {
-                       var model = deviceModel.getDeviceModel(resourceID)
-                       if(model !== null)
-                           return model.getProperty("displayName").value
+                    text: {
+                        var model = deviceModel.getDeviceModel(resourceID)
+                        if (model !== null)
+                            return model.getProperty("displayName").value
 
-                       return description
+                        return description
                     }
 
                     fontSize: Fonts.listDelegateSize
                 }
 
-
-                TextLabel
-                {
+                TextLabel {
                     width: 100
                     horizontalAlignment: Text.AlignRight
                     text: (price / 100).toLocaleString(Qt.locale("de_DE"))
                     fontSize: Fonts.listDelegateSize
-              //      anchors.verticalCenter: parent.verticalCenter
-                     visible: delegate.width > 400
+                    //      anchors.verticalCenter: parent.verticalCenter
+                    visible: delegate.width > 400
                 }
 
-                TextLabel
-                {
+                TextLabel {
                     Layout.alignment: Qt.AlignVCenter
                     text: "EUR"
                     fontSize: Fonts.verySmallControlFontSize
                     color: Colors.lightGrey
-//                        anchors.verticalCenter: parent.verticalCenter
+                    //                        anchors.verticalCenter: parent.verticalCenter
                     visible: delegate.width > 400
                 }
-                Item
-                {
+                Item {
                     id: content
                     width: 150
                     height: parent.height
 
-                    TimeFormatter
-                    {
+                    TimeFormatter {
                         id: formatter
                         time: timestamp
                         anchors.right: parent.right
@@ -111,25 +97,30 @@ ListView
         }
     }
 
-    SynchronizedListModel
-    {
+    SynchronizedListModel {
         id: logModel
         property string userFilter
         property string resourceFilter
         preloadCount: 5
         resource: "labcontrol/logs"
-        filter: ({"match":{"userID":docroot.userID, "logType": 0}, "limit": docroot.limit, "sort":{"timestamp": -1}})
+        filter: ({
+                     "match": {
+                         "userID": docroot.userID,
+                         "logType": 0
+                     },
+                     "limit": docroot.limit,
+                     "sort": {
+                         "timestamp": -1
+                     }
+                 })
     }
 
-
-    Rectangle
-    {
+    Rectangle {
         z: 10
         color: Colors.darkBlue
         anchors.fill: parent
-        opacity: !logModel.initialized? 1 : 0
-        LoadingIndicator
-        {
+        opacity: !logModel.initialized ? 1 : 0
+        LoadingIndicator {
             visible: parent.opacity != 0
         }
     }

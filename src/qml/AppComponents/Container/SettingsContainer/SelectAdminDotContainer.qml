@@ -1,3 +1,5 @@
+
+
 /*   2log.io
  *   Copyright (C) 2021 - 2log.io | mail@2log.io,  mail@friedemann-metzger.de
  *
@@ -14,166 +16,136 @@
  *   You should have received a copy of the GNU Affero General Public License
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
-
 import QtQuick 2.5
 import UIControls 1.0
 import QtQuick.Layouts 1.3
 import CloudAccess 1.0
 import AppComponents 1.0
 
-
-Container
-{
+Container {
     id: selectDot
     headline: "RFID Reader"
     width: parent.width
     property string selectedReaderMapping
     signal selectedReaderIndexChosen(string selectedReader)
 
-    Item
-    {
-        FilteredDeviceModel
-        {
+    Item {
+        FilteredDeviceModel {
             id: dotModel
             deviceType: ["2log Dot", "RFID Reader"]
         }
     }
 
-
-    Flow
-    {
+    Flow {
         width: parent.width
         spacing: 20
 
-        TextLabel
-        {
+        TextLabel {
             height: 40
             verticalAlignment: Qt.AlignVCenter
             id: label
             elide: Text.ElideNone
             wrapMode: Text.Wrap
-            text: qsTr("Dot zum Anlegen und Editieren von Nutzern");
+            text: qsTr("Dot zum Anlegen und Editieren von Nutzern")
         }
 
-
-        Row
-        {
+        Row {
             id: stateDisplay
             spacing: 10
 
-            DropDown
-            {
+            DropDown {
                 id: dotDropDown
                 width: 200
                 enabled: options.length > 0
                 anchors.verticalCenter: parent.verticalCenter
-                placeholderText: enabled ? qsTr("Wähle einen Dot") : qsTr("Keine Dots registriert")
-                options:
-                {
+                placeholderText: enabled ? qsTr("Wähle einen Dot") : qsTr(
+                                               "Keine Dots registriert")
+                options: {
                     var options = []
-                    for(var i = 0; i < dotModel.count; i++)
-                    {
+                    for (var i = 0; i < dotModel.count; i++) {
                         var description = dotModel.getModelAt(i).description
-                        if(description === "")
+                        if (description === "")
                             description = dotModel.getModelAt(i).uuid
                         options.push(description)
                     }
-                    return options;
+                    return options
                 }
-                selectedIndex:
-                {
-                    if(dotModel.count > 0 )
-                    {
-                        var indexForMap = dotModel.getIndexForMapping(selectDot.selectedReaderMapping)
+                selectedIndex: {
+                    if (dotModel.count > 0) {
+                        var indexForMap = dotModel.getIndexForMapping(
+                                    selectDot.selectedReaderMapping)
                         return indexForMap
                     }
 
                     return -1
                 }
 
-                onIndexClicked:
-                {
+                onIndexClicked: {
                     var selectedReader = dotModel.getMapping(index)
-                    if(selectedReader !== "")
-                        settingsModel.setProperty("selectedReader", selectedReader)
+                    if (selectedReader !== "")
+                        settingsModel.setProperty("selectedReader",
+                                                  selectedReader)
                 }
             }
 
-
-            SynchronizedObjectModel
-            {
+            SynchronizedObjectModel {
                 id: settingsModel
                 resource: "home/settings/cardreader"
-                onInitializedChanged:
-                {
-                    selectDot.selectedReaderMapping = Qt.binding(function()
-                    {
+                onInitializedChanged: {
+                    selectDot.selectedReaderMapping = Qt.binding(function () {
                         var selectedreader = settingsModel.selectedReader
-                        return selectedreader  === undefined ? "" : selectedreader
+                        return selectedreader === undefined ? "" : selectedreader
                     })
                 }
             }
-            property bool readerOnline:
-            {
-                if(dotModel.count == 0)
+            property bool readerOnline: {
+                if (dotModel.count == 0)
                     return false
 
                 var index = dotDropDown.dirty ? dotDropDown.editedSelectedIndex : dotDropDown.selectedIndex
 
-                 index >= 0 ? dotModel.getModelAt(index).deviceOnline : false
+                index >= 0 ? dotModel.getModelAt(index).deviceOnline : false
             }
 
-            Item
-            {
+            Item {
                 width: 20
                 height: 1
             }
 
-
-            Icon
-            {
-                 id: icon
-                 anchors.verticalCenter: parent.verticalCenter
+            Icon {
+                id: icon
+                anchors.verticalCenter: parent.verticalCenter
             }
 
-            TextLabel
-            {
+            TextLabel {
                 id: stateText
                 anchors.verticalCenter: parent.verticalCenter
             }
 
-            states:
-            [
-                State
-                {
-                    name:"online"
+            states: [
+                State {
+                    name: "online"
                     when: stateDisplay.readerOnline
-                    PropertyChanges
-                    {
+                    PropertyChanges {
                         target: icon
                         icon: Icons.check
                     }
 
-                    PropertyChanges
-                    {
+                    PropertyChanges {
                         target: stateText
                         text: "Bereit"
                     }
                 },
-                State
-                {
-                    name:"offline"
+                State {
+                    name: "offline"
                     when: !stateDisplay.readerOnline
-                    PropertyChanges
-                    {
+                    PropertyChanges {
                         target: icon
                         icon: Icons.warning
                         iconColor: Colors.warnRed
                     }
 
-                    PropertyChanges
-                    {
+                    PropertyChanges {
                         target: stateText
                         text: "Offline"
                     }

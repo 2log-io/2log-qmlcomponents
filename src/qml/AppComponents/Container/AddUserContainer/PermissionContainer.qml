@@ -1,3 +1,5 @@
+
+
 /*   2log.io
  *   Copyright (C) 2021 - 2log.io | mail@2log.io,  mail@friedemann-metzger.de
  *
@@ -14,8 +16,6 @@
  *   You should have received a copy of the GNU Affero General Public License
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
-
 import QtQuick 2.5
 import UIControls 1.0
 import QtQuick.Layouts 1.3
@@ -23,184 +23,157 @@ import CloudAccess 1.0
 import AppComponents 1.0
 import "../../Widgets"
 
-
-Container
-{
+Container {
     id: container
 
-    headline:qsTr("Berechtigungen")
-    property var permissions:({})
-    property var groups:({})
+    headline: qsTr("Berechtigungen")
+    property var permissions: ({})
+    property var groups: ({})
 
-
-    function check(deviceID)
-    {
-        if(allgroupsModel.count <= 0)
-            return false;
-        for(var i = 0; i < allgroupsModel.keys.length; i++)
-        {
+    function check(deviceID) {
+        if (allgroupsModel.count <= 0)
+            return false
+        for (var i = 0; i < allgroupsModel.keys.length; i++) {
             var key = allgroupsModel.keys[i]
             var item = groups[key]
-            if(item !== undefined)
-            {
-                if(item.active)
-                {
+            if (item !== undefined) {
+                if (item.active) {
                     var entities = allgroupsModel.getItem(key).entities
-                    for(var n = 0; n < entities.length; n++)
-                    {
-                        if(entities[n].entityID === deviceID)
-                            return true;
+                    for (var n = 0; n < entities.length; n++) {
+                        if (entities[n].entityID === deviceID)
+                            return true
                     }
                 }
             }
         }
-        return false;
+        return false
     }
 
-
-    Column
-    {
+    Column {
         width: parent.width
         spacing: 10
 
-
-        TextLabel
-        {
+        TextLabel {
             visible: layout.count > 0
-            text:qsTr("Gruppenberechtigungen")
+            text: qsTr("Gruppenberechtigungen")
             opacity: .5
         }
 
-        SynchronizedListLookupModel
-        {
+        SynchronizedListLookupModel {
             id: allgroupsModel
-            lookupKey:"uuid"
-            resource:"labcontrol/groups"
+            lookupKey: "uuid"
+            resource: "labcontrol/groups"
         }
 
-        DynamicGridView
-        {
+        DynamicGridView {
             id: layout
             width: parent.width + 10
             cellHeight: 150
             maxCellWidth: 160
             model: allgroupsModel.keys
-            interactive:false
+            interactive: false
 
-            delegate:
-            Item
-            {
+            delegate: Item {
                 width: layout.cellWidth
                 height: layout.cellHeight
 
-                GroupPermissionItem
-                {
+                GroupPermissionItem {
                     id: item
-                    property var permission: container.groups[allgroupsModel.getItem(modelData).uuid]
+                    property var permission: container.groups[allgroupsModel.getItem(
+                                                                  modelData).uuid]
                     anchors.fill: parent
                     anchors.bottomMargin: 10
-                    anchors.rightMargin:  10
+                    anchors.rightMargin: 10
                     deviceName: allgroupsModel.getItem(modelData).name
                     expires: permission !== undefined ? permission.expirationDate : ""
-                    permissionState:
-                    {
+                    permissionState: {
                         return permission === undefined ? 0 : 1
                     }
-                    onClicked:
-                    {
-                        container.groups = addOrRemoveGroup(allgroupsModel.getItem(modelData).uuid, container.groups)
+                    onClicked: {
+                        container.groups = addOrRemoveGroup(
+                                    allgroupsModel.getItem(modelData).uuid,
+                                    container.groups)
                     }
 
-                    onDateSelected: container.groups = setPermissionDate(allgroupsModel.getItem(modelData).uuid, container.groups, date)
+                    onDateSelected: container.groups = setPermissionDate(
+                                        allgroupsModel.getItem(modelData).uuid,
+                                        container.groups, date)
                 }
             }
         }
 
-        TextLabel
-        {
-            text:qsTr("Einzelberechtigungen")
+        TextLabel {
+            text: qsTr("Einzelberechtigungen")
             opacity: .5
         }
 
-
-        DynamicGridView
-        {
+        DynamicGridView {
             id: layout2
             width: parent.width + 10
             maxCellWidth: 160
             cellHeight: 150
             model: deviceModel
-            interactive:false
+            interactive: false
 
-            delegate:
-            Item
-            {
+            delegate: Item {
                 width: layout.cellWidth
                 height: layout.cellHeight
 
-                SinglePermissionItem
-                {
+                SinglePermissionItem {
                     id: item2
                     property var permission: container.permissions[_deviceID]
                     anchors.fill: parent
                     icon: TypeDef.getIcon(_tag)
                     anchors.bottomMargin: 10
-                    anchors.rightMargin:  10
-                    deviceName:  _displayName
+                    anchors.rightMargin: 10
+                    deviceName: _displayName
                     expires: permission !== undefined ? permission.expirationDate : ""
 
-                    permissionState:
-                    {
-                        if(permission === undefined)
-                            return 0;
+                    permissionState: {
+                        if (permission === undefined)
+                            return 0
 
-                        if(permission.active)
+                        if (permission.active)
                             return 1
                         else
                             return 2
                     }
 
-                    hasGroupPermission:
-                    {
+                    hasGroupPermission: {
                         container.check(_deviceID)
                     }
 
-                    onClicked: container.permissions = setPermissionState(_deviceID, container.permissions, (permissionState + 1) % 3)
-                    onSetLevel: container.permissions = setPermissionState(_deviceID, container.permissions, level)
-                    onDateSelected: container.permissions = setPermissionDate(_deviceID, container.permissions, date)
+                    onClicked: container.permissions = setPermissionState(
+                                   _deviceID, container.permissions,
+                                   (permissionState + 1) % 3)
+                    onSetLevel: container.permissions = setPermissionState(
+                                    _deviceID, container.permissions, level)
+                    onDateSelected: container.permissions = setPermissionDate(
+                                        _deviceID, container.permissions, date)
                 }
             }
         }
     }
 
-
-    function setPermissionDate(permissionID, permissions, date)
-    {
-        if(permissions[permissionID] !== undefined)
-        {
+    function setPermissionDate(permissionID, permissions, date) {
+        if (permissions[permissionID] !== undefined) {
             permissions[permissionID].expirationDate = date
             return permissions
         }
-
     }
-    function setPermissionState(permissionID, permissions, state)
-    {
-        if(state === 0 && permissions[permissionID] !== undefined)
-        {
+    function setPermissionState(permissionID, permissions, state) {
+        if (state === 0 && permissions[permissionID] !== undefined) {
             delete permissions[permissionID]
-            return permissions;
-        }
-        else
-        {
+            return permissions
+        } else {
 
-            if(permissions[permissionID] !== undefined)
-            {
+            if (permissions[permissionID] !== undefined) {
                 permissions[permissionID].active = (state === 1)
                 return permissions
             }
 
             var now = new Date()
-            now.setFullYear(now.getFullYear()+1)
+            now.setFullYear(now.getFullYear() + 1)
             var permission = {}
             permission["expirationDate"] = now
             permission["active"] = (state === 1)
@@ -211,46 +184,37 @@ Container
         }
     }
 
-    function addOrRemovePermission(permissionID, permissions)
-    {
-        if(permissions[permissionID] === undefined)
-        {
+    function addOrRemovePermission(permissionID, permissions) {
+        if (permissions[permissionID] === undefined) {
             var now = new Date()
-            now.setFullYear(now.getFullYear()+1)
+            now.setFullYear(now.getFullYear() + 1)
             var permission = {}
             permission["expirationDate"] = now
             permission["active"] = true
             permission["expires"] = true
             permission["resourceID"] = permissionID
             permissions[permissionID] = permission
-        }
-        else
-        {
+        } else {
             delete permissions[permissionID]
         }
 
         return permissions
     }
 
-    function addOrRemoveGroup(groupID, groups)
-    {
-        if(permissions[groupID] === undefined)
-        {
+    function addOrRemoveGroup(groupID, groups) {
+        if (permissions[groupID] === undefined) {
             var now = new Date()
-            now.setFullYear(now.getFullYear()+1)
+            now.setFullYear(now.getFullYear() + 1)
             var permission = {}
             permission["expirationDate"] = now
             permission["active"] = true
             permission["expires"] = true
             permission["groupID"] = groupID
             groups[groupID] = permission
-        }
-        else
-        {
+        } else {
             delete permissions[groupID]
         }
 
         return permissions
     }
-
 }
