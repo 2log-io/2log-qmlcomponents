@@ -18,7 +18,7 @@ Item {
 
     Item {
         height: parent.height
-        width: parent.width // > 900 ? 900 : parent.width
+        width: parent.width
         anchors.horizontalCenter: parent.horizontalCenter
 
         Row {
@@ -34,16 +34,4 @@ Item {
             anchors.right: parent.right
         }
     }
-
-    //    Image
-    //    {
-    //        source: "qrc:/QuickLabControls/Assets/Pics/Logo-2logio.svg"
-    //        width: 80
-    //        fillMode:Image.PreserveAspectFit
-
-    //        sourceSize.width: width
-    //        anchors.left: parent.left
-    //        anchors.verticalCenter: parent.verticalCenter
-    //        anchors.margins: 30
-    //    }
 }

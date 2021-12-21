@@ -101,5 +101,6 @@
         <file>AppComponents/Container/PayDesk/BillSummary/BillSummary.qml</file>
         <file>AppComponents/Container/HardwareSetupContainer/HookDeviceContainer.qml</file>
         <file>AppComponents/Widgets/BottomAppMeuButton.qml</file>
+        <file>AppComponents/Container/LicenseContainer/LicenseContainer.qml</file>
     </qresource>
 </RCC>

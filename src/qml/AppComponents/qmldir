@@ -13,7 +13,7 @@ SwitchSetupContainer 1.0                    Container/HardwareSetupContainer/Swi
 LastMachineJobsContainer 1.0                Container/LogContainer/LastJobsContainer.qml
 
 LoginContainer 1.0                          Container/LoginContainer/LoginContainer.qml
-
+LicenseContainer 1.0                        Container/LicenseContainer/LicenseContainer.qml
 GraphContainer 1.0                          Container/MachineContainer/GraphContainer.qml
 MachineCommonSettingsContainer 1.0          Container/MachineContainer/MachineCommonSettingsContainer.qml
 MachineInfoContainer 1.0                    Container/MachineContainer/MachineInfoContainer.qml
