@@ -45,6 +45,16 @@ Column {
         }
     }
 
+    function connect() {
+        if (Connection.state == Connection.STATE_Connected) {
+            docroot.login(username.text, password.text)
+        } else if (Connection.serverUrl !== "") {
+            Connection.reconnectServer()
+        }
+
+        root.loggedOut = false
+    }
+
     TextField {
         id: username
         enabled: Connection.state != Connection.STATE_Authenticated
@@ -60,13 +70,7 @@ Column {
         placeholderText: qsTr("Password")
         field.echoMode: TextInput.Password
         enabled: Connection.state != Connection.STATE_Authenticated
-        onAccepted: {
-            if (Connection.state == Connection.STATE_Connected) {
-                docroot.login(username.text, password.text)
-            } else if (Connection.serverUrl !== "") {
-                Connection.reconnectServer()
-            }
-        }
+        onAccepted: connect()
         icon: Icons.lock
     }
 
@@ -106,13 +110,7 @@ Column {
         StandardButton {
             width: parent.width
             text: "Login"
-            onClicked: {
-                if (Connection.state == Connection.STATE_Connected) {
-                    docroot.login(username.text, password.text)
-                } else if (Connection.serverUrl !== "") {
-                    Connection.reconnectServer()
-                }
-            }
+            onClicked: connect()
         }
     }
 
