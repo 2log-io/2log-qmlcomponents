@@ -71,8 +71,6 @@ Container {
             width: parent.width
             options: TypeDef.getLongStrings(TypeDef.roles)
             placeholderText: qsTr("Rolle")
-            onSelectedIndexChanged: if (selectedIndex >= 0)
-                                        studgDD.selectedIndex = -1
         }
     }
 
@@ -81,8 +79,7 @@ Container {
         var nameOK = nameField.acceptableInput
         var surnameOK = surnameField.acceptableInput
         var roleOK = roleDD.acceptableInput
-        var studgOK = true // studgDD.acceptableInput
-        return mailOK && nameOK && surnameOK && roleOK && studgOK
+        return mailOK && nameOK && surnameOK && roleOK
     }
 
     function validateInput() {
@@ -90,7 +87,6 @@ Container {
         var nameOK = nameField.check()
         var surnameOK = surnameField.check()
         var roleOK = roleDD.check()
-        var studgOK = true //studgDD.check()
 
         if (!nameOK) {
             nameField.field.forceActiveFocus()
@@ -112,11 +108,6 @@ Container {
             return false
         }
 
-        if (!studgOK) {
-            studgDD.forceActiveFocus()
-            return false
-        }
-
         return true
     }
 
@@ -125,6 +116,5 @@ Container {
         nameField.text = ""
         surnameField.text = ""
         roleDD.selectedIndex = -1
-        //  studgDD.selectedIndex = -1
     }
 }

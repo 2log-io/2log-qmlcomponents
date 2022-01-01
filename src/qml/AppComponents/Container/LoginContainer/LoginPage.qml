@@ -1,5 +1,6 @@
 
 
+
 /*   2log.io
  *   Copyright (C) 2021 - 2log.io | mail@2log.io,  mail@friedemann-metzger.de
  *
@@ -81,7 +82,7 @@ Column {
 
     Connections {
         target: Connection
-        onStateChanged: {
+        function onStateChanged() {
             if (Connection.state == Connection.STATE_Connected) {
                 if (username.text !== "" && password.text !== "") {
                     docroot.login(username.text, password.text)
