@@ -256,13 +256,13 @@ Container {
 
                 Connections {
                     target: deviceModel
-                    onDeviceOnlineChanged: if (deviceModel.deviceOnline
-                                                   && docroot.waitingForDevice) {
-                                               stack.replace(
-                                                           dotOverview,
-                                                           StackView.PushTransition)
-                                               docroot.waitingForDevice = false
-                                           }
+                    function onDeviceOnlineChanged() {
+                        if (deviceModel.deviceOnline
+                                && docroot.waitingForDevice) {
+                            stack.replace(dotOverview, StackView.PushTransition)
+                            docroot.waitingForDevice = false
+                        }
+                    }
                 }
             }
             Component {

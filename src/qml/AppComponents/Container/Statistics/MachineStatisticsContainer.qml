@@ -80,7 +80,7 @@ Container {
             id: counter
             label: qsTr("Betriebsstundenzähler")
 
-            //  helpText: qsTr("Zählt die Betriebsstunden \über einen beliebigen Zeitraum.")
+            helpText: qsTr("Zählt die Betriebsstunden \über einen beliebigen Zeitraum.")
             width: parent.width > 500 ? (parent.width - 40) / 3 : parent.width
 
             value: {
