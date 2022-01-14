@@ -113,15 +113,15 @@ Flow {
             Item {
                 width: 250
                 height: 250
-                CalendarWidget {
-                    id: fromDatePicker
-                    anchors.fill: parent
-                    maximumDate: toDatePicker.selectedDate
-                    onClicked: {
-                        date.setHours(0)
-                        docroot.fromChanged(date)
-                    }
-                }
+                //                CalendarWidget {
+                //                    id: fromDatePicker
+                //                    anchors.fill: parent
+                //                    maximumDate: toDatePicker.selectedDate
+                //                    onClicked: {
+                //                        date.setHours(0)
+                //                        docroot.fromChanged(date)
+                //                    }
+                //                }
             }
         }
     }
@@ -213,17 +213,17 @@ Flow {
                     width: 250
                     height: 250
 
-                    CalendarWidget {
-                        id: toDatePicker
-                        anchors.fill: parent
-                        selectedDate: docroot.expires
-                        minimumDate: fromDatePicker.selectedDate
-                        onClicked: {
-                            date.setHours(23)
-                            date.setMinutes(59)
-                            docroot.toChanged(date)
-                        }
-                    }
+                    //                    CalendarWidget {
+                    //                        id: toDatePicker
+                    //                        anchors.fill: parent
+                    //                        selectedDate: docroot.expires
+                    //                        minimumDate: fromDatePicker.selectedDate
+                    //                        onClicked: {
+                    //                            date.setHours(23)
+                    //                            date.setMinutes(59)
+                    //                            docroot.toChanged(date)
+                    //                        }
+                    //                    }
                 }
             }
         }

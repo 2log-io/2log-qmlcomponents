@@ -17,10 +17,12 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 import QtQuick 2.5
+import QtQuick
 import QtQuick.Layouts 1.3
 import UIControls 1.0
 import CloudAccess 1.0
 import AppComponents 1.0
+
 import "../../Widgets"
 
 Container {
@@ -60,8 +62,8 @@ Container {
             width: parent.width
             nextOnTab: roleDD
             placeholderText: qsTr("eMail")
-            field.validator: RegExpValidator {
-                regExp: /\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*/
+            field.validator: RegularExpressionValidator {
+                regularExpression: /\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*/
             }
         }
 

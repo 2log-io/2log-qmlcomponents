@@ -34,8 +34,14 @@ SOURCES += \
 
 
 android {
-    HEADERS +=    $$PWD/cpp/CppHelper/NFCReader.h
-    SOURCES +=    $$PWD/cpp/CppHelper/NFCReader.cpp
+    HEADERS +=    $$PWD/cpp/NFCReader.h
+    SOURCES +=    $$PWD/cpp/NFCReader.cpp
+    QT += nfc
+}
+
+ios {
+    HEADERS +=    $$PWD/cpp/NFCReader.h
+    SOURCES +=    $$PWD/cpp/NFCReader.cpp
     QT += nfc
 }
 

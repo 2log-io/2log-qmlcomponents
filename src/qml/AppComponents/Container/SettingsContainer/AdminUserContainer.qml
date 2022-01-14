@@ -17,6 +17,7 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 import QtQuick 2.8
+import QtQuick
 import QtQuick.Controls 2.4
 import UIControls 1.0
 import QtQuick.Layouts 1.3
@@ -119,8 +120,8 @@ Container {
                     id: mailField
                     mandatory: true
                     placeholderText: qsTr("eMail")
-                    field.validator: RegExpValidator {
-                        regExp: /\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*/
+                    field.validator: RegularExpressionValidator {
+                        regularExpression: /\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*/
                     }
                     width: parent.width
                     anchors.verticalCenter: parent.verticalCenter

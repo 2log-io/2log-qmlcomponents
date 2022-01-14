@@ -19,7 +19,10 @@
 #include <QDebug>
 #include <QDateTime>
 #include <QFileDialog>
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
 #include <QTextCodec>
+#endif
+#include <QRegularExpression>
 #include <QFile>
 
 
@@ -78,16 +81,15 @@ bool CSVReader::read()
         return false;
 
     QTextStream stream(_content);
-    stream.setCodec(QTextCodec::codecForUtfText(_content));
+
+    #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
+    auto codec = QTextCodec::codecForUtfText(_content);
+    stream.setCodec(codec);
+    #endif
 
     while (!stream.atEnd())
     {
         QString lineString = QString(stream.readLine()).simplified();
-//        while(!lineString.endsWith(";"))
-//        {
-//            lineString += QString(stream.readLine()).simplified();
-//        }
-
         QStringList data = lineString.split(";");
         if(data.count() == 1)
             data = lineString.split(",");
@@ -187,9 +189,10 @@ bool CSVReader::read()
             eMail = data[_mailIndex];
 
          eMail.remove("\r\n");
-         QRegExp mailCheck("\\w+([-+.']\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*");
+         bool validMailAddress;
 
-         bool validMailAddress = mailCheck.exactMatch(eMail);
+         QRegularExpression mailCheck("\\w+([-+.']\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*");
+         validMailAddress = mailCheck.match(eMail).hasMatch();
 
          if(!validMailAddress)
          {
@@ -221,11 +224,14 @@ bool CSVReader::read()
 
         if(_balanceIndex >= 0 && _balanceIndex < data.count())
         {
-            QRegExp regexp("\\d+(?:(?:,|.)\\d\\d*)?");
-            int pos = regexp.indexIn(data[_balanceIndex]);
+            QRegularExpression regexp("\\d+(?:(?:,|.)\\d\\d*)?");
+            auto regExpMatch = regexp.match(data[_balanceIndex]);
+            int pos = regExpMatch.lastCapturedIndex();
+
+
             if(pos >= 0)
             {
-                QString match =  regexp.capturedTexts().at(0);
+                QString match =  regExpMatch.captured(0);
                 match = match.replace(",",".");
                 int val = static_cast<int>(match.toDouble() * 100);
                 user["balance"] = val;

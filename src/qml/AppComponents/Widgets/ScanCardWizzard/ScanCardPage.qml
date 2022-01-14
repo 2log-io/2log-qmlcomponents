@@ -14,7 +14,7 @@ Item {
     property CardReader reader
     Connections {
         target: reader
-        onCardRead: {
+        function onCardRead(data) {
             if (data.errorCode < 0) {
                 console.log("Unbekannte Karte")
                 scanCardPage.state = "cardOK"

@@ -1,5 +1,6 @@
 
 
+
 /*   2log.io
  *   Copyright (C) 2021 - 2log.io | mail@2log.io,  mail@friedemann-metzger.de
  *
@@ -16,6 +17,7 @@
  *   You should have received a copy of the GNU Affero General Public License
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+import QtQuick
 import QtQuick 2.12
 import CloudAccess 1.0
 import QtQuick.Controls 2.3
@@ -47,8 +49,8 @@ Item {
             label: qsTr("Space URL")
             id: urlField
             mandatory: true
-            validator: RegExpValidator {
-                regExp: /[https:\/\/]?(.+)\.cobot\.me/
+            validator: RegularExpressionValidator {
+                regularExpression: /[https:\/\/]?(.+)\.cobot\.me/
             }
         }
     }

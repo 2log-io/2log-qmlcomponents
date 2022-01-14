@@ -17,6 +17,7 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 import QtQuick 2.5
+import QtQuick
 import UIControls 1.0
 import CloudAccess 1.0
 import AppComponents 1.0
@@ -107,8 +108,8 @@ Container {
             Binding on text {
                 value: userModel.mail
             }
-            validator: RegExpValidator {
-                regExp: /\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*/
+            validator: RegularExpressionValidator {
+                regularExpression: /\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*/
             }
             mandatory: true
         }

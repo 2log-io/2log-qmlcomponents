@@ -24,6 +24,8 @@ signals:
 private slots:
     void targetDetected(QNearFieldTarget *target);
     void targetLost(QNearFieldTarget *target);
+    void handleAdapterStateChange(QNearFieldManager::AdapterState state);
+    void errSlot(QNearFieldTarget::Error error, const QNearFieldTarget::RequestId &id);
 
 signals:
     void readyChanged();

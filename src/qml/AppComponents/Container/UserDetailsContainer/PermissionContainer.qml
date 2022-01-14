@@ -203,8 +203,9 @@ Container {
                         }
                         deviceName: _displayName
                         onSetLevel: setPermission(_deviceID, level)
-                        expires: parent.permissionData.expirationDate
-                                 !== undefined ? parent.permissionData.expirationDate : ""
+                        expires: Date.fromLocaleDateString(
+                                     parent.permissionData.expirationDate
+                                     !== undefined ? parent.permissionData.expirationDate : "")
                         permissionState: {
                             if (permissionData._exists) {
                                 if (permissionData.active)

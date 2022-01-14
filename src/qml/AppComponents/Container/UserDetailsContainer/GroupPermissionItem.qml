@@ -136,11 +136,13 @@ BaseItem {
                     active: dateFlyout.opened
                     width: 250
                     height: 250
+
+                    /*
                     sourceComponent: CalendarWidget {
                         anchors.fill: parent
                         selectedDate: docroot.expires
                         onClicked: docroot.dateSelected(date)
-                    }
+                    }*/
                 }
             }
         }

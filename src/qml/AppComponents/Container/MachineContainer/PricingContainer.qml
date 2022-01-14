@@ -17,6 +17,7 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 import QtQuick 2.5
+import QtQuick
 import UIControls 1.0
 import QtQuick.Layouts 1.1
 import CloudAccess 1.0
@@ -86,8 +87,8 @@ Container {
         FormTextItem {
             label: qsTr("Preis [EUR]")
             id: price
-            validator: RegExpValidator {
-                regExp: /^\d+([\.,]\d{2})?$/
+            validator: RegularExpressionValidator {
+                regularExpression: /^\d+([\.,]\d{2})?$/
             }
             Binding on text {
                 value: model ? (model.pricePerUnit / 100).toLocaleString(
@@ -112,8 +113,8 @@ Container {
         FormTextItem {
             label: qsTr("Mindestguthaben [EUR]")
             id: minBalance
-            validator: RegExpValidator {
-                regExp: /^\d+([\.,]\d{2})?$/
+            validator: RegularExpressionValidator {
+                regularExpression: /^\d+([\.,]\d{2})?$/
             }
             Binding on text {
                 value: model ? (model.minimumBalance / 100).toLocaleString(

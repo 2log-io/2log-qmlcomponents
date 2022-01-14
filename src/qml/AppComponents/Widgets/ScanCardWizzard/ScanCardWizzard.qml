@@ -10,27 +10,24 @@ Item {
     signal confirm(string cardID)
     signal cancel
     property bool manual: !reader.ready
-
+    property Component currentComponent
+    onCurrentComponentChanged: stack.replace(currentComponent)
     Component.onCompleted: {
         if (isMobile && nfcReader.ready) {
-            if (stack.depth > 1)
-                stack.clear()
-
-            stack.replace(scanCardPage)
+            docroot.currentComponent = scanCardPage
         }
     }
 
     onManualChanged: {
-        if (stack.depth > 1)
-            stack.clear()
         if (!manual) {
+            console.log("A")
             if (reader.ready) {
-                stack.replace(scanCardPage)
+                docroot.currentComponent = scanCardPage
             } else {
-                stack.replace(message)
+                docroot.currentComponent = message
             }
         } else {
-            stack.replace(keyboardCardPage)
+            docroot.currentComponent = keyboardCardPage
         }
     }
 
@@ -39,7 +36,12 @@ Item {
     Stack {
         id: stack
         anchors.fill: parent
-        initialItem: docroot.manual ? undefined : scanCardPage
+        initialItem: dummy
+        Component.onCompleted: stack.push(docroot.currentComponent)
+    }
+    Component {
+        id: dummy
+        Item {}
     }
 
     Component {
@@ -47,7 +49,7 @@ Item {
         ScanCardPage {
             reader: docroot.reader
             onConfirm: docroot.confirm(cardID)
-            onCancel: stack.depth > 1 ? stack.pop() : docroot.cancel()
+            onCancel: docroot.cancel()
         }
     }
 
@@ -57,7 +59,7 @@ Item {
         MessagePage {
             message: qsTr("Momentan ist leider kein Dot zum Einlesen von Karten konfiguriert. Dies kann im Administrationsbereich geändert werden.")
             onConfirm: docroot.confirm(cardID)
-            onCancel: stack.depth > 1 ? stack.pop() : docroot.cancel()
+            onCancel: docroot.cancel()
         }
     }
 
@@ -65,7 +67,7 @@ Item {
         id: keyboardCardPage
         TextFieldCardPage {
             onConfirm: docroot.confirm(cardID)
-            onCancel: stack.depth > 1 ? stack.pop() : docroot.cancel()
+            onCancel: docroot.cancel()
         }
     }
 }

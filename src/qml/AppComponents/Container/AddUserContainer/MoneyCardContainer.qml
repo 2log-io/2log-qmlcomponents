@@ -17,6 +17,7 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 import QtQuick 2.5
+import QtQuick
 import QtQuick.Controls 2.3
 import UIControls 1.0
 import QtQuick.Layouts 1.3
@@ -124,8 +125,8 @@ Container {
                             clip: false
                             width: 100
                             placeholderText: "0,00"
-                            field.validator: RegExpValidator {
-                                regExp: /^[-]?\d+([\.,]\d{2})?$/
+                            field.validator: RegularExpressionValidator {
+                                regularExpression: /^[-]?\d+([\.,]\d{2})?$/
                             }
                             field.horizontalAlignment: Text.AlignRight
                             fontSize: Fonts.bigDisplayFontSize

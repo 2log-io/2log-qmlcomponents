@@ -3,7 +3,7 @@ import QtQuick.Layouts 1.3
 import QtQuick.Controls 2.4
 import UIControls 1.0
 import AppComponents 1.0
-import QtGraphicalEffects 1.12
+import Qt5Compat.GraphicalEffects
 
 Item {
     id: docroot
