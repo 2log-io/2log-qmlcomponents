@@ -8,7 +8,6 @@ NFCReader::NFCReader(QObject *parent) : QObject(parent),
 {
     connect(_manager, SIGNAL(targetDetected(QNearFieldTarget*)), this, SLOT(targetDetected(QNearFieldTarget*)));
     connect(_manager, SIGNAL(targetLost(QNearFieldTarget*)), this, SLOT(targetLost(QNearFieldTarget*)));
-  //  connect(_manager, &QNearFieldManager::error, this, &NFCReader::errSlot);
     connect(_manager, &QNearFieldManager::adapterStateChanged,
             this, &NFCReader::handleAdapterStateChange);
 }
@@ -16,14 +15,19 @@ NFCReader::NFCReader(QObject *parent) : QObject(parent),
 void NFCReader::startRead()
 {
     qDebug()<< Q_FUNC_INFO;
-    qDebug()<<_manager->startTargetDetection(QNearFieldTarget::AnyAccess);
-
+    qDebug()<<_manager->startTargetDetection(QNearFieldTarget::TagTypeSpecificAccess);
 }
 
 bool NFCReader::ready()
 {
     qDebug()<< Q_FUNC_INFO;
-    return _manager->isEnabled();
+    bool enabled = _manager->isEnabled();
+    qDebug()<<"A"<<_manager->isSupported(QNearFieldTarget::UnknownAccess);
+    qDebug()<<"B"<<_manager->isSupported(QNearFieldTarget::AnyAccess);
+    qDebug()<<"C"<<_manager->isSupported(QNearFieldTarget::NdefAccess);
+    qDebug()<<"D"<<_manager->isSupported(QNearFieldTarget::TagTypeSpecificAccess);
+    qDebug()<< enabled;
+    return enabled;
 }
 
 void NFCReader::targetDetected(QNearFieldTarget *target)
