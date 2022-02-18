@@ -95,6 +95,31 @@ Item {
             width: parent.width
         }
 
+        Row {
+            id: autoConnectControls
+            spacing: 10
+            CheckBox {
+                scale: .8
+                intercept: true
+                checked: Connection.autoConnect
+                onClicked: Connection.autoConnect = !Connection.autoConnect
+            }
+
+            TextLabel {
+                opacity: .5
+                anchors.verticalCenter: parent.verticalCenter
+                text: qsTr("Fürs nächste mal merken")
+                MouseArea {
+                    anchors.fill: parent
+                    onClicked: Connection.autoConnect = !Connection.autoConnect
+                }
+            }
+        }
+        Item {
+            height: 10
+            width: parent.width
+        }
+
         StandardButton {
             width: parent.width
             text: qsTr("Verbinden")

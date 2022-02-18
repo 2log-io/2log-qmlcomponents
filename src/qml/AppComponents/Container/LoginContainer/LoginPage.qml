@@ -75,6 +75,20 @@ Column {
         icon: Icons.lock
     }
 
+    ViewActionButton {
+        height: 10
+        hasBorder: false
+        text: qsTr("Passwort vergessen?")
+        onClicked: docroot.resetPasswordClicked()
+        fontSize: Fonts.verySmallControlFontSize
+        anchors.left: parent.left
+        anchors.leftMargin: -10
+        opacity: .5
+        Behavior on opacity {
+            NumberAnimation {}
+        }
+    }
+
     Item {
         height: 5
         width: parent.width
@@ -95,19 +109,28 @@ Column {
     Column {
         width: parent.width
         spacing: 15
-        ViewActionButton {
-            height: 10
-            hasBorder: false
-            text: qsTr("Passwort vergessen?")
-            onClicked: docroot.resetPasswordClicked()
-            fontSize: Fonts.verySmallControlFontSize
-            anchors.left: parent.left
-            anchors.leftMargin: -10
-            opacity: .5
-            Behavior on opacity {
-                NumberAnimation {}
+
+        Row {
+            id: autoConnectControls
+            spacing: 10
+            CheckBox {
+                scale: .8
+                intercept: true
+                checked: UserLogin.autoLogIn
+                onClicked: UserLogin.autoLogIn = !UserLogin.autoLogIn
+            }
+
+            TextLabel {
+                opacity: .5
+                anchors.verticalCenter: parent.verticalCenter
+                text: qsTr("Fürs nächste mal merken")
+                MouseArea {
+                    anchors.fill: parent
+                    onClicked: UserLogin.autoLogIn = !UserLogin.autoLogIn
+                }
             }
         }
+
         StandardButton {
             width: parent.width
             text: "Login"

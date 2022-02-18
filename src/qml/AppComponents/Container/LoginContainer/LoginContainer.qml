@@ -32,7 +32,7 @@ Container {
     StackView {
         id: stack
         width: parent.width
-        height: 180
+        height: 220
         initialItem: serverURL === "" ? connect : login
         clip: true
 
