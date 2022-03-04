@@ -22,7 +22,7 @@ import QtQuick 2.8
 import UIControls 1.0
 import AppComponents 1.0
 
-Rectangle {
+Item {
     id: docroot
 
     property bool flat
@@ -32,7 +32,7 @@ Rectangle {
     opacity: flat ? .6 : 1
     width: parent.width
     height: 40
-    color: Colors.darkBlue
+ //   color: Colors.darkBlue
 
     RowLayout {
         width: parent.width - 40
@@ -54,7 +54,7 @@ Rectangle {
             Layout.fillHeight: true
             Row {
                 anchors.right: parent.right
-                spacing: 4
+                spacing: 10
                 anchors.verticalCenter: parent.verticalCenter
                 TextLabel {
 
