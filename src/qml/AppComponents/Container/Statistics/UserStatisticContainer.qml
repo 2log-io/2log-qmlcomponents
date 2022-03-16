@@ -55,7 +55,7 @@ Container {
             width: parent.width > 400 ? (parent.width - 20) / 2 : parent.width
             value: {
                 if (model.initialized) {
-                    return model.debts >= 0 ? (model.debts / 100).toLocaleString(
+                    return model.debts <= 0 ? (model.debts / 100).toLocaleString(
                                                   Qt.locale("de_DE")) : 0
                 }
                 return ""
