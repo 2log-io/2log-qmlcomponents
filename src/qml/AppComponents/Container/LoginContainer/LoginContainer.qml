@@ -28,6 +28,7 @@ Container {
 
     width: 300
     headline: qsTr("Willkommen!")
+    property bool enableServerTextField
 
     StackView {
         id: stack
@@ -115,6 +116,7 @@ Container {
             id: connect
             ConnectPage {
                 id: page
+                serverEnabled: docroot.enableServerTextField
                 property string desc: "connect"
             }
         }

@@ -1,6 +1,5 @@
 
 
-
 /*   2log.io
  *   Copyright (C) 2021 - 2log.io | mail@2log.io,  mail@friedemann-metzger.de
  *
@@ -52,8 +51,6 @@ Column {
         } else if (Connection.serverUrl !== "") {
             Connection.reconnectServer()
         }
-
-        root.loggedOut = false
     }
 
     TextField {

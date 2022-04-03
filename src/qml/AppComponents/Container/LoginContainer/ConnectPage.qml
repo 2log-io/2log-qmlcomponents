@@ -22,40 +22,42 @@ import UIControls 1.0
 import CloudAccess 1.0
 
 Item {
+    id: docroot
+    property alias serverEnabled: server.enabled
+
+    function connect() {
+        if (server.text !== "") {
+            if (!server.text.includes(".") && !server.text.includes(":"))
+                server.text = server.text + ".2log.io"
+
+            if (!server.text.startsWith("ws"))
+                server.text = "wss://" + server.text
+
+            Connection.connectToServer(server.text, connectCb)
+        } else {
+            server.showErrorAnimation()
+        }
+    }
+
+    function connectCb(success, errorMsg) {
+        if (!success) {
+            if (errorMsg === 0)
+                errorLabel.text = qsTr("Ungültige Server Adresse.")
+            else
+                errorLabel.text = qsTr("Server Fehler.")
+
+            error.opacity = 1
+            server.showErrorAnimation()
+        } else {
+            errorLabel.text = ""
+        }
+    }
+
     Column {
-        id: docroot
         spacing: 0
         anchors.top: parent.top
         anchors.topMargin: 20
         width: parent.width
-
-        function connect() {
-            if (server.text !== "") {
-                if (!server.text.includes(".") && !server.text.includes(":"))
-                    server.text = server.text + ".2log.io"
-
-                if (!server.text.startsWith("ws"))
-                    server.text = "wss://" + server.text
-
-                Connection.connectToServer(server.text, connectCb)
-            } else {
-                server.showErrorAnimation()
-            }
-        }
-
-        function connectCb(success, errorMsg) {
-            if (!success) {
-                if (errorMsg === 0)
-                    errorLabel.text = qsTr("Ungültige Server Adresse.")
-                else
-                    errorLabel.text = qsTr("Server Fehler.")
-
-                error.opacity = 1
-                server.showErrorAnimation()
-            } else {
-                errorLabel.text = ""
-            }
-        }
 
         TextField {
             id: server
@@ -63,10 +65,7 @@ Item {
             width: parent.width
             icon: Icons.server
             text: serverURL
-            enabled: (Connection.state == Connection.STATE_Disconnected
-                      && !root.suspended && !root.provisioning)
-                     || errorLabel.text !== ""
-
+            enabled: docroot.serverEnabled || errorLabel.text !== ""
             onTextChanged: if (text !== "")
                                error.opacity = 0
             field.onAccepted: {
