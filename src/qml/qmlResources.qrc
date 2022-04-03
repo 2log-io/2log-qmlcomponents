@@ -102,5 +102,6 @@
         <file>AppComponents/Container/HardwareSetupContainer/HookDeviceContainer.qml</file>
         <file>AppComponents/Widgets/BottomAppMeuButton.qml</file>
         <file>AppComponents/Container/LicenseContainer/LicenseContainer.qml</file>
+        <file>AppComponents/Container/LoginContainer/DeviceConnectContainer.qml</file>
     </qresource>
 </RCC>
