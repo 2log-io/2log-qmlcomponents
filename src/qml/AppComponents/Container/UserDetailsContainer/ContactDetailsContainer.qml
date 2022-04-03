@@ -56,14 +56,6 @@ Container {
                 if (roleCombo.dirty) {
                     userModel.role = TypeDef.roles[roleCombo.editedSelectedIndex].code
                 }
-
-                if (courseCombo.dirty) {
-                    if (courseCombo.editedSelectedIndex >= 0) {
-                        userModel.course = TypeDef.courses[courseCombo.editedSelectedIndex].code
-                    } else {
-                        userModel.course = ""
-                    }
-                }
             }
         }
     }
